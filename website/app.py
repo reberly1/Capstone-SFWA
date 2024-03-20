@@ -1,26 +1,21 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request
 
 app = Flask(__name__)
 
-posts = [
-    {
-    'author': "Joe Smow",
-    'title': 'Blog Post 1',
-    'content': 'sample data',
-    'date': "April 21, 2018"
-    },
-    {
-    'author': "Joe slow",
-    'title': 'Blog Post 2',
-    'content': 'sample data1',
-    'date': "April 21, 2022"
-    }
-]
-
-@app.route('/')
-@app.route('/home')
+@app.route('/', methods=['GET','POST'])
+@app.route('/home', methods=['GET','POST'])
 def home():
-    return render_template('home.html', posts=posts)
+   if request.method == 'POST':
+        # Get form data
+        name = request.form['name']
+        message = request.form['message']
+
+        # Process the data (you can do whatever you want with it)
+        print('Name:', name)
+        print('Message:', message)
+        return render_template('home.html', name=name, message=message)
+   else:
+        return render_template('home.html')
 
 @app.route('/about')
 def about():
