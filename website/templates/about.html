@@ -1,6 +1,32 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>About Page</h1> 
+    <h1>Calculator Page</h1> 
+
+    <form method="POST">
+        <div class="form-group">
+            <label for="Loan Principal">Loan Principal</label>
+            <input type="number" class="form-control" id="Loan Principal" name="principal" placeholder="Enter Your Loan Principal">
+        </div>
+        
+        <div class="form-group">
+            <label for="Loan Interest">Loan Interest</label>
+            <input type="number" class="form-control" id="Loan Interest" name="interest" placeholder="Enter Your Interest Rate">
+        </div>
+
+        <div class="form-group">
+            <label for="Graduation Date">Graduation Date</label>
+            <input type="date" class="form-control" id="Graduation Date" name="grad" placeholder="Enter Your Graduation Date">
+        </div>
+
+        <div class="form-group">
+            <label for="Term Cost">Term Cost</label>
+            <input type="number" class="form-control" id="Term Cost" name="term" placeholder="Enter the Cost of your Current Term">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>   
+
+
 {% endblock content %}
 
 

@@ -17,9 +17,20 @@ def home():
    else:
         return render_template('home.html')
 
-@app.route('/about')
+@app.route('/about', methods=['GET','POST'])
 def about():
-    return render_template('about.html', title='About')
-
+    if request.method == 'POST':
+        principal = request.form['principal']
+        interest = request.form['interest']
+        grad = request.form['grad']
+        term = request.form['term']
+        # Process the data (you can do whatever you want with it)
+        print('Principal:', principal)
+        print('Interest:', interest)
+        print('Graduation Date', grad)
+        print('Term Cost', term)
+        return render_template('about.html', title='About', principal=principal, interest=interest, grad=grad, term=term)
+    else:
+        return render_template("about.html")
 if __name__ == '__main__':
     app.run(debug=True)
