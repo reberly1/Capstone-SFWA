@@ -24,13 +24,33 @@ def about():
         interest = request.form['interest']
         grad = request.form['grad']
         term = request.form['term']
+        future = request.form['future']
         # Process the data (you can do whatever you want with it)
         print('Principal:', principal)
         print('Interest:', interest)
-        print('Graduation Date', grad)
-        print('Term Cost', term)
-        return render_template('about.html', title='About', principal=principal, interest=interest, grad=grad, term=term)
+        print('Graduation Date:', grad)
+        print('Term Cost:', term)
+        print('Future Interest:', future)
+        return render_template('about.html', title='About', principal=principal, interest=interest, grad=grad, term=term,future=future)
     else:
         return render_template("about.html")
+    
+@app.route('/about/report', methods=['GET','POST'])
+def report():
+    if request.method == 'POST':
+        principal = request.form['principal']
+        interest = request.form['interest']
+        grad = request.form['grad']
+        term = request.form['term']
+        future = request.form['future']
+        # Process the data (you can do whatever you want with it)
+        print('Principal:', principal)
+        print('Interest:', interest)
+        print('Graduation Date:', grad)
+        print('Term Cost:', term)
+        print('Future Interest:', future)
+        return render_template('report.html', title='Report', principal=principal, interest=interest, grad=grad, term=term,future=future)
+    return render_template('report.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

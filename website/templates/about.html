@@ -2,7 +2,7 @@
 {% block content %}
     <h1>Calculator Page</h1> 
 
-    <form method="POST">
+    <form action="/about/report" method="POST">
         <div class="form-group">
             <label for="Loan Principal">Loan Principal</label>
             <input type="number" class="form-control" id="Loan Principal" name="principal" placeholder="Enter Your Loan Principal">
@@ -21,6 +21,11 @@
         <div class="form-group">
             <label for="Term Cost">Term Cost</label>
             <input type="number" class="form-control" id="Term Cost" name="term" placeholder="Enter the Cost of your Current Term">
+        </div>
+
+        <div class="form-group">
+            <label for="Future Interest">Future Loan Interest</label>
+            <input type="number" class="form-control" id="Future Interest" name="future" placeholder="Enter the estimated interest for future loans">
         </div>
 
         <button type="submit" class="btn btn-primary">Submit</button>
