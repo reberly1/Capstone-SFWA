@@ -19,6 +19,10 @@ def repayment():
 def adjustment():
     return render_template('adjustment.html')
 
+@app.route('/calculator/unguided', methods=['GET','POST'])
+def unguided():
+    return render_template('unguided.html')
+
 @app.route('/calculator/debt', methods=['GET','POST'])
 def about():
     if request.method == 'POST':

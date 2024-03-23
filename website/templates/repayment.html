@@ -3,4 +3,17 @@
 
     <h1>Repayment Calculator</h1>
 
+    <form action="/calculator/unguided" method="POST">
+        <div class="form-group">
+            <label for="EST_Total">Total Estimated Loan Principal</label>
+            <input type="number" class="form-control" id="EST_Total" name="EST_Total" placeholder="Enter Your Total Estimated Loan Principal">
+        </div>
+
+        <div class="form-group">
+            <label for="Monthly">Total Estimated Monthly Payment</label>
+            <input type="number" class="form-control" id="Monthly" name="Monthly" placeholder="Enter Your Estimated Monthly Payment">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    <form>
 {% endblock content %}
