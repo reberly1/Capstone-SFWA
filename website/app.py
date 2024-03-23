@@ -2,22 +2,24 @@ from flask import Flask, render_template, url_for, request
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET','POST'])
-@app.route('/home', methods=['GET','POST'])
+@app.route('/')
+@app.route('/home')
 def home():
-   if request.method == 'POST':
-        # Get form data
-        name = request.form['name']
-        message = request.form['message']
+        return render_template('home.html', title="Home")
 
-        # Process the data (you can do whatever you want with it)
-        print('Name:', name)
-        print('Message:', message)
-        return render_template('home.html', name=name, message=message)
-   else:
-        return render_template('home.html')
+@app.route('/calculator', methods=['GET','POST'])
+def calculator():
+    return render_template('calculator.html')
 
-@app.route('/about', methods=['GET','POST'])
+@app.route('/calculator/repayment', methods=['GET','POST'])
+def repayment():
+    return render_template('repayment.html')
+
+@app.route('/calculator/adjustment', methods=['GET','POST'])
+def adjustment():
+    return render_template('adjustment.html')
+
+@app.route('/calculator/debt', methods=['GET','POST'])
 def about():
     if request.method == 'POST':
         principal = request.form['principal']
@@ -25,17 +27,11 @@ def about():
         grad = request.form['grad']
         term = request.form['term']
         future = request.form['future']
-        # Process the data (you can do whatever you want with it)
-        print('Principal:', principal)
-        print('Interest:', interest)
-        print('Graduation Date:', grad)
-        print('Term Cost:', term)
-        print('Future Interest:', future)
-        return render_template('about.html', title='About', principal=principal, interest=interest, grad=grad, term=term,future=future)
+        return render_template('debt.html', principal=principal, interest=interest, grad=grad, term=term,future=future)
     else:
-        return render_template("about.html")
+        return render_template("debt.html")
     
-@app.route('/about/report', methods=['GET','POST'])
+@app.route('/calculator/report', methods=['GET','POST'])
 def report():
     if request.method == 'POST':
         principal = request.form['principal']
