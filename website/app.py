@@ -26,8 +26,8 @@ def unguided():
 @app.route('/calculator/debt', methods=['GET','POST'])
 def about():
     if request.method == 'POST':
-        principal = request.form['principal']
-        interest = request.form['interest']
+        principal = request.form['principal[]']
+        interest = request.form['interest[]']
         grad = request.form['grad']
         term = request.form['term']
         future = request.form['future']
@@ -38,8 +38,8 @@ def about():
 @app.route('/calculator/report', methods=['GET','POST'])
 def report():
     if request.method == 'POST':
-        principal = request.form['principal']
-        interest = request.form['interest']
+        principal = request.form['principal[]']
+        interest = request.form['interest[]']
         grad = request.form['grad']
         term = request.form['term']
         future = request.form['future']

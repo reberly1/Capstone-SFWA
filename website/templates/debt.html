@@ -3,16 +3,23 @@
     <h1>Calculator Page</h1> 
 
     <form action="/calculator/report" method="POST">
-        <div class="form-group">
-            <label for="Loan Principal">Loan Principal</label>
-            <input type="number" class="form-control" id="Loan Principal" name="principal" placeholder="Enter Your Loan Principal">
-        </div>
         
-        <div class="form-group">
-            <label for="Loan Interest">Loan Interest</label>
-            <input type="number" class="form-control" id="Loan Interest" name="interest" placeholder="Enter Your Interest Rate">
+        <!--Inputs for multiple existing loan principals/interest rates-->
+        <div id="dynamic loans">
+            <div class="form-group">
+                <label for="Loan Principal">Loan Principal</label>
+                <input type="number" class="form-control" id="Loan Principal[]" name="principal" placeholder="Enter Your Loan Principal">
+            </div>
+            
+            <div class="form-group">
+                <label for="Loan Interest">Loan Interest</label>
+                <input type="number" class="form-control" id="Loan Interest[]" name="interest" placeholder="Enter Your Interest Rate">
+            </div>
         </div>
 
+        <button type="button" class="btn btn-secondary" onclick="addLoan()">Add Another Loan</button>
+
+        <!--Inputs for singular inputs, graduation date, current term cost, and interest rate for future loans-->
         <div class="form-group">
             <label for="Graduation Date">Graduation Date</label>
             <input type="date" class="form-control" id="Graduation Date" name="grad" placeholder="Enter Your Graduation Date">
@@ -28,9 +35,42 @@
             <input type="number" class="form-control" id="Future Interest" name="future" placeholder="Enter the estimated interest for future loans">
         </div>
 
+        <!--Submits all inputs previously established-->
         <button type="submit" class="btn btn-primary">Submit</button>
-    </form>   
+    </form>  
 
+    <script>
+        function addLoan(){
+            var dynamicLoans = document.getElementById("dynamic loans")
+            var loanPrincipal = document.getElementById('Loan Principal[]')
+            var loanInterest = document.getElementById('Loan Interest[]')
+
+            var newDiv = document.createElement('div')
+            newDiv.classList.add('form-group')
+
+            //creates a principle form input with preestablished html parameters
+            var newPrincipal = document.createElement('input')
+            newPrincipal.type = 'number';
+            newPrincipal.classList.add('form-control');
+            newPrincipal.name = 'principal[]'; 
+            newPrincipal.placeholder = 'Enter Your Loan Principal';
+
+             // Creates a interest form input with preestablished html parameters
+            var newInterest = document.createElement('input');
+            newInterest.type = 'number';
+            newInterest.classList.add('form-control');
+            newInterest.name = 'interest[]'; 
+            newInterest.placeholder = 'Enter Your Interest Rate';
+
+            newDiv.appendChild(document.createTextNode('Loan Principal'))
+            newDiv.appendChild(newPrincipal);
+            newDiv.appendChild(document.createTextNode('Loan Interest'));
+            newDiv.appendChild(newInterest);
+
+            // Add the new loan input fields to the container
+            dynamicLoans.appendChild(newDiv);
+        }
+    </script>
 
 {% endblock content %}
 
