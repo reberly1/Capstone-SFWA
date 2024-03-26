@@ -54,15 +54,18 @@
             newInterest.name = 'interest[]'; 
             newInterest.placeholder = 'Enter Your Interest Rate';
 
-            //subsidized checkmark form input with html based parameters
-            var newSubsidized = document.createElement('input');
-            newSubsidized.type = 'checkbox';
-            newSubsidized.name = 'subsidized[]';
+            //Yes radio button to indicate if a loan is subsidized
+            var subsidizedYes = document.createElement('input');
+            subsidizedYes.type = 'radio';
+            subsidizedYes.name = 'subsidized[]' + dynamicLoans.children.length;
+            subsidizedYes.value = 'true';
 
-            //Creates subsidized checkbox label parameters
-            var label = document.createElement('label');
-            label.innerHTML = 'Subsidized'
-
+            //No radio button to indicate if a loan is subsidized
+            var subsidizedNo = document.createElement('input');
+            subsidizedNo.type = 'radio';
+            subsidizedNo.name = 'subsidized[]' + dynamicLoans.children.length;
+            subsidizedNo.value = 'false';
+            subsidizedNo.checked = true; 
 
             //Duplicates the format of the original by creating a label
             //Underneath the labels the forms are added with the parameters above
@@ -70,8 +73,12 @@
             newDiv.appendChild(newPrincipal);
             newDiv.appendChild(document.createTextNode('Loan Interest'));
             newDiv.appendChild(newInterest);
-            newDiv.appendChild(label)
-            newDiv.appendChild(newSubsidized);
+            newDiv.appendChild(document.createTextNode('Subsidized '));
+            newDiv.appendChild(document.createElement('br'));
+            newDiv.appendChild(document.createTextNode('Yes '));
+            newDiv.appendChild(subsidizedYes);
+            newDiv.appendChild(document.createTextNode('No '));
+            newDiv.appendChild(subsidizedNo);
 
             // Add the new loan input fields to the container
             dynamicLoans.appendChild(newDiv);

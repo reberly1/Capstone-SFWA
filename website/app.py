@@ -32,7 +32,7 @@ def report():
     if request.method == 'POST':
         principal = request.form.getlist('principal[]')
         interest = request.form.getlist('interest[]')
-        subsidized = request.form.getlist('subsidized[]')
+        sub = request.form.getlist('subsidized[]')
         grad = request.form['grad']
         term = request.form['term']
         future = request.form['future']
@@ -40,7 +40,7 @@ def report():
         # Process the data (you can do whatever you want with it)
         print('Principal:', principal)
         print('Interest:', interest)
-        print('subsidized', subsidized)
+        print('subsidized', sub)
         print('Graduation Date:', grad)
         print('Term Cost:', term)
         print('Future Interest:', future)
