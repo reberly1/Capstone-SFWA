@@ -37,16 +37,9 @@ def report():
         term = request.form['term']
         future = request.form['future']
         monthly = request.form['monthly']
+        misc = request.form['misc']
 
-        # Process the data (you can do whatever you want with it)
-        print('Principal:', principal)
-        print('Interest:', interest)
-        print('subsidized', sub)
-        print('Graduation Date:', grad)
-        print('Term Cost:', term)
-        print('Future Interest:', future)
-        print('Monthly:', monthly)
-        return render_template('report.html', title='Report', principal=principal, interest=interest, sub=sub, grad=grad, term=term,future=future, monthly=monthly)
+        return render_template('report.html', title='Report', principal=principal, interest=interest, sub=sub, grad=grad, term=term,future=future, monthly=monthly, misc=misc)
     return render_template('report.html')
 
 if __name__ == '__main__':
