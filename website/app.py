@@ -32,10 +32,11 @@ def report():
     if request.method == 'POST':
         principal = request.form.getlist('principal[]')
         interest = request.form.getlist('interest[]')
-        sub = request.form.getlist('subsidized[]')
+        sub = request.form.getlist('loantype[]')
         grad = request.form['grad']
         term = request.form['term']
         future = request.form['future']
+        monthly = request.form['monthly']
 
         # Process the data (you can do whatever you want with it)
         print('Principal:', principal)
@@ -44,7 +45,8 @@ def report():
         print('Graduation Date:', grad)
         print('Term Cost:', term)
         print('Future Interest:', future)
-        return render_template('report.html', title='Report', principal=principal, interest=interest, grad=grad, term=term,future=future)
+        print('Monthly:', monthly)
+        return render_template('report.html', title='Report', principal=principal, interest=interest, sub=sub, grad=grad, term=term,future=future, monthly=monthly)
     return render_template('report.html')
 
 if __name__ == '__main__':

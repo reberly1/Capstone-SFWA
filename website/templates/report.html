@@ -3,4 +3,32 @@
 
     <h1>Report Page</h1>
 
+    {% if principal %}
+    <p>Principal: {{ principal }}</p>
+    {% endif %}
+    
+    {% if interest %}
+    <p>Interest: {{ interest }}</p>
+    {% endif %}
+
+    {% if sub %}
+    <p>Subsidized: {{ sub }}</p>
+    {% endif %}
+
+    {% if grad %}
+    <p>Grad: {{ grad }}</p>
+    {% endif %}
+    
+    {% if term %}
+    <p>Term: {{ term }}</p>
+    {% endif %}
+    
+    {% if future %}
+    <p>Future: {{ future }}</p>
+    {% endif %}
+    
+    {% if monthly %}
+    <p>Monthly: {{ monthly }}</p>
+    {% endif %}
+
 {% endblock content %}
