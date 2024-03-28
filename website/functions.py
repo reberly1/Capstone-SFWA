@@ -1,6 +1,6 @@
 import datetime
 
-def total_debt(principals, rates, subsidized, term, misc):
+def total_debt(principals, rates, subsidized, term, misc, future):
     total = 0
     num_months = month_count(term)
 
@@ -8,7 +8,7 @@ def total_debt(principals, rates, subsidized, term, misc):
     for i in range(len(principals)):
         #Calculate the amount of interest from unsubsidized loans and include with that loan's principal
         if (subsidized[i]) == 'unsubsidized':
-            total += (principals[i] + interest(principals[i], rates[i], num_months[i]))
+            total += (principals[i] + interest(principals[i], rates[i], num_months))
         else:
             #If the loan is subsidized only include the principal
             total += principals[i]
@@ -20,7 +20,7 @@ def interest(principal, int_rate, num_months):
     daily = (int_rate * principal)/365
     return days * daily
 
-def repayment_time(payment, int_rate, misc, principal):
+def repayment_time(payment, int_rate, misc, principal, future):
     int_accrued = 0
     num_months = 0
     total_int = 0
@@ -31,22 +31,21 @@ def repayment_time(payment, int_rate, misc, principal):
         total_int += interest(principal, int_rate, 1)
         num_months += 1
         misc -= payment
-        
+
         #Apply overpay to the interest accrued
-        if (misc < 0):
+        if (misc <= 0):
             int_accrued += misc
             misc = 0
     
     #Pay the principal and any ongoing accruing interest
-    while (principal != 0):
+    while (principal > 0):
         int_accrued += interest(principal, int_rate, 1)
         total_int += interest(principal, int_rate, 1)
         num_months += 1
 
         #Pay off any existing interest first
-        if (int_accrued != 0): 
+        if (int_accrued > 0): 
             int_accrued -= payment
-
             #If the interest is overpayed, apply the difference to the principal
             if (int_accrued < 0):
                 principal += int_accrued
@@ -56,6 +55,11 @@ def repayment_time(payment, int_rate, misc, principal):
         else:
             principal -= payment
 
+    #Pay for any anticipated future loans
+    while (future > 0):
+        num_months += 1
+        future -= payment
+
     #Return length in months to repay loan and interest accrued in that time frame
     return [num_months, total_int]
 
@@ -63,8 +67,17 @@ def prin_ratio(payment, mon_int):
     #Returns what percentage of a monthly payment goes to principal
     return ((payment - mon_int)/payment)
 
-def pay_rate(int_rate, misc, principal, num_months):
-    return 0
+def pay_rate(rates, misc, principals, future, num_months):
+    #Note does not yet factor in the adjusted interest for when the principal is being paid off
+    total_interest = 0
+    total_principal = 0
+    for i in range(len(principals)):
+        total_interest += interest(principals[i], rates[i], num_months)
+        total_principal += principals[i]
+
+    total = total_interest + misc + total_principal + future
+
+    return total/num_months
 
 def month_count(terms):
     current_month = datetime.datetime.now().month
@@ -92,3 +105,4 @@ def month_count(terms):
         months += (12 - current_month)
     
     return months
+
