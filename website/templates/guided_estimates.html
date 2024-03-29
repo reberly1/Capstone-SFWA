@@ -1,10 +1,19 @@
 {% extends "layout.html" %}
 {% block content %}
-<form action="/guided/terms">
-    <button>Back</button>
+<form action="/guided/terms"><button>Back</button></form>
+
+<form method="POST">
+    <div class="form-group">
+        <label for="monthly">Total Estimated Monthly Payment</label>
+        <input type="number" class="form-control" id="monthly" name="monthly" placeholder="Enter Your Estimated Monthly Payment" value="1">
+    </div>
+
+    <div class="form-group">
+        <label for="duration">Ideal Repayment Period in Years</label>
+        <input type="number" class="form-control" id="duration" name="duration" placeholder="Enter your ideal repayment period in Years" value="1">
+    </div>
+
+    <button type="submit">Submit</button>
 </form>
 
-<form action="/report">
-    <button>Next</button>
-</form>
 {% endblock content %}

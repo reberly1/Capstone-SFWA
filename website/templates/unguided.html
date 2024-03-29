@@ -9,14 +9,14 @@
         <div id="dynamic loans">   
         </div>
 
-        <button type="button" class="btn btn-secondary" onclick="addLoan()">Add Loan</button>
+        <button type="button" onclick="addLoan()">Add Loan</button>
 
         <!--Inputs for singular inputs, terms remaining, current term cost, and interest rate for future loans-->
+        
         <div class="form-group">
             <label for="misc">Existing Interest/MISC</label>
             <input type="number" class="form-control" id="misc" name="misc" placeholder="Enter the amount of all other existing student debts">
         </div>
-
 
         <div class="form-group">
             <label for="grad">Terms Remaining</label>
@@ -39,7 +39,7 @@
         </div>
 
         <!--Submits all inputs previously established-->
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit">Submit</button>
     </form>  
 
     <script>
@@ -80,7 +80,6 @@
             loanType.appendChild(unsub);
             loanType.appendChild(sub);
             
-
             //Duplicates the format of the original by creating a label
             //Underneath the labels the forms are added with the parameters above
             newDiv.appendChild(document.createTextNode('Loan Principal'))

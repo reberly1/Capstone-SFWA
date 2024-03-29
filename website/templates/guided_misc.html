@@ -1,10 +1,13 @@
 {% extends "layout.html" %}
 {% block content %}
-<form action="/guided/loans">
-    <button>Back</button>
-</form>
+<form action="/guided/loans"><button>Back</button></form>
 
-<form action="/guided/terms">
-    <button>Next</button>
+    <form method="POST">
+    <div class="form-group">
+        <label for="misc">Existing Interest/MISC</label>
+        <input type="number" class="form-control" id="misc" name="misc" placeholder="Enter the amount of all other existing student debts" value="0">
+    </div>
+
+    <button type="submit">Next</button>
 </form>
 {% endblock content %}
