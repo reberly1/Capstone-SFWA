@@ -2,40 +2,32 @@
 {% block content %}
     <h1>Calculator Page</h1> 
 
-    <form action="/report" method="POST">
+    <form method="POST">
         
         <!--div container for dynamic variables declared within the javascript addLoan() function-->
-        <!--These dynamic varibles include the loan principal and loan interest form variables-->
-        <div id="dynamic loans">   
-        </div>
+        <div id="dynamic loans" div class="form-group"></div>
 
+        <!--Calls the addLoan() javascript function to add additional loan inputs when user presses the button-->
         <button type="button" onclick="addLoan()">Add Loan</button>
 
-        <!--Inputs for singular inputs, terms remaining, current term cost, and interest rate for future loans-->
-        
+        <!--Inputs for singular inputs required by application-->
         <div class="form-group">
+
             <label for="misc">Existing Interest/MISC</label>
             <input type="number" class="form-control" id="misc" name="misc" placeholder="Enter the amount of all other existing student debts">
-        </div>
-
-        <div class="form-group">
+        
             <label for="grad">Terms Remaining</label>
             <input type="number" class="form-control" id="grad" name="grad" placeholder="Enter the number of remaining terms">
-        </div>
+        
+            <label for="term cost">Term Cost</label>
+            <input type="number" class="form-control" id="term cost" name="term cost" placeholder="Enter the Cost of your Current Term">
 
-        <div class="form-group">
-            <label for="Term Cost">Term Cost</label>
-            <input type="number" class="form-control" id="Term Cost" name="term" placeholder="Enter the Cost of your Current Term">
-        </div>
-
-        <div class="form-group">
             <label for="monthly">Total Estimated Monthly Payment</label>
             <input type="number" class="form-control" id="monthly" name="monthly" placeholder="Enter Your Estimated Monthly Payment">
-        </div>
 
-        <div class="form-group">
             <label for="duration">Ideal Repayment Period in Years</label>
             <input type="number" class="form-control" id="duration" name="duration" placeholder="Enter your ideal repayment period in Years">
+
         </div>
 
         <!--Submits all inputs previously established-->
@@ -44,53 +36,91 @@
 
     <script>
         function addLoan() {
-            //Container for dynamic inputs
+            //Container for dynamic inputs declared above
             var dynamicLoans = document.getElementById("dynamic loans")
 
             //Html div to insert dynamic inputs and to add to base html
+            //Approximate HTML Equivalent
+            //<div class='form-group'></div>
             var newDiv = document.createElement('div')
             newDiv.classList.add('form-group')
 
             //principal form input with html based parameters
-            var newPrincipal = document.createElement('input')
+            //Approximate HTML Equivalent
+            //<input type="number" class="form-control" id="principal[]" name="principal[]" placeholder="Enter Your Loan Principal">
+            var newPrincipal = document.createElement('input');
             newPrincipal.type = 'number';
             newPrincipal.classList.add('form-control');
+            newPrincipal.id = 'principal[]';
             newPrincipal.name = 'principal[]'; 
             newPrincipal.placeholder = 'Enter Your Loan Principal';
 
             //interest form input with html based parameters
+            //Approximate HTML Equivalent
+            //<input type="number" class="form-control" id="interest[]" "name="interest[]" placeholder="Enter Your Interest Rate">
             var newInterest = document.createElement('input');
             newInterest.type = 'number';
             newInterest.classList.add('form-control');
+            newInterest.id = 'interest[]';
             newInterest.name = 'interest[]'; 
             newInterest.placeholder = 'Enter Your Interest Rate';
-
-            var loanType = document.createElement('select');
-            loanType.classList.add('form-control');
-            loanType.name = 'loantype[]';
-
+            
+            //loan type form input with html based parameters
+            //Approximate HTML Equivalent
+            //<select class="form-control" id="loantype[]" name="loantype[]"></select>
+            var newLoanType = document.createElement('select');
+            newLoanType.classList.add('form-control');
+            newLoanType.id = 'loantype[]';
+            newLoanType.name = 'loantype[]';
+            
+            //loan type dropdown menu options 
+            //Approximate HTML Equivalent
+            //<option value='subsidized'>subsidized</option>
             var sub = document.createElement('option');
             sub.value = 'subsidized';
             sub.textContent = 'subsidized';
-
+            
+            //Approximate HTML Equivalent
+            //<option value='unsubsidized'>unsubsidized</option>
             var unsub = document.createElement('option');
             unsub.value = 'unsubsidized';
             unsub.textContent = 'unsubsidized';
-
-            loanType.appendChild(unsub);
-            loanType.appendChild(sub);
             
-            //Duplicates the format of the original by creating a label
-            //Underneath the labels the forms are added with the parameters above
+            //Adds the two options above the the dropdown menu form 'newLoanType'
+            newLoanType.appendChild(unsub);
+            newLoanType.appendChild(sub);
+            
+            //Adds the forms to the div with labels in the order as shown 
             newDiv.appendChild(document.createTextNode('Loan Principal'))
             newDiv.appendChild(newPrincipal);
             newDiv.appendChild(document.createTextNode('Loan Interest'));
             newDiv.appendChild(newInterest);
             newDiv.appendChild(document.createTextNode('Loan Type'));
-            newDiv.appendChild(loanType);
+            newDiv.appendChild(newLoanType);
 
-            // Add the new loan input fields to the container
+            //Adds the new loan input fields to the container so that it's visible to the user
             dynamicLoans.appendChild(newDiv);
+
+            //Approximate HTML Equivalent of forms being inserted
+            //<div id="dynamic loans" div class="form-group">
+            //
+            //  Start of Inserted Content
+            //  <div class='form-group'>
+            //      <label for="principal[]">Loan Principal</label>
+            //      <input type="number" class="form-control" id="principal[]" name="principal[]" placeholder="Enter Your Loan Principal">
+            //
+            //      <label for="interest[]">Loan Interest</label>
+            //      <input type="number" class="form-control" id="interest[]" "name="interest[]" placeholder="Enter Your Interest Rate">
+            //
+            //      <label for="loantype[]">Loan Type</label>
+            //      <select class="form-control" id="loantype[]" name="loantype[]">
+            //          <option value='subsidized'>subsidized</option>
+            //          <option value='unsubsidized'>unsubsidized</option>
+            //      </select>
+            //  </div>
+            //  End of Inserted Content
+            //
+            //</div>
         }
 
         //Creates an initial form input for the user in case they have only 1 loan

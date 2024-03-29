@@ -71,20 +71,22 @@ def unguided():
         session['term cost'] = request.form['term cost']
         session['monthly'] = request.form['monthly']
         session['duration'] = request.form['duration']
-
+        return redirect('/report')
+    
     return render_template("unguided.html",title='Unguided')
     
 @app.route('/report', methods=['GET','POST'])
 def report():
     #Collects all calculator input from session for computation and display
-    principal = session.get('principal[]')
-    interest = session.get('interest[]')
-    loantype = session.get('loantype')
-    grad = float(session.get('grad'))
-    term = float(session.get('term'))
-    monthly = float(session.get('monthly'))
-    misc = float(session.get('misc'))
-    duration = float(session.get('duration'))
+    #numeric values are typecasted from string to float
+    principal = [float(principal) for principal in session['principals']]
+    interest = [float(interest) for interest in session['interests']]
+    loantype = session['loantypes']
+    grad = float(session['grad'])
+    term = float(session['term cost'])
+    monthly = float(session['monthly'])
+    misc = float(session['misc'])
+    duration = float(session['duration'])
     
     repayment = pay_rate(interest, misc, principal, grad*term, duration*12)
 

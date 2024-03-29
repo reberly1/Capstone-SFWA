@@ -3,16 +3,19 @@
 <form action="/guided/misc"><button>Back</button></form>
 
 <form method="POST">
+    
+    <!--Form inputs for Terms Remaining and Term Cost-->>
     <div class="form-group">
+
         <label for="grad">Terms Remaining</label>
         <input type="number" class="form-control" id="grad" name="grad" placeholder="Enter the number of remaining terms" value="1">
-    </div>
 
-    <div class="form-group">
         <label for="term Cost">Term Cost</label>
         <input type="number" class="form-control" id="term Cost" name="term cost" placeholder="Enter the Cost of your Current Term" value="1">
+        
     </div>
 
     <button type="submit">Next</button>
+
 </form>
 {% endblock content %}

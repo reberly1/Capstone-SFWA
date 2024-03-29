@@ -3,17 +3,20 @@
 <form action="/guided/terms"><button>Back</button></form>
 
 <form method="POST">
+    
+    <!--Form inputs for Total Estimated Monthly Payment and Ideal Repayment Period in Years-->
     <div class="form-group">
+        
         <label for="monthly">Total Estimated Monthly Payment</label>
         <input type="number" class="form-control" id="monthly" name="monthly" placeholder="Enter Your Estimated Monthly Payment" value="1">
-    </div>
 
-    <div class="form-group">
         <label for="duration">Ideal Repayment Period in Years</label>
         <input type="number" class="form-control" id="duration" name="duration" placeholder="Enter your ideal repayment period in Years" value="1">
+
     </div>
 
     <button type="submit">Submit</button>
+
 </form>
 
 {% endblock content %}
