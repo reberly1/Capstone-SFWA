@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Logging Page</h1>
+
+    <form method="POST">
+
+        <div class="form-group">
+
+            <!--Dropdown Menu for type of Log being submitted-->
+            <label for="logtype">Log Type</label>
+                <select class="form-control" id="logtype" name="logtype">
+                    <option value='Expense'>Expense</option>
+                    <option value='Payment'>Payment</option>
+                    <option value='Note'>Note</option>
+                </select>
+
+            <!--Amount that will be add to or deducted from the current loan balance-->
+            <label for="amount">Amount</label>
+            <input type="number" class="form-control" id="amount" name="amount" placeholder="How Much is the Amount?">
+
+            <!--Any notes the user wants to enter to the log for organization purposes-->
+            <label for="note">Note</label>
+            <input type="text" class="form-control" id="note" name="note" placeholder="Notes....">
+
+        </div>
+
+        <button type="submit">Submit Log</button>
+
+    </form>
+{% endblock content %}

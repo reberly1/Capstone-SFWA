@@ -88,6 +88,8 @@ def report():
     misc = float(session['misc'])
     duration = float(session['duration'])
     
+
+    #Needs to be refactored/reworked for accuracy of output
     repayment = pay_rate(interest, misc, principal, grad*term, duration*12)
 
     total = total_debt(principal, interest, loantype, term, misc, grad*term)
@@ -99,6 +101,10 @@ def report():
         total_int += repayment_time(monthly, interest[i], 0, principal[i], grad*term)[1]
     
     return render_template('report.html', title='Report', principal=principal, interest=interest, sub=loantype, grad=grad, term=term, monthly=monthly, misc=misc, total=total, span=span, total_int=total_int,repayment=repayment)
+
+@app.route('/log', methods=['GET','POST'])
+def log():
+    return render_template('log.html',title='Log')
 
 if __name__ == '__main__':
     app.run(debug=True)
