@@ -1,4 +1,3 @@
-import datetime
 import math
 
 def find_num_months(principal, interest_rate, payment):
@@ -36,4 +35,9 @@ def find_total_int(principal, payment, duration):
     #Formula is total payments - principal
     return (payment*duration*12) - principal
 
-
+def minimum_salary(payment):
+    #For a comfortable loan to income ratio, your income should be 3 times your monthly debt payment
+    comfort_ratio = 3
+    yearly = 12
+    #Returns the yearly and monthly income needed to have a debt to income ratio of ~33%
+    return (payment*comfort_ratio*yearly, payment*comfort_ratio)

@@ -82,12 +82,24 @@ def report():
     principal = [float(principal) for principal in session['principals']]
     interest = [float(interest) for interest in session['interests']]
     loantype = session['loantypes']
-    grad = float(session['grad'])
-    term = float(session['term cost'])
     monthly = float(session['monthly'])
+    grad = float(session['grad'])
+    term = float(session['term cost'])   
     duration = float(session['duration'])
     
-    return render_template('report.html', title='Report', principal=principal, interest=interest, sub=loantype, grad=grad, term=term, monthly=monthly, misc=misc, duration=duration)
+    #Calculate Total Debt Upon Graduation
+    (grad_debt, grad_interest) = debt_upon_graduation(principal, interest, loantype, grad, term)
+
+    repayment = []
+    monthly_rate = []
+    for i in range(len(principal)):
+        #Calculate Duration to Pay back the loan at the monthly rate
+        repayment.append(find_num_months(principal[i], interest[i], monthly))
+
+        #Calculate monthly rate needed to pay back loan at ideal repayment time
+        monthly_rate.append(find_monthly_payment(principal[i], interest[i], duration))
+
+    return render_template('report.html', title='Report')
 
 @app.route('/log', methods=['GET','POST'])
 def log():
