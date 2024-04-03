@@ -1,6 +1,44 @@
 {% extends "layout.html" %}
-{% block content %}
 
+{% block content %}
     <h1>Report Page</h1>
 
+    <h2>Loan Details:</h2>
+    <ul>
+        <li>Principal: {{ principal }}</li>
+        <li>Interest: {{ interest }}</li>
+        <li>Loan Type: {{ loantype }}</li>
+        <li>Monthly Payment: {{ monthly }}</li>
+        <li>Graduation Year: {{ grad }}</li>
+        <li>Term Cost: {{ term }}</li>
+        <li>Duration: {{ duration }}</li>
+    </ul>
+
+    <h2>Total Debt Upon Graduation:</h2>
+    <p>Debt: {{ grad_debt }}</p>
+    <p>Interest: {{ grad_interest }}</p>
+
+    <h2>Repayment Details:</h2>
+    <ul>
+        {% for i in range(principal_length) %}
+            <li>Repayment Duration (Loan {{ i+1 }}): {{ repayment_duration[i] }}</li>
+            <li>Monthly Rate (Loan {{ i+1 }}): {{ monthly_rate[i] }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Total Cost and Interest for Ideal Repayment:</h2>
+    <p>Total Cost: {{ ID_total }}</p>
+    <p>Total Interest: {{ ID_int }}</p>
+
+    <h2>Total Cost and Interest for Ideal Payment:</h2>
+    <p>Total Cost: {{ IP_total }}</p>
+    <p>Total Interest: {{ IP_int }}</p>
+
+    <h2>Percentage of Payments Going Towards the Principal:</h2>
+    <p>Percentage for Ideal Repayment: {{ ID_per }}</p>
+    <p>Percentage for Ideal Payment: {{ IP_per }}</p>
+
+    <h2>Recommended Salary:</h2>
+    <p>Recommended Salary for Ideal Repayment: {{ ID_salary }}</p>
+    <p>Recommended Salary for Ideal Payment: {{ IP_salary }}</p>
 {% endblock content %}

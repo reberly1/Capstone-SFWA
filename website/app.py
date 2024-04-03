@@ -23,7 +23,7 @@ def loans():
         session['principals'] = request.form.getlist('principal[]')
         session['interests'] = request.form.getlist('interest[]')
         session['loantypes'] = request.form.getlist('loantype[]')
-        return redirect('/guided/misc')
+        return redirect('/guided/terms')
     
     return render_template('guided_loans.html',title='Guided Loans')
 
@@ -66,7 +66,6 @@ def unguided():
         session['principals'] = request.form.getlist('principal[]')
         session['interests'] = request.form.getlist('interest[]')
         session['loantypes'] = request.form.getlist('loantype[]')
-        session['misc'] = request.form['misc']
         session['grad'] = request.form['grad']
         session['term cost'] = request.form['term cost']
         session['monthly'] = request.form['monthly']
@@ -90,16 +89,28 @@ def report():
     #Calculate Total Debt Upon Graduation
     (grad_debt, grad_interest) = debt_upon_graduation(principal, interest, loantype, grad, term)
 
-    repayment = []
+    repayment_duration = []
     monthly_rate = []
     for i in range(len(principal)):
         #Calculate Duration to Pay back the loan at the monthly rate
-        repayment.append(find_num_months(principal[i], interest[i], monthly))
+        repayment_duration.append(find_num_months(principal[i], interest[i], monthly))
 
         #Calculate monthly rate needed to pay back loan at ideal repayment time
         monthly_rate.append(find_monthly_payment(principal[i], interest[i], duration))
 
-    return render_template('report.html', title='Report')
+    #Calculate the total cost and interest for both ideals for comparison
+    (ID_total, ID_int) = find_cost(principal, monthly_rate, [duration])
+    (IP_total, IP_int) = find_cost(principal, [monthly], repayment_duration)
+
+    #Calculate the percentage of payments going towards the principal for each ideal
+    ID_per = prin_to_int_ratio(ID_total, ID_int)
+    IP_per = prin_to_int_ratio(IP_total, IP_int)
+
+    #Calculate the recommended salary for each ideal scenario
+    ID_salary = minimum_salary(monthly*len(principal))
+    IP_salary = minimum_salary(sum(monthly_rate))
+
+    return render_template('report.html', title='Report', principal=principal, interest=interest, loantype=loantype, monthly=monthly, grad=grad, term=term, duration=duration, grad_debt=grad_debt, grad_interest=grad_interest, repayment_duration=repayment_duration, monthly_rate=monthly_rate, ID_total=ID_total, ID_int=ID_int, IP_total=IP_total, IP_int=IP_int, ID_per=ID_per, IP_per=IP_per, ID_salary=ID_salary, IP_salary=IP_salary,principal_length=len(principal))
 
 @app.route('/log', methods=['GET','POST'])
 def log():

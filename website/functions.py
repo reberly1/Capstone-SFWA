@@ -1,5 +1,19 @@
 import math
 
+def find_cost(principal_list, monthly, duration):
+    total_int = 0
+
+    for i in range(len(principal_list)):
+        if (len(monthly) > 1):
+            total_int += find_total_int(principal_list[i], monthly[i], duration[0])
+        elif (len(duration) > 1):
+            total_int += find_total_int(principal_list[i], monthly[0], duration[i])
+        else:
+            total_int += find_total_int(principal_list[i], monthly[0], duration[0])
+
+    total = total_int + sum(principal_list)
+    return (total, total_int)
+
 def find_num_months(principal, interest_rate, payment):
     #Finds number of months N to repay a loan with
     #N = -log(1-iA/p)/log(1+i) where i is interest rate A is principal and p in monthly payment
