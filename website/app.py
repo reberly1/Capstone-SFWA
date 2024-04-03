@@ -85,7 +85,6 @@ def report():
     grad = float(session['grad'])
     term = float(session['term cost'])
     monthly = float(session['monthly'])
-    misc = float(session['misc'])
     duration = float(session['duration'])
     
     return render_template('report.html', title='Report', principal=principal, interest=interest, sub=loantype, grad=grad, term=term, monthly=monthly, misc=misc, duration=duration)
