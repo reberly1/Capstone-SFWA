@@ -13,14 +13,14 @@
         <!--Inputs for singular inputs required by application-->
         <div class="form-group">
         
-            <label for="grad">Years Until Graduation</label>
-            <input type="number" class="form-control" id="grad" name="grad" placeholder="Enter the Number of Years Until Graduation">
+            <label for="year_grad">Years Until Graduation</label>
+            <input type="number" class="form-control" id="year_grad" name="year_grad" placeholder="Enter the Number of Years Until Graduation">
         
-            <label for="term cost">Yearly Cost</label>
-            <input type="number" class="form-control" id="term cost" name="term cost" placeholder="Enter the Estimated Cost of College Per Year">
+            <label for="term_cost">Yearly Cost</label>
+            <input type="number" class="form-control" id="term_cost" name="term_cost" placeholder="Enter the Estimated Cost of College Per Year">
 
-            <label for="monthly">Total Estimated Monthly Payment</label>
-            <input type="number" class="form-control" id="monthly" name="monthly" placeholder="Enter Your Estimated Monthly Payment">
+            <label for="month_pay">Total Estimated Monthly Payment</label>
+            <input type="number" class="form-control" id="month_pay" name="month_pay" placeholder="Enter Your Estimated Monthly Payment">
 
             <label for="duration">Total Loan Duration</label>
             <input type="number" class="form-control" id="duration" name="duration" placeholder="Enter the Payment Length in Years">
@@ -68,8 +68,8 @@
             //<select class="form-control" id="loantype[]" name="loantype[]"></select>
             var newLoanType = document.createElement('select');
             newLoanType.classList.add('form-control');
-            newLoanType.id = 'loantype[]';
-            newLoanType.name = 'loantype[]';
+            newLoanType.id = 'loan_type[]';
+            newLoanType.name = 'loan_type[]';
             
             //loan type dropdown menu options 
             //Approximate HTML Equivalent

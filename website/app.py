@@ -22,38 +22,28 @@ def loans():
     if request.method == "POST":
         session['principals'] = request.form.getlist('principal[]')
         session['interests'] = request.form.getlist('interest[]')
-        session['loantypes'] = request.form.getlist('loantype[]')
+        session['loan_types'] = request.form.getlist('loan_type[]')
         return redirect('/guided/terms')
     
     return render_template('guided_loans.html',title='Guided Loans')
 
-#Page 2, misc interest and fees
-@app.route('/guided/misc', methods=['GET','POST'])
-def misc():
-    #Stores all input into session for extraction by other pages
-    if request.method == "POST":
-        session['misc'] = request.form['misc']
-        return redirect('/guided/terms')
-    
-    return render_template('guided_misc.html',title='Guided Misc')
-
-#Page 3, term costs
+#Page 2, term costs
 @app.route('/guided/terms', methods=['GET','POST'])
 def terms():
     #Stores all input into session for extraction by other pages
     if request.method == "POST":
-        session['grad'] = request.form['grad']
-        session['term cost'] = request.form['term cost']
+        session['year_grad'] = request.form['year_grad']
+        session['term_cost'] = request.form['term_cost']
         return redirect('/guided/estimates')
     
     return render_template('guided_terms.html',title='Guided Terms')
 
-#Page 4, estimates
+#Page 3, estimates
 @app.route('/guided/estimates', methods=['GET','POST'])
 def estimates():
     #Stores all input into session for extraction by other pages
     if request.method == "POST":
-        session['monthly'] = request.form['monthly']
+        session['month_pay'] = request.form['month_pay']
         session['duration'] = request.form['duration']
         return redirect('/report')
     
@@ -65,10 +55,10 @@ def unguided():
     if request.method == "POST":
         session['principals'] = request.form.getlist('principal[]')
         session['interests'] = request.form.getlist('interest[]')
-        session['loantypes'] = request.form.getlist('loantype[]')
-        session['grad'] = request.form['grad']
-        session['term cost'] = request.form['term cost']
-        session['monthly'] = request.form['monthly']
+        session['loan_types'] = request.form.getlist('loan_type[]')
+        session['year_grad'] = request.form['year_grad']
+        session['term_cost'] = request.form['term_cost']
+        session['month_pay'] = request.form['month_pay']
         session['duration'] = request.form['duration']
         return redirect('/report')
     
@@ -80,12 +70,14 @@ def report():
     #numeric values are typecasted from string to float
     principal = [float(principal) for principal in session['principals']]
     interest = [float(interest) for interest in session['interests']]
-    loantype = session['loantypes']
-    monthly = float(session['monthly'])
-    grad = float(session['grad'])
-    term = float(session['term cost'])   
-    duration = float(session['duration'])
+    loantype = session['loan_types']
+    monthly = float(session['month_pay'])
+    grad = float(session['year_grad']) * 12
+    term = float(session['term_cost'])   
+    duration = float(session['duration']) * 12
     
+
+    """Standardizations and revisions needed for the report"""
     #Calculate Total Debt Upon Graduation
     (grad_debt, grad_interest) = debt_upon_graduation(principal, interest, loantype, grad, term)
 
@@ -107,8 +99,8 @@ def report():
     IP_per = prin_to_int_ratio(IP_total, IP_int)
 
     #Calculate the recommended salary for each ideal scenario
-    ID_salary = minimum_salary(monthly*len(principal))
-    IP_salary = minimum_salary(sum(monthly_rate))
+    ID_salary = minimum_salary(sum(monthly_rate))
+    IP_salary = minimum_salary(monthly*len(principal))
 
     return render_template('report.html', title='Report', principal=principal, interest=interest, loantype=loantype, monthly=monthly, grad=grad, term=term, duration=duration, grad_debt=grad_debt, grad_interest=grad_interest, repayment_duration=repayment_duration, monthly_rate=monthly_rate, ID_total=ID_total, ID_int=ID_int, IP_total=IP_total, IP_int=IP_int, ID_per=ID_per, IP_per=IP_per, ID_salary=ID_salary, IP_salary=IP_salary,principal_length=len(principal))
 
