@@ -102,7 +102,7 @@ def report():
     ID_salary = minimum_salary(sum(monthly_rate))
     IP_salary = minimum_salary(monthly*len(principal))
 
-    return render_template('report.html', title='Report', principal=principal, interest=interest, loantype=loantype, monthly=monthly, grad=grad, term=term, duration=duration, grad_debt=grad_debt, grad_interest=grad_interest, repayment_duration=repayment_duration, monthly_rate=monthly_rate, ID_total=ID_total, ID_int=ID_int, IP_total=IP_total, IP_int=IP_int, ID_per=ID_per, IP_per=IP_per, ID_salary=ID_salary, IP_salary=IP_salary,principal_length=len(principal))
+    return render_template('report.html', title='Report', principal=principal, interest=interest, loantype=loantype, monthly=monthly, grad=grad, term=term, duration=duration, grad_debt=grad_debt, grad_interest=grad_interest, repayment_duration=repayment_duration, monthly_rate=monthly_rate, ID_total=ID_total, ID_int=ID_int, IP_total=IP_total, IP_int=IP_int, ID_per=ID_per, IP_per=IP_per, ID_salary=ID_salary, IP_salary=IP_salary,principal_length=len(principal),total_EMI=sum(monthly_rate),total_duration=max(repayment_duration))
 
 @app.route('/log', methods=['GET','POST'])
 def log():
