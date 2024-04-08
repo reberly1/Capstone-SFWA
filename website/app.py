@@ -91,8 +91,8 @@ def report():
         monthly_rate.append(find_monthly_payment(principal[i], interest[i], duration))
 
     #Calculate the total cost and interest for both ideals for comparison
-    (ID_total, ID_int) = find_cost(principal, monthly_rate, [duration])
-    (IP_total, IP_int) = find_cost(principal, [monthly], repayment_duration)
+    (ID_total, ID_int) = find_cost(principal, interest, monthly_rate, [duration])
+    (IP_total, IP_int) = find_cost(principal, interest, [monthly], repayment_duration)
 
     #Calculate the percentage of payments going towards the principal for each ideal
     ID_per = prin_to_int_ratio(ID_total, ID_int)

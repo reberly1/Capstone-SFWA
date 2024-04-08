@@ -1,12 +1,14 @@
 import math
 
-def find_cost(prin_list, month_pay, duration):
+def find_cost(prin_list, rates_list, month_pay, duration):
     """
     Description
     Calculates the total cost of a loan and total interest
     Parameters
     prin_list:    TYPE: Float[]
                   DESC: The principals/balances of all student loans taken
+    rates_list:   TYPE: Float[]
+                  DESC: The interest rates of all student loans taken
     month_pay:    TYPE: Float[]
                   DESC: A list stating how much is paid to each loan
     duration:     TYPE: Int[]
@@ -15,19 +17,18 @@ def find_cost(prin_list, month_pay, duration):
     Float Tuple:  DESC: The total cost of the loan and total interest
     """
     total_int = 0
-    print(prin_list, month_pay, duration)
     for i in range(len(prin_list)):
         if (len(month_pay) > 1):
-            total_int += find_total_int(prin_list[i], month_pay[i], duration[0])
+            total_int += calc_int(prin_list[i], month_pay[i], duration[0], rates_list[i])
         elif (len(duration) > 1):
-            total_int += find_total_int(prin_list[i], month_pay[0], duration[i])
+            total_int += calc_int(prin_list[i], month_pay[0], duration[i], rates_list[i])
 
         else:
-            total_int += find_total_int(prin_list[i], month_pay[0], duration[0])
+            total_int += calc_int(prin_list[i], month_pay[0], duration[0], rates_list[i])
     total = total_int + sum(prin_list)
     return (total, total_int)
 
-def find_num_months(principal, interest_rate, month_pay):
+def find_num_months(principal, int_rate, month_pay):
     """
     Description
     Calculates the number of months N to repay a loan with
@@ -47,10 +48,10 @@ def find_num_months(principal, interest_rate, month_pay):
     Int           DESC: The number of months needed to pay back the loan
     """
     
-    i = (interest_rate / 12)/100
+    i = (int_rate / 12)/100
     A = principal
     p = month_pay
-    N = math.floor(-math.log(1 - (i*A)/p) / math.log(1 + i))
+    N = math.ceil(-math.log(1 - (i*A)/p) / math.log(1 + i))
     return N
 
 def find_monthly_payment(principal, int_rate, duration):
@@ -76,7 +77,7 @@ def find_monthly_payment(principal, int_rate, duration):
     EMI = (principal * r * (1 + r)**n) / ((1 + r)**n - 1)
     return EMI
 
-def debt_upon_graduation(prin_list, rates_list, types_list, months_grad, year_cost):
+def debt_upon_graduation(prin_list, rates_list, types_list, years_grad, year_cost):
     """
     Description
     Estimates the total loans accrued throughout college including interest
@@ -88,8 +89,8 @@ def debt_upon_graduation(prin_list, rates_list, types_list, months_grad, year_co
                   DESC: The interest rates of all student loans taken
     types_list:   TYPE: str[]
                   DESC: The unsubsidized or subsidized statuses of all loans
-    months_grad:   TYPE: Int
-                  DESC: The number of months a student has before graduation
+    years_grad:   TYPE: Int
+                  DESC: The number of years a student has before graduation
     year_cost:    TYPE: Float
                   DESC: The user estimated cost of college per year
 
@@ -101,8 +102,8 @@ def debt_upon_graduation(prin_list, rates_list, types_list, months_grad, year_co
     total_int = 0
     for i in range(len(prin_list)):
         if (types_list[i] == 'unsubsidized'):
-            total_int += (prin_list[i] * rates_list[i] * (math.floor(months_grad/12)))/100
-    total = total_int + sum(prin_list) + ((math.floor(months_grad/12)) * year_cost)
+            total_int += (prin_list[i] * rates_list[i] * (math.ceil(years_grad/12)))/100
+    total = total_int + sum(prin_list) + ((math.ceil(years_grad/12)) * year_cost)
     return (total, total_int)
 
 def prin_to_int_ratio(total, total_int):
@@ -123,7 +124,7 @@ def prin_to_int_ratio(total, total_int):
     #Calculates what percentage of payments contributed goes towards the principal 
     return (total-total_int)/total
 
-def find_total_int(principal, month_pay, duration):
+def calc_int(principal, month_pay, duration, int_rate):
     """
     Description
     Calculates the total interest accrued over the duration of a loan
@@ -136,13 +137,23 @@ def find_total_int(principal, month_pay, duration):
                   DESC: Monthly payment made towards loan
     duration:     TYPE: Float
                   DESC: Total time spent in months paying off the loan
+    int_rate:     TYPE: Float
+                  DESC: Interest rate of the loan
 
     Returns
     Float:        DESC: The total interest accrued across the loan's duration
     """
+    temp_prin = principal
+    true_rate = int_rate/100
+    temp_monthly = 0
+    interest = 0
+    for i in range(int(duration)):
+        temp_interest = (temp_prin * (true_rate/365) * 30.437)
+        temp_monthly = (month_pay - temp_interest) 
+        temp_prin -= temp_monthly
+        interest += temp_interest
 
-    return (month_pay * duration) - principal
-
+    return interest 
 
 def minimum_salary(month_pay):
     """

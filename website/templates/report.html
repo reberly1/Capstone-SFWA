@@ -37,14 +37,14 @@
               <h3>To Pay ${{monthly}} Per Month<br> Per Loan<br> It Will Take</h3>
               <ul>
                   {% for i in range(principal_length) %}
-                    <li>A Repayment Duration of {{ repayment_duration[i] // 12 }} Years and {{ repayment_duration[i] % 12 }} Months <br>for loan {{i+1}} of Principal Amount: ${{ principal[i] }}</li>
+                    <li>A Repayment Duration of {{ repayment_duration[i] // 12 }} Years and {{ repayment_duration[i] % 12}} Months <br>for loan {{i+1}} of Principal Amount: ${{ principal[i] }}</li>
                   {% endfor %}  
               </ul>
               <h3>For a Total Span of <br>{{total_duration//12}} Years and {{total_duration%12}} Months</h3>    
-              <h2>For a Total Cost of ${{ID_total-ID_total%1}}</h2>
-              <h2>A Total Interest of ${{ID_int-ID_int%1}}</h2>
-              <h2>{{(ID_per * 100) - (ID_per * 100) % 1}}% of Your Payments Will Contribute to Principal</h2>
-              <h2>Your Recommended Salary is at least ${{ID_salary[0] - ID_salary[0] % 1}} Annually or ${{ID_salary[1] - ID_salary[1] % 1}} Per Month</h2>
+              <h2>For a Total Cost of ${{IP_total - IP_total%1}}</h2>
+              <h2>A Total Interest of ${{IP_int - IP_int%1}}</h2>
+              <h2>{{(IP_per * 100) - (IP_per * 100) % 1}}% of Your Payments Will Contribute to Principal</h2>
+              <h2>Your Recommended Salary is at least ${{IP_salary[0] - IP_salary[0] % 1}} Annually or ${{IP_salary[1] - IP_salary[1] % 1}} Per Month</h2>
           </div>
             
           <div class="right-col">
@@ -55,10 +55,10 @@
                   {% endfor %}  
               </ul>
               <h3>For a Total Estimated Monthly Installment of ${{total_EMI - total_EMI % 1}} Per Month</h3>  
-              <h2>For a Total Cost of ${{IP_total - IP_total % 1}}</h2>
-              <h2>A Total Interest of ${{IP_int - IP_int % 1}}</h2>
-              <h2>{{(IP_per * 100) - (IP_per * 100) % 1}}% of Your Payments Will Contribute to Principal</h2>
-              <h2>Your Recommended Salary is at least ${{IP_salary[0] - IP_salary[0] % 1}} Annually or ${{IP_salary[1] - IP_salary[1] % 1}} Per Month</h2>
+              <h2>For a Total Cost of ${{ID_total - ID_total % 1}}</h2>
+              <h2>A Total Interest of ${{ID_int - ID_int % 1}}</h2>
+              <h2>{{(ID_per * 100) - (ID_per * 100) % 1}}% of Your Payments Will Contribute to Principal</h2>
+              <h2>Your Recommended Salary is at least ${{ID_salary[0] - ID_salary[0] % 1}} Annually or ${{ID_salary[1] - ID_salary[1] % 1}} Per Month</h2>
           </div>
       </div>
       
