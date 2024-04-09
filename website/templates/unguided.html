@@ -14,16 +14,16 @@
         <div class="form-group">
         
             <label for="year_grad">Years Until Graduation</label>
-            <input type="number" class="form-control" id="year_grad" name="year_grad" placeholder="Enter the Number of Years Until Graduation">
+            <input type="number" class="form-control" id="year_grad" name="year_grad" placeholder="Enter the Number of Years Until Graduation" min="0" max="8">
         
             <label for="term_cost">Yearly Cost</label>
-            <input type="number" class="form-control" id="term_cost" name="term_cost" placeholder="Enter the Estimated Cost of College Per Year">
+            <input type="number" class="form-control" id="term_cost" name="term_cost" placeholder="Enter the Estimated Cost of College Per Year" min="0" max="1000000">
 
             <label for="month_pay">Total Estimated Monthly Payment</label>
-            <input type="number" class="form-control" id="month_pay" name="month_pay" placeholder="Enter Your Estimated Monthly Payment">
+            <input type="number" class="form-control" id="month_pay" name="month_pay" placeholder="Enter Your Estimated Monthly Payment" min="1">
 
             <label for="duration">Total Loan Duration</label>
-            <input type="number" class="form-control" id="duration" name="duration" placeholder="Enter the Payment Length in Years">
+            <input type="number" class="form-control" id="duration" name="duration" placeholder="Enter the Payment Length in Years" min="1" max="50">
 
         </div>
 
@@ -52,6 +52,7 @@
             newPrincipal.id = 'principal[]';
             newPrincipal.name = 'principal[]'; 
             newPrincipal.placeholder = 'Enter Your Loan Principal';
+            newPrincipal.min = '1'
 
             //interest form input with html based parameters
             //Approximate HTML Equivalent
@@ -62,6 +63,8 @@
             newInterest.id = 'interest[]';
             newInterest.name = 'interest[]'; 
             newInterest.placeholder = 'Enter Your Interest Rate';
+            newInterest.min = '1'
+            newInterest.max = '25'
             
             //loan type form input with html based parameters
             //Approximate HTML Equivalent

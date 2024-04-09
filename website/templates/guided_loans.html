@@ -15,6 +15,47 @@
 
 </form>
 
+<tbody>
+    <br>
+    This is where you enter your existing loans and their interest rates.
+    In addition, you may specify if the loan is unsubsidized or subsidized.
+    Subsidized means that interest is not accrued while you're in school.
+    unsubsidized means that interest is being accrued even while you're in school.
+    To add another loan simply press the add loan button above and another loan 
+    form will be produced.
+    <br>
+    Here's an example input with usage rules you may use for reference:
+</tbody>
+
+<tbody>
+    <br>
+    <br>
+    Loan Principal
+    <br>
+    30000 (The Loan Principal cannot be less than 1)
+    <br>
+    Loan Interest
+    <br>
+    7 (The Loan Interest cannot be less than 1 or exceed 25.)
+    <br>
+    Loan Type
+    <br>
+    unsubsidized 
+    <br>
+    <br>
+    Loan Principal
+    <br>
+    20000
+    <br>
+    Loan Interest
+    <br>
+    5
+    <br>
+    Loan Type
+    <br>
+    unsubsidized
+</tbody>
+
 <script>
     function addLoan() {
         //Container for dynamic inputs declared above
@@ -35,6 +76,7 @@
         newPrincipal.id = 'principal[]';
         newPrincipal.name = 'principal[]'; 
         newPrincipal.placeholder = 'Enter Your Loan Principal';
+        newPrincipal.min = '1'
 
         //interest form input with html based parameters
         //Approximate HTML Equivalent
@@ -45,6 +87,8 @@
         newInterest.id = 'interest[]';
         newInterest.name = 'interest[]'; 
         newInterest.placeholder = 'Enter Your Interest Rate';
+        newInterest.min = '1'
+        newInterest.max = '25'
         
         //loan type form input with html based parameters
         //Approximate HTML Equivalent
@@ -82,7 +126,7 @@
         //Adds the new loan input fields to the container so that it's visible to the user
         dynamicLoans.appendChild(newDiv);
 
-        //Approximate HTML Equivalent of Dynamic Forms being inserted
+        //Approximate HTML Equivalent of forms being inserted
         //<div id="dynamic loans" div class="form-group">
         //
         //  Start of Inserted Content

@@ -7,15 +7,32 @@
     <!--Form inputs for Terms Remaining and Term Cost-->
     <div class="form-group">
 
-        <label for="year_grad">Terms Remaining</label>
-        <input type="number" class="form-control" id="year_grad" name="year_grad" placeholder="Enter the number of remaining terms">
+        <label for="year_grad">Years Remaining</label>
+        <input type="number" class="form-control" id="year_grad" name="year_grad" placeholder="Enter the Number of Years until Graduation" min="0" max="8">
 
-        <label for="term_Cost">Term Cost</label>
-        <input type="number" class="form-control" id="term_Cost" name="term_cost" placeholder="Enter the Cost of your Current Term">
+        <label for="term_Cost">Yearly Cost</label>
+        <input type="number" class="form-control" id="term_Cost" name="term_cost" placeholder="Enter the Cost of College Per Year" min="0" max="1000000">
         
     </div>
 
     <button type="submit">Next</button>
 
 </form>
+
+<tbody>
+   This is where you enter the number of years you have until graduation 
+   as well as the estimated cost of college per year. 
+   To better provide an estimate for your yearly cost of tuition, you
+   may use UMBC's term cost calculator's to calculate a term estimate
+   at <br> https://financialaid.umbc.edu/cost-calculators/ <br><br>
+   Here is an example input with rules and limitations: <br>
+   Years Remaining
+   <br>
+   2 (Cannot be less than 0 or exceed 8 years)
+   <br>
+   Yearly cost
+   <br>
+   10000 (Cannot be less than 0 or exceed 1,000,000 dollars)
+
+</tbody>
 {% endblock content %}
