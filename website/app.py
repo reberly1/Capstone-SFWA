@@ -108,5 +108,9 @@ def report():
 def log():
     return render_template('log.html',title='Log')
 
+@app.route('/milestone', methods=['GET','POST'])
+def milestone():
+    return render_template('milestone.html',title='Milestones')
+
 if __name__ == '__main__':
     app.run(debug=True)

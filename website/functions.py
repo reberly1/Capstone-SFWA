@@ -46,12 +46,16 @@ def find_num_months(principal, int_rate, month_pay):
 
     Returns
     Int           DESC: The number of months needed to pay back the loan
+                        or -12000 indicating it cannot be repaid
     """
     
     i = (int_rate / 12)/100
     A = principal
     p = month_pay
-    N = math.ceil(-math.log(1 - (i*A)/p) / math.log(1 + i))
+    if (1 > (i*A)/p):
+        N = math.ceil(-math.log(1 - (i*A)/p) / math.log(1 + i))
+    else:
+        N = -12000
     return N
 
 def find_monthly_payment(principal, int_rate, duration):
