@@ -112,5 +112,12 @@ def log():
 def milestone():
     return render_template('milestone.html',title='Milestones')
 
+@app.route('/graph', methods=['GET','POST'])
+def graph():
+    data = [("Monday", 3), ("Tuesday", 4), ("Wednesday", 5)]
+    labels = [row[1] for row in data]
+    values = [row[1] for row in data]
+    return render_template('graph.html',title='Graph', labels=labels, data=values)
+
 if __name__ == '__main__':
     app.run(debug=True)

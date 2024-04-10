@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h3>Graph Page</h3>
+
+<canvas id="lineChart" width="900" height="400"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Extracting labels and data from server-side variables
+    const labels = {{ labels | tojson }};
+    const data = {{ data | tojson }};
+
+    const chartConfig = {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Sales',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: data,
+            }]
+        },
+        options: {
+            maintainAspectRatio: false
+        }
+    };
+
+    // Initialize Chart.js with the canvas element
+    const lineChartCanvas = document.getElementById('lineChart').getContext('2d');
+    const lineChart = new Chart(lineChartCanvas, chartConfig);
+</script>
+
+{% endblock content %}
