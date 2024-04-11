@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Repayment/Scholarship Logging Page</h1>
+
+    <form method="POST">
+
+        <div class="form-group">
+
+            <!--Dropdown Menu for type of Log being submitted-->
+            <label for="logtype">Log Type</label>
+                <select class="form-control" id="logtype" name="logtype">
+                    <option value='Payment'>Payment</option>
+                    <option value='Scholarship'>Scholarship</option>
+                </select>
+
+            <!--Amount that will be add to or deducted from the current loan balance-->
+            <label for="amount">Amount</label>
+            <input type="number" class="form-control" id="amount" name="amount" placeholder="How Much is the Amount?" min="0">
+
+            <!--The Date the Payment or Loan was made-->
+            <label for="date">Date of Repayment or Scholarship Disbursement</label>
+            <input type="date" class="form-control" id="date" name="date" placeholder="Enter the Date the Loan or Payment was Made">
+
+            <!--Any notes the user wants to enter to the log for organization purposes-->
+            <label for="note">Note</label>
+            <input type="text" class="form-control" id="note" name="note" placeholder="Notes....">
+
+        </div>
+
+        <button type="submit">Submit Log</button>
+
+    </form>
+
+    <script>
+        //Dynamically limits dates for new payments or loans to only be
+        //made either today or on a previous date
+        date.max = new Date().toISOString().split("T")[0];
+    </script>
+{% endblock content %}

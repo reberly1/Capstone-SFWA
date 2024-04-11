@@ -1,4 +1,66 @@
 {% extends "layout.html" %}
 {% block content %}
+
+<style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    .container {
+      display: flex;
+      justify-content: center;
+      position: relative;
+    } 
+     .th, .tr, .td {
+        border: 1px solid black;
+    }
+    .table {
+        width: 50%;
+    }
+    .right {
+        transform: translateX(20%);
+    }
+
+</style>
+
 <h3>Milestones Page</h3>
+
+<div class="container">
+    <table class="table">
+        <tr>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Notes</th>
+        </tr>
+        <tr>
+            <td>Repayment</td>
+            <td>$250.00</td>
+            <td>April 11th 2024</d>
+            <td>Payment Made</td>
+        </tr>
+    </table> 
+
+    <table class="table right">
+        <tr>
+            <th>Principal</th>
+            <th>Interest Rate</th>
+            <th>Date of Disbursement</th>
+            <th>Outstanding Interest/Fees</th>
+            <th>Total Balance</th>
+            <th>Notes</th>
+        </tr>
+        <tr>
+            <td>$20000.00</td>
+            <td>5%</td>
+            <td>April 11th 2024</d>
+            <td>$5000.00</td>
+            <td>$25000.00</td>
+            <td>Loan of $20000</td>
+        </tr>
+    </table> 
+</div>
+
 {% endblock content %}
