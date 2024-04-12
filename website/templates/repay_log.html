@@ -1,17 +1,10 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>Repayment/Scholarship Logging Page</h1>
+    <h1>Repayment Logging Page</h1>
 
     <form method="POST">
 
         <div class="form-group">
-
-            <!--Dropdown Menu for type of Log being submitted-->
-            <label for="logtype">Log Type</label>
-                <select class="form-control" id="logtype" name="logtype">
-                    <option value='Payment'>Payment</option>
-                    <option value='Scholarship'>Scholarship</option>
-                </select>
 
             <!--Amount that will be add to or deducted from the current loan balance-->
             <label for="amount">Amount</label>
@@ -30,6 +23,8 @@
         <button type="submit">Submit Log</button>
 
     </form>
+
+    {{conf}}
 
     <script>
         //Dynamically limits dates for new payments or loans to only be

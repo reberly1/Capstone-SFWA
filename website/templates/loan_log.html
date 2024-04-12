@@ -1,6 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
 
+<h3>Loan Logging Page</h3>
+
 <form method="POST">
 
     <div class="form-group">
@@ -12,27 +14,36 @@
         <option value='Scholarship'>No</option>
     </select>
 
-    <label for="new loan">Principal</label>
-    <input type="number" class="form-control" id="new loan" name="new loan" placeholder="How Much is the Amount?" min="0">
+    <label for="new_loan">Principal</label>
+    <input type="number" class="form-control" id="new_loan" name="new_loan" placeholder="How Much is the Amount?" min="0">
 
-    <label for="new rate">Interest Rate</label>
-    <input type="number" class="form-control" id="new rate" name="new rate" placeholder="What is the loan's interest rate?" min="1">
+    <label for="new_rate">Interest Rate</label>
+    <input type="number" class="form-control" id="new_rate" name="new_rate" placeholder="What is the loan's interest rate?" min="1">
 
     <!--The Date the Loan was Disbursed-->
-    <label for="loan date">Date of Loan Disbursement</label>
-    <input type="loan date" class="form-control" id="loan date" name="loan date" placeholder="Enter the Date the Loan or Payment was Made">
+    <label for="loan_date">Date of Loan Disbursement</label>
+    <input type="date" class="form-control" id="loan_date" name="loan_date" placeholder="Enter the Date the Loan was Disbursed">
 
-    <label for="existing int">Outstanding Fees/Interest</label>
-    <input type="number" class="form-control" id="existing int" name="existing int" placeholder="Enter the Date the Loan or Payment was Made">
+    <label for="existing_int">Outstanding Fees/Interest</label>
+    <input type="number" class="form-control" id="existing_int" name="existing_int" placeholder="Enter the Date the Loan or Payment was Made">
 
     <!--Any notes the user wants to enter to the log for organization purposes-->
-    <label for="loan note">Note</label>
-    <input type="text" class="form-control" id="loan note" name="loan note" placeholder="Notes....">
+    <label for="loan_note">Note</label>
+    <input type="text" class="form-control" id="loan_note" name="loan_note" placeholder="Notes....">
 
 
 
     <button type="submit">Submit Log</button>
 
  </form>
+
+ <br>
+ {{conf}}
+
+ <script>
+    //Dynamically limits dates for new payments or loans to only be
+    //made either today or on a previous date
+    loan_date.max = new Date().toISOString().split("T")[0];
+</script>
 
 {% endblock content %}

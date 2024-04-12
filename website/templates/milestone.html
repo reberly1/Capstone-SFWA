@@ -30,17 +30,17 @@
 <div class="container">
     <table class="table">
         <tr>
-            <th>Category</th>
             <th>Amount</th>
             <th>Date</th>
             <th>Notes</th>
         </tr>
+        {% for i in range(num_pay_logs) %}
         <tr>
-            <td>Repayment</td>
-            <td>$250.00</td>
-            <td>April 11th 2024</d>
-            <td>Payment Made</td>
+            <td>{{ amount[i] }}</td>
+            <td>{{ pay_date[i] }}</td>
+            <td>{{ pay_note[i] }}</td>
         </tr>
+        {% endfor %}
     </table> 
 
     <table class="table right">
@@ -52,14 +52,16 @@
             <th>Total Balance</th>
             <th>Notes</th>
         </tr>
+        {% for i in range(num_loan_logs) %}
         <tr>
-            <td>$20000.00</td>
-            <td>5%</td>
-            <td>April 11th 2024</d>
-            <td>$5000.00</td>
-            <td>$25000.00</td>
-            <td>Loan of $20000</td>
+            <td>{{ loan_principal[i] }}</td>
+            <td>{{ loan_int_rate[i] }}</td>
+            <td>{{ loan_date[i] }}</td>
+            <td>{{ loan_fees[i] }}</td>
+            <td>{{ loan_principal[i] + loan_fees[i] }}</td>
+            <td>{{ loan_note[i] }}</td>
         </tr>
+        {% endfor %}
     </table> 
 </div>
 

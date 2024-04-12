@@ -110,15 +110,130 @@ def log_menu():
 
 @app.route('/log/repay', methods=['GET','POST'])
 def repay_log():
-    return render_template('repay_log.html',title='Repayment Log')
+    #Initializes variables if they don't yet exist so that values can be added to them
+    if 'amount' not in session:
+        session['amount'] = []
+    if 'pay_date' not in session:
+        session['pay_date'] = []
+    if 'pay_note' not in session:
+        session['pay_note'] = []
+
+    if request.method == 'POST':
+        #Extract current lists from session
+        amount_list = session['amount']
+        pay_date_list = session['pay_date']
+        pay_note_list = session['pay_note']
+
+        #Append to the lists
+        amount_list.append(request.form['amount'])
+        pay_date_list.append(request.form['date'])
+        pay_note_list.append(request.form['note'])
+
+        #Set the session variables to the new lists
+        session['amount'] = amount_list
+        session['pay_date'] = pay_date_list
+        session['pay_note'] = pay_note_list
+
+    conf = "There are " + str(len(session['pay_date'])) + " Entries Currently"
+
+    return render_template('repay_log.html',title='Repayment Log', conf=conf)
 
 @app.route('/log/loan', methods=['GET','POST'])
 def loan_log():
-    return render_template('loan_log.html',title='Repayment Log')
+    #Initializes variables if they don't yet exist so that values can be added to them
+    if 'auto' not in session:
+        session['auto'] = []
+    if 'loan_principal' not in session:
+        session['loan_principal'] = []
+    if 'loan_int_rate' not in session:
+        session['loan_int_rate'] = []
+    if 'loan_date' not in session:
+        session['loan_date'] = []
+    if 'loan_fees' not in session:
+        session['loan_fees'] = []
+    if 'loan_bal' not in session:
+        session['loan_bal'] = []
+    if 'loan_note' not in session:
+        session['loan_note'] = []
+
+    if request.method == 'POST':
+        # Extract current lists from session
+        auto_list = session['auto']
+        loan_principal_list = session['loan_principal']
+        loan_int_rate_list = session['loan_int_rate']
+        loan_date_list = session['loan_date']
+        loan_fees_list = session['loan_fees']
+        loan_note_list = session['loan_note']
+
+        # Append to the lists
+        auto_list.append(request.form['auto'])
+        loan_principal_list.append(request.form['new_loan'])
+        loan_int_rate_list.append(request.form['new_rate'])
+        loan_date_list.append(request.form['loan_date'])
+        loan_fees_list.append(request.form['existing_int'])
+        loan_note_list.append(request.form['loan_note'])
+
+        # Set the session variables to the new lists
+        session['auto'] = auto_list
+        session['loan_principal'] = loan_principal_list
+        session['loan_int_rate'] = loan_int_rate_list
+        session['loan_date'] = loan_date_list
+        session['loan_fees'] = loan_fees_list
+        session['loan_note'] = loan_note_list
+
+
+    conf = "There are " + str(len(session['loan_date'])) + " Entries Currently"
+    
+    return render_template('loan_log.html',title='Loan Log', conf=conf)
 
 @app.route('/milestone', methods=['GET','POST'])
 def milestone():
-    return render_template('milestone.html',title='Milestones')
+    #Initializes variables if they don't yet exist so that values can be added to them
+    if 'amount' not in session:
+        session['amount'] = []
+    if 'pay_date' not in session:
+        session['pay_date'] = []
+    if 'pay_note' not in session:
+        session['pay_note'] = []
+    if 'auto' not in session:
+        session['auto'] = []
+    if 'loan_principal' not in session:
+        session['loan_principal'] = []
+    if 'loan_int_rate' not in session:
+        session['loan_int_rate'] = []
+    if 'loan_date' not in session:
+        session['loan_date'] = []
+    if 'loan_fees' not in session:
+        session['loan_fees'] = []
+    if 'loan_bal' not in session:
+        session['loan_bal'] = []
+    if 'loan_note' not in session:
+        session['loan_note'] = []
+
+    amount = [float(amount) for amount in session['amount']]
+    pay_date = session['pay_date']
+    pay_note = session['pay_note']
+    auto = session['auto']
+    loan_principal = [float(principal) for principal in session['loan_principal']]
+    loan_int_rate = [float(rate) for rate in session['loan_int_rate']]
+    loan_date = session['loan_date']
+    loan_fees = [float(fee) for fee in session['loan_fees']]
+    loan_note = session['loan_note']
+
+    return render_template('milestone.html',
+                           title='Milestones',
+                           amount=amount,
+                           pay_date=pay_date,
+                           pay_note=pay_note,
+                           num_pay_logs = len(pay_date),
+                           auto=auto,
+                           loan_principal=loan_principal,
+                           loan_int_rate=loan_int_rate,
+                           loan_date=loan_date,
+                           loan_fees=loan_fees,
+                           loan_note=loan_note,
+                           num_loan_logs = len(loan_date)
+                           )
 
 @app.route('/graph', methods=['GET','POST'])
 def graph():
