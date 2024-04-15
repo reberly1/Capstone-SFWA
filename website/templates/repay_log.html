@@ -5,6 +5,10 @@
     <form method="POST">
 
         <div class="form-group">
+            
+            <!--Selection of Which loan the given payment will go towards-->
+            <label for="loan_choice">Loan To Repay</label>
+                <select class="form-control" id="loan_choice" name="loan_choice"></select>
 
             <!--Amount that will be add to or deducted from the current loan balance-->
             <label for="amount">Amount</label>
@@ -30,5 +34,17 @@
         //Dynamically limits dates for new payments or loans to only be
         //made either today or on a previous date
         date.max = new Date().toISOString().split("T")[0];
+
+        //Dynamically creates the list of loans the user can choose to repay
+        var loans = {{ loans | tojson }};
+        var loanChoice = document.getElementById('loan_choice');
+
+        for (let i = 0; i < loans.length; i++) {
+            var loan = document.createElement('option');
+            loan.value = i;
+            loan.textContent = 'Loan ' + i + ' of initial principal: ' + loans[i];
+            loanChoice.appendChild(loan);
+        }
+
     </script>
 {% endblock content %}

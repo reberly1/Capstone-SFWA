@@ -188,38 +188,26 @@ def int_since(loan_dates, loan_int_rates, loan_principals, last_pay_date):
 
     return int_accrued
 
-def apply_adjustments(loan_principals, loan_fees, int_accured, amounts):
-    #A Total sum of all payments recorded
-    total_payments = sum(amounts)
-   
-   #Apply interest to outstanding fees and interest
+def apply_adjustments(loan_principals, loan_fees, int_accured, amounts, loan_choice):
+    #Apply interest to outstanding fees and interest
     for i in range(len(int_accured)):
         loan_fees[i] += int_accured[i]
 
-    #While payments need to be applied and there are existing loans to pay
-    while (total_payments > 0 and sum(loan_principals) > 0):
-
-        #Find the loan with the lowest existing balance (snowball method)
-        index_min = 0
-        for i in range(len(loan_principals)):
-            if loan_principals[index_min] > loan_principals[i] and loan_principals[i] > 0:
-                index_min = i
+    for i in range(len(amounts)):
+        payment = amounts[i]
+        loan_index = loan_choice[i]
 
         #Pay off fees and interest first
-        temp = loan_fees[index_min]
-        loan_fees[index_min] -= total_payments
-        total_payments -= temp
+        loan_fees[loan_index] -= payment
 
         #Applies the difference to the principal
-        if loan_fees[index_min] < 0:
-            temp = loan_principals[index_min]
-            loan_principals[index_min] -= total_payments
-            total_payments -= temp 
-            loan_fees[index_min] = 0
+        if loan_fees[loan_index] < 0:
+            loan_principals[loan_index] += loan_fees[loan_index]
+            loan_fees[loan_index] = 0
 
         #If the given loan was paid off set it to 0
-        if loan_principals[index_min] < 0:
-            loan_principals[index_min] = 0
+        if loan_principals[loan_index] < 0:
+            loan_principals[loan_index] = 0
 
     return (loan_principals, loan_fees)
 

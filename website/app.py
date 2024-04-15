@@ -141,26 +141,35 @@ def repay_log():
         session['pay_date'] = []
     if 'pay_note' not in session:
         session['pay_note'] = []
+    if 'loan_choice' not in session:
+        session['loan_choice'] = []
+    if 'loan_principal' not in session:
+        session['loan_principal'] = []
+
+    loans = session['loan_principal']
 
     if request.method == 'POST':
         #Extract current lists from session
         amount_list = session['amount']
         pay_date_list = session['pay_date']
         pay_note_list = session['pay_note']
+        choice_list = session['loan_choice']
 
         #Append to the lists
         amount_list.append(request.form['amount'])
         pay_date_list.append(request.form['date'])
         pay_note_list.append(request.form['note'])
+        choice_list.append(request.form['loan_choice'])
 
         #Set the session variables to the new lists
         session['amount'] = amount_list
         session['pay_date'] = pay_date_list
         session['pay_note'] = pay_note_list
+        session['loan_choice'] = choice_list
 
     conf = "There are " + str(len(session['pay_date'])) + " Entries Currently"
 
-    return render_template('repay_log.html',title='Repayment Log', conf=conf)
+    return render_template('repay_log.html',title='Repayment Log', conf=conf, loans=loans)
 
 @app.route('/log/loan', methods=['GET','POST'])
 def loan_log():
@@ -214,6 +223,8 @@ def milestone():
         session['pay_date'] = []
     if 'pay_note' not in session:
         session['pay_note'] = []
+    if 'loan_choice' not in session:
+        session['loan_choice'] = []
     if 'loan_principal' not in session:
         session['loan_principal'] = []
     if 'loan_int_rate' not in session:
@@ -230,6 +241,7 @@ def milestone():
     amount = [float(amount) for amount in session['amount']]
     pay_date = [datetime.strptime(day, '%Y-%m-%d') for day in session['pay_date']]
     pay_note = session['pay_note']
+    loan_choice = [int(choice) for choice in session['loan_choice']]
     loan_principal = [float(principal) for principal in session['loan_principal']]
     loan_int_rate = [float(rate) for rate in session['loan_int_rate']]
     loan_date = [datetime.strptime(day, '%Y-%m-%d') for day in session['loan_date']]
@@ -239,8 +251,8 @@ def milestone():
     if (len(loan_principal) > 0 and len(amount) > 0):
         #Calculates ajustment from loans being repayed and interest accrued since last payment
         int_accrued = int_since(loan_date, loan_int_rate, loan_principal, pay_date[len(pay_date)-1])
-        print(int_accrued)
-        (loan_principal, loan_fees) = apply_adjustments(loan_principal, loan_fees, int_accrued, amount)
+        print("This is being ran ", int_accrued)
+        (loan_principal, loan_fees) = apply_adjustments(loan_principal, loan_fees, int_accrued, amount, loan_choice)
 
     return render_template('milestone.html',
                            title='Milestones',
