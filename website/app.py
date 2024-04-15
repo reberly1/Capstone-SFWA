@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, session, redirect
 from functions import *
 import math
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = "Dummy Key For Debugging Purposes"
@@ -102,7 +103,30 @@ def report():
     ID_salary = minimum_salary(sum(monthly_rate))
     IP_salary = minimum_salary(monthly*len(principal))
 
-    return render_template('report.html', title='Report', principal=principal, interest=interest, loantype=loantype, monthly=monthly, grad=grad, term=term, duration=duration, grad_debt=grad_debt, grad_interest=grad_interest, repayment_duration=repayment_duration, monthly_rate=monthly_rate, ID_total=ID_total, ID_int=ID_int, IP_total=IP_total, IP_int=IP_int, ID_per=ID_per, IP_per=IP_per, ID_salary=ID_salary, IP_salary=IP_salary,principal_length=len(principal),total_EMI=sum(monthly_rate),total_duration=max(repayment_duration))
+    return render_template('report.html', title='Report', 
+                           principal=principal, 
+                           interest=interest, 
+                           loantype=loantype, 
+                           monthly=monthly, 
+                           grad=grad, 
+                           term=term, 
+                           duration=duration, 
+                           grad_debt=grad_debt, 
+                           grad_interest=grad_interest, 
+                           repayment_duration=repayment_duration, 
+                           monthly_rate=monthly_rate, 
+                           ID_total=ID_total, 
+                           ID_int=ID_int, 
+                           IP_total=IP_total, 
+                           IP_int=IP_int, 
+                           ID_per=ID_per, 
+                           IP_per=IP_per, 
+                           ID_salary=ID_salary, 
+                           IP_salary=IP_salary,
+                           principal_length=len(principal),
+                           total_EMI=sum(monthly_rate),
+                           total_duration=max(repayment_duration))
+
 
 @app.route('/log', methods=['GET','POST'])
 def log_menu():
@@ -141,8 +165,6 @@ def repay_log():
 @app.route('/log/loan', methods=['GET','POST'])
 def loan_log():
     #Initializes variables if they don't yet exist so that values can be added to them
-    if 'auto' not in session:
-        session['auto'] = []
     if 'loan_principal' not in session:
         session['loan_principal'] = []
     if 'loan_int_rate' not in session:
@@ -158,7 +180,6 @@ def loan_log():
 
     if request.method == 'POST':
         # Extract current lists from session
-        auto_list = session['auto']
         loan_principal_list = session['loan_principal']
         loan_int_rate_list = session['loan_int_rate']
         loan_date_list = session['loan_date']
@@ -166,7 +187,6 @@ def loan_log():
         loan_note_list = session['loan_note']
 
         # Append to the lists
-        auto_list.append(request.form['auto'])
         loan_principal_list.append(request.form['new_loan'])
         loan_int_rate_list.append(request.form['new_rate'])
         loan_date_list.append(request.form['loan_date'])
@@ -174,7 +194,6 @@ def loan_log():
         loan_note_list.append(request.form['loan_note'])
 
         # Set the session variables to the new lists
-        session['auto'] = auto_list
         session['loan_principal'] = loan_principal_list
         session['loan_int_rate'] = loan_int_rate_list
         session['loan_date'] = loan_date_list
@@ -195,8 +214,6 @@ def milestone():
         session['pay_date'] = []
     if 'pay_note' not in session:
         session['pay_note'] = []
-    if 'auto' not in session:
-        session['auto'] = []
     if 'loan_principal' not in session:
         session['loan_principal'] = []
     if 'loan_int_rate' not in session:
@@ -211,14 +228,19 @@ def milestone():
         session['loan_note'] = []
 
     amount = [float(amount) for amount in session['amount']]
-    pay_date = session['pay_date']
+    pay_date = [datetime.strptime(day, '%Y-%m-%d') for day in session['pay_date']]
     pay_note = session['pay_note']
-    auto = session['auto']
     loan_principal = [float(principal) for principal in session['loan_principal']]
     loan_int_rate = [float(rate) for rate in session['loan_int_rate']]
-    loan_date = session['loan_date']
+    loan_date = [datetime.strptime(day, '%Y-%m-%d') for day in session['loan_date']]
     loan_fees = [float(fee) for fee in session['loan_fees']]
     loan_note = session['loan_note']
+
+    if (len(loan_principal) > 0 and len(amount) > 0):
+        #Calculates ajustment from loans being repayed and interest accrued since last payment
+        int_accrued = int_since(loan_date, loan_int_rate, loan_principal, pay_date[len(pay_date)-1])
+        print(int_accrued)
+        (loan_principal, loan_fees) = apply_adjustments(loan_principal, loan_fees, int_accrued, amount)
 
     return render_template('milestone.html',
                            title='Milestones',
@@ -226,7 +248,6 @@ def milestone():
                            pay_date=pay_date,
                            pay_note=pay_note,
                            num_pay_logs = len(pay_date),
-                           auto=auto,
                            loan_principal=loan_principal,
                            loan_int_rate=loan_int_rate,
                            loan_date=loan_date,

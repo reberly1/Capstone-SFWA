@@ -7,15 +7,8 @@
 
     <div class="form-group">
 
-    <!--Dropdown Menu for whether auto interest should be enabled-->
-    <label for="auto">Should Newly Accrued Interest be Automatically Logged Monthly?</label>
-    <select class="form-control" id="auto" name="auto">
-        <option value='Payment'>Yes</option>
-        <option value='Scholarship'>No</option>
-    </select>
-
     <label for="new_loan">Principal</label>
-    <input type="number" class="form-control" id="new_loan" name="new_loan" placeholder="How Much is the Amount?" min="0">
+    <input type="number" class="form-control" id="new_loan" name="new_loan" placeholder="How Much is the Amount?" min="1">
 
     <label for="new_rate">Interest Rate</label>
     <input type="number" class="form-control" id="new_rate" name="new_rate" placeholder="What is the loan's interest rate?" min="1">
@@ -25,7 +18,7 @@
     <input type="date" class="form-control" id="loan_date" name="loan_date" placeholder="Enter the Date the Loan was Disbursed">
 
     <label for="existing_int">Outstanding Fees/Interest</label>
-    <input type="number" class="form-control" id="existing_int" name="existing_int" placeholder="Enter the Date the Loan or Payment was Made">
+    <input type="number" class="form-control" id="existing_int" name="existing_int" placeholder="Enter the Date the Loan or Payment was Made" min="0">
 
     <!--Any notes the user wants to enter to the log for organization purposes-->
     <label for="loan_note">Note</label>
