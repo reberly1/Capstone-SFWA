@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, session, redirect
 from functions import *
 import math
-from datetime import datetime
+import datetime
+
 
 app = Flask(__name__)
 app.secret_key = "Dummy Key For Debugging Purposes"
@@ -239,20 +240,44 @@ def milestone():
         session['loan_note'] = []
 
     amount = [float(amount) for amount in session['amount']]
-    pay_date = [datetime.strptime(day, '%Y-%m-%d') for day in session['pay_date']]
+    pay_date = [datetime.datetime.strptime(day, '%Y-%m-%d') for day in session['pay_date']]
     pay_note = session['pay_note']
     loan_choice = [int(choice) for choice in session['loan_choice']]
     loan_principal = [float(principal) for principal in session['loan_principal']]
     loan_int_rate = [float(rate) for rate in session['loan_int_rate']]
-    loan_date = [datetime.strptime(day, '%Y-%m-%d') for day in session['loan_date']]
+    loan_date = [datetime.datetime.strptime(day, '%Y-%m-%d') for day in session['loan_date']]
     loan_fees = [float(fee) for fee in session['loan_fees']]
     loan_note = session['loan_note']
 
+    (adj_loan_principal, adj_loan_fees) = ([], [])
     if (len(loan_principal) > 0 and len(amount) > 0):
         #Calculates ajustment from loans being repayed and interest accrued since last payment
         int_accrued = int_since(loan_date, loan_int_rate, loan_principal, pay_date[len(pay_date)-1])
-        print("This is being ran ", int_accrued)
-        (loan_principal, loan_fees) = apply_adjustments(loan_principal, loan_fees, int_accrued, amount, loan_choice)
+        (adj_loan_principal, adj_loan_fees) = apply_adjustments(loan_principal, loan_fees, int_accrued, amount, loan_choice)
+    
+    #Creates a total balance list by combining the values in the principal and fees lists
+    loan_bal = [principal + fees for principal, fees in zip(adj_loan_principal, adj_loan_fees)]
+    #Filters payments that pertain to the current month for projection purposes
+    current_payments = [(amount[i], loan_choice[i]) for i, date in enumerate(pay_date) if date.month == datetime.datetime.now().month]
+
+    #Projection of each loan if paid at the current monthly
+    balances = [] 
+    for i in range(len(loan_bal)):
+        bal_i = []
+        monthly_payment = sum(amount for amount, choice in current_payments if choice == i)
+        for j in range(120):
+            #The sum of all payments made to the loan in question
+            loan_bal[i] -= monthly_payment
+
+            if (loan_bal[i] < 0):
+                loan_bal[i] = 0
+
+            bal_i.append(loan_bal[i]) 
+        
+        balances.append(bal_i)
+
+    end_date = datetime.date.today() + datetime.timedelta(days=365 * 10)
+    dates = [(datetime.date.today() + datetime.timedelta(days=30 * i)).strftime('%Y-%m') for i in range((end_date.year - datetime.date.today().year) * 12 + end_date.month - datetime.date.today().month + 1)]
 
     return render_template('milestone.html',
                            title='Milestones',
@@ -265,7 +290,9 @@ def milestone():
                            loan_date=loan_date,
                            loan_fees=loan_fees,
                            loan_note=loan_note,
-                           num_loan_logs = len(loan_date)
+                           num_loan_logs = len(loan_date),
+                           labels=dates,
+                           data=balances
                            )
 
 @app.route('/graph', methods=['GET','POST'])

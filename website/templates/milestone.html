@@ -65,4 +65,31 @@
     </table> 
 </div>
 
+<canvas id="lineChart" width="900" height="400"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Extracting labels and data from server-side variables
+    const labels = {{ labels | tojson }};
+    const data = {{ data | tojson }};
+
+    var datasets = data.map((balances, index) => {
+            return {
+                label: "Loan " + (index + 1),
+                data: balances,
+                fill: false,
+            };
+        });
+
+    var ctx = document.getElementById('lineChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: datasets
+            }});
+
+
+</script>
+
 {% endblock content %}
