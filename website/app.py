@@ -295,12 +295,13 @@ def milestone():
                            data=balances
                            )
 
-@app.route('/graph', methods=['GET','POST'])
-def graph():
-    data = [("Monday", 3), ("Tuesday", 4), ("Wednesday", 5)]
-    labels = [row[1] for row in data]
-    values = [row[1] for row in data]
-    return render_template('graph.html',title='Graph', labels=labels, data=values)
+@app.route('/login', methods=['GET','POST'])
+def login():
+    return render_template('login.html', title='Login')
+
+@app.route('/login/register', methods=['GET','POST'])
+def register():
+    return render_template('register.html', title='Register')
 
 if __name__ == '__main__':
     app.run(debug=True)
