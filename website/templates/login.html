@@ -2,11 +2,17 @@
 {% block content %}
 <h1>Login Page</h1>
 
-<label for="username">Username</label>
-<input type="text" class="form-control" id="username" name="username" placeholder="Enter Your Username">
+<form method="POST">
 
-<label for="password">Password</label>
-<input type="text" class="form-control" id="password" name="password" placeholder="Enter Your Password">
+    <label for="username">Username</label>
+    <input type="text" class="form-control" id="username" name="username" placeholder="Enter Your Username" required>
+
+    <label for="password">Password</label>
+    <input type="text" class="form-control" id="password" name="password" placeholder="Enter Your Password" required>
+
+    <button type="submit">Login</button>
+
+</form>
 
 <form action="/login/register"><button>Register</button></form>
 

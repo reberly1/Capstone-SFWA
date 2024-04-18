@@ -67,6 +67,8 @@
 
 <canvas id="lineChart" width="900" height="400"></canvas>
 
+<a href="data:csv,{{ csv }}" download="log.csv">Download CSV of Logs</a>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     // Extracting labels and data from server-side variables
@@ -88,7 +90,6 @@
                 labels: labels,
                 datasets: datasets
             }});
-
 
 </script>
 

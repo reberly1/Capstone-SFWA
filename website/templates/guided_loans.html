@@ -76,7 +76,8 @@
         newPrincipal.id = 'principal[]';
         newPrincipal.name = 'principal[]'; 
         newPrincipal.placeholder = 'Enter Your Loan Principal';
-        newPrincipal.min = '1'
+        newPrincipal.min = '1';
+        newPrincipal.required = 'true';
 
         //interest form input with html based parameters
         //Approximate HTML Equivalent
@@ -87,8 +88,9 @@
         newInterest.id = 'interest[]';
         newInterest.name = 'interest[]'; 
         newInterest.placeholder = 'Enter Your Interest Rate';
-        newInterest.min = '1'
-        newInterest.max = '25'
+        newInterest.min = '1';
+        newInterest.max = '25';
+        newInterest.required = 'true';
         
         //loan type form input with html based parameters
         //Approximate HTML Equivalent
@@ -97,6 +99,7 @@
         newLoanType.classList.add('form-control');
         newLoanType.id = 'loan_type[]';
         newLoanType.name = 'loan_type[]';
+        newLoanType.required = 'true';
         
         //loan type dropdown menu options 
         //Approximate HTML Equivalent

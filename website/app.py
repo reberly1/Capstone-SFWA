@@ -2,7 +2,8 @@ from flask import Flask, render_template, request, session, redirect
 from functions import *
 import math
 import datetime
-
+import numpy
+import pandas
 
 app = Flask(__name__)
 app.secret_key = "Dummy Key For Debugging Purposes"
@@ -279,6 +280,12 @@ def milestone():
     end_date = datetime.date.today() + datetime.timedelta(days=365 * 10)
     dates = [(datetime.date.today() + datetime.timedelta(days=30 * i)).strftime('%Y-%m') for i in range((end_date.year - datetime.date.today().year) * 12 + end_date.month - datetime.date.today().month + 1)]
 
+    headers = ["Amount", "Date", "Notes", "Principal", "Interest Rate", "Date of Disbursement", "Outstanding Interest/Fees", "Notes"]
+    array_csv = numpy.asarray([amount,pay_date,pay_note,loan_principal,loan_int_rate,loan_date,loan_fees,loan_note])
+    df = pandas.DataFrame(array_csv).T
+    df.columns = headers
+    csv = df.to_csv(index=False)
+
     return render_template('milestone.html',
                            title='Milestones',
                            amount=amount,
@@ -292,7 +299,8 @@ def milestone():
                            loan_note=loan_note,
                            num_loan_logs = len(loan_date),
                            labels=dates,
-                           data=balances
+                           data=balances,
+                           csv=csv
                            )
 
 @app.route('/login', methods=['GET','POST'])

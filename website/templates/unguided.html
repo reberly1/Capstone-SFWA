@@ -14,16 +14,16 @@
         <div class="form-group">
         
             <label for="year_grad">Years Until Graduation</label>
-            <input type="number" class="form-control" id="year_grad" name="year_grad" placeholder="Enter the Number of Years Until Graduation" min="0" max="8">
+            <input type="number" class="form-control" id="year_grad" name="year_grad" placeholder="Enter the Number of Years Until Graduation" min="0" max="8" required>
         
             <label for="term_cost">Yearly Cost</label>
-            <input type="number" class="form-control" id="term_cost" name="term_cost" placeholder="Enter the Estimated Cost of College Per Year" min="0" max="1000000">
+            <input type="number" class="form-control" id="term_cost" name="term_cost" placeholder="Enter the Estimated Cost of College Per Year" min="0" max="1000000" required>
 
             <label for="month_pay">Total Estimated Monthly Payment</label>
-            <input type="number" class="form-control" id="month_pay" name="month_pay" placeholder="Enter Your Estimated Monthly Payment" min="1">
+            <input type="number" class="form-control" id="month_pay" name="month_pay" placeholder="Enter Your Estimated Monthly Payment" min="1" required>
 
             <label for="duration">Total Loan Duration</label>
-            <input type="number" class="form-control" id="duration" name="duration" placeholder="Enter the Payment Length in Years" min="1" max="50">
+            <input type="number" class="form-control" id="duration" name="duration" placeholder="Enter the Payment Length in Years" min="1" max="50" required>
 
         </div>
 
@@ -36,13 +36,13 @@
         function addLoan() {
             //Container for dynamic inputs declared above
             var dynamicLoans = document.getElementById("dynamic loans")
-
+    
             //Html div to insert dynamic inputs and to add to base html
             //Approximate HTML Equivalent
             //<div class='form-group'></div>
             var newDiv = document.createElement('div')
             newDiv.classList.add('form-group')
-
+    
             //principal form input with html based parameters
             //Approximate HTML Equivalent
             //<input type="number" class="form-control" id="principal[]" name="principal[]" placeholder="Enter Your Loan Principal">
@@ -52,8 +52,9 @@
             newPrincipal.id = 'principal[]';
             newPrincipal.name = 'principal[]'; 
             newPrincipal.placeholder = 'Enter Your Loan Principal';
-            newPrincipal.min = '1'
-
+            newPrincipal.min = '1';
+            newPrincipal.required = "true";
+    
             //interest form input with html based parameters
             //Approximate HTML Equivalent
             //<input type="number" class="form-control" id="interest[]" "name="interest[]" placeholder="Enter Your Interest Rate">
@@ -63,8 +64,9 @@
             newInterest.id = 'interest[]';
             newInterest.name = 'interest[]'; 
             newInterest.placeholder = 'Enter Your Interest Rate';
-            newInterest.min = '1'
-            newInterest.max = '25'
+            newInterest.min = '1';
+            newInterest.max = '25';
+            newInterest.required = 'true';
             
             //loan type form input with html based parameters
             //Approximate HTML Equivalent
@@ -73,6 +75,7 @@
             newLoanType.classList.add('form-control');
             newLoanType.id = 'loan_type[]';
             newLoanType.name = 'loan_type[]';
+            newLoanType.required = 'true';
             
             //loan type dropdown menu options 
             //Approximate HTML Equivalent
@@ -98,10 +101,10 @@
             newDiv.appendChild(newInterest);
             newDiv.appendChild(document.createTextNode('Loan Type'));
             newDiv.appendChild(newLoanType);
-
+    
             //Adds the new loan input fields to the container so that it's visible to the user
             dynamicLoans.appendChild(newDiv);
-
+    
             //Approximate HTML Equivalent of forms being inserted
             //<div id="dynamic loans" div class="form-group">
             //
@@ -123,7 +126,7 @@
             //
             //</div>
         }
-
+    
         //Creates an initial form input for the user in case they have only 1 loan
         addLoan();
     </script>

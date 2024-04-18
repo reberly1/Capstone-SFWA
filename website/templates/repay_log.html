@@ -8,15 +8,15 @@
             
             <!--Selection of Which loan the given payment will go towards-->
             <label for="loan_choice">Loan To Repay</label>
-                <select class="form-control" id="loan_choice" name="loan_choice"></select>
+                <select class="form-control" id="loan_choice" name="loan_choice" required></select>
 
             <!--Amount that will be add to or deducted from the current loan balance-->
             <label for="amount">Amount</label>
-            <input type="number" class="form-control" id="amount" name="amount" placeholder="How Much is the Amount?" min="0">
+            <input type="number" class="form-control" id="amount" name="amount" placeholder="How Much is the Amount?" min="0" required>
 
             <!--The Date the Payment or Loan was made-->
             <label for="date">Date of Repayment or Scholarship Disbursement</label>
-            <input type="date" class="form-control" id="date" name="date" placeholder="Enter the Date the Loan or Payment was Made">
+            <input type="date" class="form-control" id="date" name="date" placeholder="Enter the Date the Loan or Payment was Made" required>
 
             <!--Any notes the user wants to enter to the log for organization purposes-->
             <label for="note">Note</label>
