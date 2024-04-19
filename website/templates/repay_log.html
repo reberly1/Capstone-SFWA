@@ -28,6 +28,7 @@
 
     </form>
 
+    <!--String verifying a sucessful log by monitoring number of entries-->
     {{conf}}
 
     <script>
@@ -39,6 +40,7 @@
         var loans = {{ loans | tojson }};
         var loanChoice = document.getElementById('loan_choice');
 
+        //Adds each existing loan to the repayment selection
         for (let i = 0; i < loans.length; i++) {
             var loan = document.createElement('option');
             loan.value = i;

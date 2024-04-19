@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request, session, redirect
 from functions import *
-import math
 import datetime
-import numpy
 import pandas
 
 app = Flask(__name__)
@@ -169,6 +167,7 @@ def repay_log():
         session['pay_note'] = pay_note_list
         session['loan_choice'] = choice_list
 
+    #Confirmation string
     conf = "There are " + str(len(session['pay_date'])) + " Entries Currently"
 
     return render_template('repay_log.html',title='Repayment Log', conf=conf, loans=loans)
@@ -211,7 +210,7 @@ def loan_log():
         session['loan_fees'] = loan_fees_list
         session['loan_note'] = loan_note_list
 
-
+    #Confirmation string
     conf = "There are " + str(len(session['loan_date'])) + " Entries Currently"
     
     return render_template('loan_log.html',title='Loan Log', conf=conf)
@@ -240,6 +239,7 @@ def milestone():
     if 'loan_note' not in session:
         session['loan_note'] = []
 
+    #Extract Variables from session and convert data types
     amount = [float(amount) for amount in session['amount']]
     pay_date = [datetime.datetime.strptime(day, '%Y-%m-%d') for day in session['pay_date']]
     pay_note = session['pay_note']
@@ -252,7 +252,7 @@ def milestone():
 
     (adj_loan_principal, adj_loan_fees) = ([], [])
     if (len(loan_principal) > 0 and len(amount) > 0):
-        #Calculates ajustment from loans being repayed and interest accrued since last payment
+        #Calculates adjustment from loans being repayed and interest accrued since last payment
         int_accrued = int_since(loan_date, loan_int_rate, loan_principal, pay_date[len(pay_date)-1])
         (adj_loan_principal, adj_loan_fees) = apply_adjustments(loan_principal, loan_fees, int_accrued, amount, loan_choice)
     
@@ -277,12 +277,16 @@ def milestone():
         
         balances.append(bal_i)
 
+    #Calculates given date for 10 years from now
     end_date = datetime.date.today() + datetime.timedelta(days=365 * 10)
+
+    #Produces a list of months from today to 10 years from now for graph projection
     dates = [(datetime.date.today() + datetime.timedelta(days=30 * i)).strftime('%Y-%m') for i in range((end_date.year - datetime.date.today().year) * 12 + end_date.month - datetime.date.today().month + 1)]
 
+    #Produces the log csv that is downloaded at the user's request
     headers = ["Amount", "Date", "Notes", "Principal", "Interest Rate", "Date of Disbursement", "Outstanding Interest/Fees", "Notes"]
-    array_csv = numpy.asarray([amount,pay_date,pay_note,loan_principal,loan_int_rate,loan_date,loan_fees,loan_note])
-    df = pandas.DataFrame(array_csv).T
+    csv_data = [amount,pay_date,pay_note,loan_principal,loan_int_rate,loan_date,loan_fees,loan_note]
+    df = pandas.DataFrame(csv_data).T
     df.columns = headers
     csv = df.to_csv(index=False)
 
@@ -298,8 +302,8 @@ def milestone():
                            loan_fees=loan_fees,
                            loan_note=loan_note,
                            num_loan_logs = len(loan_date),
-                           labels=dates,
-                           data=balances,
+                           dates=dates,
+                           balances=balances,
                            csv=csv
                            )
 

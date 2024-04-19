@@ -1,39 +1,15 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Times New Roman', Times, serif;
-      font-size: 16px;
-      line-height: 1.6;
-    }
-    .container {
-      display: flex;
-      justify-content: center;
-      position: relative;
-    } 
-     .th, .tr, .td {
-        border: 1px solid black;
-    }
-    .table {
-        width: 50%;
-    }
-    .right {
-        transform: translateX(20%);
-    }
-
-</style>
-
-<h3>Milestones Page</h3>
-
-<div class="container">
+<div class="grid">
     <table class="table">
+        <!--Table Headers-->
         <tr>
             <th>Amount</th>
             <th>Date</th>
             <th>Notes</th>
         </tr>
+        <!--Visualizes logged payment data under the corresponding header-->
         {% for i in range(num_pay_logs) %}
         <tr>
             <td>{{ amount[i] }}</td>
@@ -44,6 +20,7 @@
     </table> 
 
     <table class="table right">
+        <!--Table Headers-->
         <tr>
             <th>Principal</th>
             <th>Interest Rate</th>
@@ -52,6 +29,7 @@
             <th>Total Balance</th>
             <th>Notes</th>
         </tr>
+        <!--Visualizes logged loan data under the corresponding header-->
         {% for i in range(num_loan_logs) %}
         <tr>
             <td>{{ loan_principal[i] }}</td>
@@ -65,29 +43,32 @@
     </table> 
 </div>
 
+<!--Container for loan graph-->
 <canvas id="lineChart" width="900" height="400"></canvas>
 
-<a href="data:csv,{{ csv }}" download="log.csv">Download CSV of Logs</a>
+<!--Log Download Button-->
+<a href="data:text/csv;charset=utf-8,{{ csv | urlencode }}" download="log.csv">Download CSV of Logs</a>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Extracting labels and data from server-side variables
-    const labels = {{ labels | tojson }};
-    const data = {{ data | tojson }};
+    //Converts flask data to usable format
+    const dates = {{ dates | tojson }};
+    const balances = {{ balances | tojson}}
 
-    var datasets = data.map((balances, index) => {
+    //Converts data to a usable format for the chart function
+    var datasets = balances.map((balance, i) => {
             return {
-                label: "Loan " + (index + 1),
-                data: balances,
-                fill: false,
+                label: "Loan " + (i + 1),
+                data: balance,
             };
         });
 
+    //Creates a chart using the data provided
     var ctx = document.getElementById('lineChart').getContext('2d');
         var chart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: labels,
+                labels: dates,
                 datasets: datasets
             }});
 

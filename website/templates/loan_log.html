@@ -7,9 +7,11 @@
 
     <div class="form-group">
 
+    <!--The amount the user borrowed-->
     <label for="new_loan">Principal</label>
     <input type="number" class="form-control" id="new_loan" name="new_loan" placeholder="How Much is the Amount?" min="1" required>
-
+    
+    <!--The interest rate for the loan-->
     <label for="new_rate">Interest Rate</label>
     <input type="number" class="form-control" id="new_rate" name="new_rate" placeholder="What is the loan's interest rate?" min="1" required>
 
@@ -17,14 +19,13 @@
     <label for="loan_date">Date of Loan Disbursement</label>
     <input type="date" class="form-control" id="loan_date" name="loan_date" placeholder="Enter the Date the Loan was Disbursed" required>
 
+    <!--Any fees/interest that are not included in the principal-->
     <label for="existing_int">Outstanding Fees/Interest</label>
     <input type="number" class="form-control" id="existing_int" name="existing_int" placeholder="Enter the Date the Loan or Payment was Made" min="0" required>
 
     <!--Any notes the user wants to enter to the log for organization purposes-->
     <label for="loan_note">Note</label>
     <input type="text" class="form-control" id="loan_note" name="loan_note" placeholder="Notes....">
-
-
 
     <button type="submit">Submit Log</button>
 

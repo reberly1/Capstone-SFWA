@@ -178,20 +178,68 @@ def minimum_salary(month_pay):
     yearly = 12
     return (month_pay*comfort_ratio*yearly, month_pay*comfort_ratio)
 
-def int_since(loan_dates, loan_int_rates, loan_principals, last_pay_date):
+def int_since(loan_dates, loan_rates, loan_prins, last_pay):
+    #CURRENTLY BUGGED PRODUCING INCORRECT CALCULATIONS
+    """
+    Description
+    Calculates the interest accrued for each loan since the day it was disbursed
+
+    Parameters
+    loan_dates:   TYPE: datetime[]
+                  DESC: list of loan disbursement dates for corresponding loans
+
+    loan_rates:   TYPE: FLOAT[]
+                  DESC: list of interest rates for corresponding loans
+
+    loan_prins:   TYPE: FLOAT[]
+                  DESC: list of principals for corresponding loans
+
+    last_pay:     TYPE: FLOAT[]
+                  DESC: list of dates representing the last time a 
+                  payment was paid to a corresponding loan
+                
+    Returns
+    float[]:      DESC: Corresponding interest acrrued for each loan
+    """
+
     int_accrued = []
 
     for i in range(len(loan_dates)):
-        days_since_disbursement = int((last_pay_date - loan_dates[i]).days)
-        int_for_loan = (loan_int_rates[i]/36500) * days_since_disbursement * loan_principals[i]
+        days_since_disbursement = int((last_pay - loan_dates[i]).days)
+        int_for_loan = (loan_rates[i]/36500) * days_since_disbursement * loan_prins[i]
         int_accrued.append(int_for_loan)
 
     return int_accrued
 
-def apply_adjustments(loan_principals, loan_fees, int_accured, amounts, loan_choice):
+def apply_adjustments(loan_prins, loan_fees, int_accrued, amounts, loan_choice):
+    """
+    Description
+    Calculates the remaining interest and principal after payments are deducted
+    Parameters
+    loan_prins:   TYPE: Float[]
+                  DESC: list of principals for corresponding loans
+
+    loan_fees:    TYPE: Float[]
+                  DESC: list of existing interest accrued for corresponding loans
+    
+    int_accrued:  TYPE: Float[]
+                  DESC: list of newly accrued interest for corresponding loans
+
+    amounts:      TYPE: Float[]
+                  DESC: list of payments made to existing loans
+
+    loan_choice:  TYPE: int[]
+                  DESC: list of indexes indicating the loan a corresponding 
+                  amount is paying towards
+
+    Returns
+    tuple:        DESC: All loan's principals and existing interest after payments
+    (Float[], Float[])
+    """
+    
     #Apply interest to outstanding fees and interest
-    for i in range(len(int_accured)):
-        loan_fees[i] += int_accured[i]
+    for i in range(len(int_accrued)):
+        loan_fees[i] += int_accrued[i]
 
     for i in range(len(amounts)):
         payment = amounts[i]
@@ -202,12 +250,12 @@ def apply_adjustments(loan_principals, loan_fees, int_accured, amounts, loan_cho
 
         #Applies the difference to the principal
         if loan_fees[loan_index] < 0:
-            loan_principals[loan_index] += loan_fees[loan_index]
+            loan_prins[loan_index] += loan_fees[loan_index]
             loan_fees[loan_index] = 0
 
         #If the given loan was paid off set it to 0
-        if loan_principals[loan_index] < 0:
-            loan_principals[loan_index] = 0
+        if loan_prins[loan_index] < 0:
+            loan_prins[loan_index] = 0
 
-    return (loan_principals, loan_fees)
+    return (loan_prins, loan_fees)
 
