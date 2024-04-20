@@ -178,8 +178,7 @@ def minimum_salary(month_pay):
     yearly = 12
     return (month_pay*comfort_ratio*yearly, month_pay*comfort_ratio)
 
-def int_since(loan_dates, loan_rates, loan_prins, last_pay):
-    #CURRENTLY BUGGED PRODUCING INCORRECT CALCULATIONS
+def int_since(loan_dates, loan_rates, loan_prins):
     """
     Description
     Calculates the interest accrued for each loan since the day it was disbursed
@@ -193,10 +192,6 @@ def int_since(loan_dates, loan_rates, loan_prins, last_pay):
 
     loan_prins:   TYPE: FLOAT[]
                   DESC: list of principals for corresponding loans
-
-    last_pay:     TYPE: FLOAT[]
-                  DESC: list of dates representing the last time a 
-                  payment was paid to a corresponding loan
                 
     Returns
     float[]:      DESC: Corresponding interest acrrued for each loan
@@ -205,7 +200,7 @@ def int_since(loan_dates, loan_rates, loan_prins, last_pay):
     int_accrued = []
 
     for i in range(len(loan_dates)):
-        days_since_disbursement = int((last_pay - loan_dates[i]).days)
+        days_since_disbursement = int((datetime.datetime.now() - loan_dates[i]).days)
         int_for_loan = (loan_rates[i]/36500) * days_since_disbursement * loan_prins[i]
         int_accrued.append(int_for_loan)
 

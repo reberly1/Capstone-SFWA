@@ -252,8 +252,8 @@ def milestone():
 
     (adj_loan_principal, adj_loan_fees) = ([], [])
     if (len(loan_principal) > 0 and len(amount) > 0):
-        #Calculates adjustment from loans being repayed and interest accrued since last payment
-        int_accrued = int_since(loan_date, loan_int_rate, loan_principal, pay_date[len(pay_date)-1])
+        #Calculates adjustment from loans being repayed and interest accrued based on today's date
+        int_accrued = int_since(loan_date, loan_int_rate, loan_principal)
         (adj_loan_principal, adj_loan_fees) = apply_adjustments(loan_principal, loan_fees, int_accrued, amount, loan_choice)
     
     #Creates a total balance list by combining the values in the principal and fees lists
@@ -277,11 +277,8 @@ def milestone():
         
         balances.append(bal_i)
 
-    #Calculates given date for 10 years from now
-    end_date = datetime.date.today() + datetime.timedelta(days=365 * 10)
-
     #Produces a list of months from today to 10 years from now for graph projection
-    dates = [(datetime.date.today() + datetime.timedelta(days=30 * i)).strftime('%Y-%m') for i in range((end_date.year - datetime.date.today().year) * 12 + end_date.month - datetime.date.today().month + 1)]
+    dates = [(datetime.date.today() + datetime.timedelta(days=30.437 * i)).strftime('%Y') for i in range(120)]
 
     #Produces the log csv that is downloaded at the user's request
     headers = ["Amount", "Date", "Notes", "Principal", "Interest Rate", "Date of Disbursement", "Outstanding Interest/Fees", "Notes"]
