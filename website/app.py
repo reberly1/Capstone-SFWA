@@ -250,30 +250,42 @@ def milestone():
     loan_fees = [float(fee) for fee in session['loan_fees']]
     loan_note = session['loan_note']
 
+
     (adj_loan_principal, adj_loan_fees) = ([], [])
+    #If there is sufficient data to plot
     if (len(loan_principal) > 0 and len(amount) > 0):
         #Calculates adjustment from loans being repayed and interest accrued based on today's date
         int_accrued = int_since(loan_date, loan_int_rate, loan_principal)
-        (adj_loan_principal, adj_loan_fees) = apply_adjustments(loan_principal, loan_fees, int_accrued, amount, loan_choice)
-    
-    #Creates a total balance list by combining the values in the principal and fees lists
-    loan_bal = [principal + fees for principal, fees in zip(adj_loan_principal, adj_loan_fees)]
+        (adj_loan_principal, adj_loan_fees) = apply_adjustments(loan_principal.copy(), loan_fees.copy(), int_accrued, amount, loan_choice)
+
     #Filters payments that pertain to the current month for projection purposes
     current_payments = [(amount[i], loan_choice[i]) for i, date in enumerate(pay_date) if date.month == datetime.datetime.now().month]
 
-    #Projection of each loan if paid at the current monthly
+    temp_prin = adj_loan_principal.copy()
+    temp_fees = adj_loan_fees.copy()
     balances = [] 
-    for i in range(len(loan_bal)):
+    for i in range(len(temp_prin)):
         bal_i = []
         monthly_payment = sum(amount for amount, choice in current_payments if choice == i)
         for j in range(120):
-            #The sum of all payments made to the loan in question
-            loan_bal[i] -= monthly_payment
 
-            if (loan_bal[i] < 0):
-                loan_bal[i] = 0
+            #Calculate interest for current month
+            temp_fees[i] += (30.437 * (loan_int_rate[i]/36500) * temp_prin[i])
+            
+            #Pay off the interest/fees first
+            temp_fees[i] -= monthly_payment
 
-            bal_i.append(loan_bal[i]) 
+            #Contribute the remaining payment to the principal
+            if (temp_fees[i] <= 0):
+                temp_prin[i] += temp_fees[i]
+                temp_fees[i] = 0
+
+            #If loan has been completely paid off
+            if (temp_prin[i] < 0):
+                temp_prin[i] = 0
+
+            #Add the current balance to the plot data
+            bal_i.append(temp_prin[i] + temp_fees[i]) 
         
         balances.append(bal_i)
 
@@ -293,10 +305,11 @@ def milestone():
                            pay_date=pay_date,
                            pay_note=pay_note,
                            num_pay_logs = len(pay_date),
-                           loan_principal=loan_principal,
+                           loan_principal=adj_loan_principal,
                            loan_int_rate=loan_int_rate,
                            loan_date=loan_date,
-                           loan_fees=loan_fees,
+                           loan_fees=adj_loan_fees,
+                           loan_bal=[principal + fees for principal, fees in zip(adj_loan_principal, adj_loan_fees)],
                            loan_note=loan_note,
                            num_loan_logs = len(loan_date),
                            dates=dates,
