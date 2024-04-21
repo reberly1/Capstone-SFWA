@@ -49,6 +49,14 @@
 <!--Log Download Button-->
 <a href="data:text/csv;charset=utf-8,{{ csv | urlencode }}" download="log.csv">Download CSV of Logs</a>
 
+<!--Log Upload Button-->
+<form action="/milestone/upload" method="POST">
+
+    <input type="file" id="user_csv" name="user_csv">
+    <input type="submit" value="Upload CSV">
+
+</form>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     //Converts flask data to usable format
@@ -75,7 +83,9 @@
             scales: {
                 x: {
                     ticks: {
-                        maxTicksLimit: 10
+                        maxTicksLimit: 10,
+                        autoSkipPadding: 12,
+                        autoSkip: true
                     }
                 },
             }
