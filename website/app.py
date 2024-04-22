@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, session, redirect
 from functions import *
 import datetime
 import pandas
+import numpy as np
 
 app = Flask(__name__)
 app.secret_key = "Dummy Key For Debugging Purposes"
@@ -241,17 +242,17 @@ def milestone():
 
     #Extract Variables from session and convert data types
     amount = [float(amount) for amount in session['amount']]
-    pay_date = [datetime.datetime.strptime(day, '%Y-%m-%d') for day in session['pay_date']]
+    pay_date = [datetime.datetime.strptime(str(day), '%Y-%m-%d') for day in session['pay_date']]
     pay_note = session['pay_note']
     loan_choice = [int(choice) for choice in session['loan_choice']]
     loan_principal = [float(principal) for principal in session['loan_principal']]
     loan_int_rate = [float(rate) for rate in session['loan_int_rate']]
-    loan_date = [datetime.datetime.strptime(day, '%Y-%m-%d') for day in session['loan_date']]
+    loan_date = [datetime.datetime.strptime(str(day), '%Y-%m-%d') for day in session['loan_date']]
     loan_fees = [float(fee) for fee in session['loan_fees']]
     loan_note = session['loan_note']
 
 
-    (adj_loan_principal, adj_loan_fees) = ([], [])
+    (adj_loan_principal, adj_loan_fees) = (loan_principal.copy(), loan_fees.copy())
     #If there is sufficient data to plot
     if (len(loan_principal) > 0 and len(amount) > 0):
         #Calculates adjustment from loans being repayed and interest accrued based on today's date
@@ -293,8 +294,8 @@ def milestone():
     dates = [(datetime.date.today() + datetime.timedelta(days=30.437 * i)).strftime('%Y') for i in range(120)]
 
     #Produces the log csv that is downloaded at the user's request
-    headers = ["Amount", "Date", "Notes", "Principal", "Interest Rate", "Date of Disbursement", "Outstanding Interest/Fees", "Notes"]
-    csv_data = [amount,pay_date,pay_note,loan_principal,loan_int_rate,loan_date,loan_fees,loan_note]
+    headers = ["Amount", "Date", "Loan Choice", "Notes", "Principal", "Interest Rate", "Date of Disbursement", "Outstanding Interest/Fees", "Loan Notes"]
+    csv_data = [amount,pay_date,loan_choice,pay_note,loan_principal,loan_int_rate,loan_date,loan_fees,loan_note]
     df = pandas.DataFrame(csv_data).T
     df.columns = headers
     csv = df.to_csv(index=False)
@@ -303,6 +304,7 @@ def milestone():
                            title='Milestones',
                            amount=amount,
                            pay_date=pay_date,
+                           choice=loan_choice,
                            pay_note=pay_note,
                            num_pay_logs = len(pay_date),
                            loan_principal=adj_loan_principal,
@@ -319,6 +321,21 @@ def milestone():
 
 @app.route('/milestone/upload', methods=['GET','POST'])
 def upload():
+    if request.method == 'POST':
+        file = request.files.get('user_csv')
+
+        df = pandas.read_csv(file, encoding='unicode_escape')
+
+        session['amount'] = [x for x in df['Amount'].tolist() if pandas.notna(x)]
+        session['pay_date'] = [datetime.datetime.strptime(str(x), '%m/%d/%Y %H:%M').strftime('%Y-%m-%d') for x in df['Date'].tolist() if pandas.notna(x)]
+        session['pay_note'] = [x for x in df['Notes'].tolist() if pandas.notna(x)]
+        session['loan_choice'] = [x for x in df['Loan Choice'].tolist() if pandas.notna(x)]
+        session['loan_principal'] = [x for x in df['Principal'].tolist() if pandas.notna(x)]
+        session['loan_int_rate'] = [x for x in df['Interest Rate'].tolist() if pandas.notna(x)]
+        session['loan_date'] = [datetime.datetime.strptime(str(x), '%m/%d/%Y %H:%M').strftime('%Y-%m-%d') for x in df['Date of Disbursement'].tolist() if pandas.notna(x)]
+        session['loan_fees'] = [x for x in df['Outstanding Interest/Fees'].tolist() if pandas.notna(x)]
+        session['loan_note'] = [x for x in df['Loan Notes'].tolist() if pandas.notna(x)]
+
     return redirect('/milestone')
 
 @app.route('/login', methods=['GET','POST'])

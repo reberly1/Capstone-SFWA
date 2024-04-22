@@ -7,6 +7,7 @@
         <tr>
             <th>Amount</th>
             <th>Date</th>
+            <th>Loan Choice</th>
             <th>Notes</th>
         </tr>
         <!--Visualizes logged payment data under the corresponding header-->
@@ -14,6 +15,7 @@
         <tr>
             <td>{{ amount[i] }}</td>
             <td>{{ pay_date[i] }}</td>
+            <td>{{ choice[i] }}</td>
             <td>{{ pay_note[i] }}</td>
         </tr>
         {% endfor %}
@@ -50,7 +52,7 @@
 <a href="data:text/csv;charset=utf-8,{{ csv | urlencode }}" download="log.csv">Download CSV of Logs</a>
 
 <!--Log Upload Button-->
-<form action="/milestone/upload" method="POST">
+<form action="/milestone/upload" method="POST" enctype="multipart/form-data">
 
     <input type="file" id="user_csv" name="user_csv">
     <input type="submit" value="Upload CSV">
