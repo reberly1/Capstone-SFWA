@@ -1,5 +1,6 @@
 import math
 import datetime
+import pandas as pd
 
 def find_cost(prin_list, rates_list, month_pay, duration):
     """
@@ -254,3 +255,16 @@ def apply_adjustments(loan_prins, loan_fees, int_accrued, amounts, loan_choice):
 
     return (loan_prins, loan_fees)
 
+def check_df(df):
+    """
+    Description
+    Validates the dataframe confirming the data is of the proper format
+    Parameters
+    df:          TYPE: DataFrame
+                  DESC: The user uploaded file that is being tested for validity
+        
+    Returns       True if the DataFrame is compatible for uploading
+                  str if the DataFrame is incompatible for a given reason
+    """
+    
+    return True

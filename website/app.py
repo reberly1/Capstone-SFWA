@@ -239,6 +239,8 @@ def milestone():
         session['loan_bal'] = []
     if 'loan_note' not in session:
         session['loan_note'] = []
+    if 'validation' not in session:
+        session['validation'] = ""
 
     #Extract Variables from session and convert data types
     amount = [float(amount) for amount in session['amount']]
@@ -316,7 +318,8 @@ def milestone():
                            num_loan_logs = len(loan_date),
                            dates=dates,
                            balances=balances,
-                           csv=csv
+                           csv=csv,
+                           validation=session['validation']
                            )
 
 @app.route('/milestone/upload', methods=['GET','POST'])
@@ -324,18 +327,121 @@ def upload():
     if request.method == 'POST':
         file = request.files.get('user_csv')
 
-        df = pandas.read_csv(file, encoding='unicode_escape')
+        #Checks file extension
+        if (file.filename.endswith('.csv') == False):
+            validation = "Incompatible File, Please submit files with extension .csv"
+            session['validation'] = validation
+            return redirect('/milestone')
 
-        session['amount'] = [x for x in df['Amount'].tolist() if pandas.notna(x)]
-        session['pay_date'] = [datetime.datetime.strptime(str(x), '%m/%d/%Y %H:%M').strftime('%Y-%m-%d') for x in df['Date'].tolist() if pandas.notna(x)]
-        session['pay_note'] = [x for x in df['Notes'].tolist() if pandas.notna(x)]
-        session['loan_choice'] = [x for x in df['Loan Choice'].tolist() if pandas.notna(x)]
-        session['loan_principal'] = [x for x in df['Principal'].tolist() if pandas.notna(x)]
-        session['loan_int_rate'] = [x for x in df['Interest Rate'].tolist() if pandas.notna(x)]
-        session['loan_date'] = [datetime.datetime.strptime(str(x), '%m/%d/%Y %H:%M').strftime('%Y-%m-%d') for x in df['Date of Disbursement'].tolist() if pandas.notna(x)]
-        session['loan_fees'] = [x for x in df['Outstanding Interest/Fees'].tolist() if pandas.notna(x)]
-        session['loan_note'] = [x for x in df['Loan Notes'].tolist() if pandas.notna(x)]
+        df = pd.read_csv(file, encoding='unicode_escape')
+        
+        #Checks csv headers formatting
+        headers = ["Amount", "Date", "Loan Choice", "Notes", "Principal", "Interest Rate", "Date of Disbursement", "Outstanding Interest/Fees", "Loan Notes"]
+        for names in headers:
+            if names not in df.columns:
+                validation = "Incompatible File, Missing Column Header " + names
+                session['validation'] = validation
+                return redirect('/milestone')
 
+        amount = [x for x in df['Amount'].tolist() if pandas.notna(x)]
+        date = [datetime.datetime.strptime(str(x), '%m/%d/%Y %H:%M').strftime('%Y-%m-%d') for x in df['Date'].tolist() if pandas.notna(x)]
+        notes = [x if pandas.notna(x) else "" for x in df['Notes'].tolist() ]
+        choice = [x for x in df['Loan Choice'].tolist() if pandas.notna(x)]
+        principal = [x for x in df['Principal'].tolist() if pandas.notna(x)]
+        int_rate = [x for x in df['Interest Rate'].tolist() if pandas.notna(x)]
+        dod = [datetime.datetime.strptime(str(x), '%m/%d/%Y %H:%M').strftime('%Y-%m-%d') for x in df['Date of Disbursement'].tolist() if pandas.notna(x)]
+        fees = [x for x in df['Outstanding Interest/Fees'].tolist() if pandas.notna(x)]
+        loan_note = [x if pandas.notna(x) else "" for x in df['Loan Notes'].tolist()]
+
+         #If the lengths of one of the columns is different reject the file
+        if (len(amount) != len(date) or len(date) != len(choice) or len(notes) > len(amount)):
+            validation = "Incompatible File, Misaligned Payment Data"
+            session['validation'] = validation
+            return redirect('/milestone')
+        
+        #If the lengths of one of the columns is different reject the file
+        if (len(principal) != len(int_rate) or len(int_rate) != len(dod) or len(dod) != len(fees) or len(loan_note) > len(amount)):
+            validation = "Incompatible File, Misaligned Loan Data"
+            session['validation'] = validation
+            return redirect('/milestone')
+        
+        #Check the validity of the amount column
+        for i in amount:
+            #If the amount is not a number
+            if not ((isinstance(i, int)) or (isinstance(i, float))):
+                validation = "Incompatible File, Invalid amount data " + i
+                session['validation'] = validation
+                return redirect('/milestone')
+            #If the amount is less than 1
+            if (i < 1):
+                validation = "Incompatible File, Invalid amount data " + i
+                session['validation'] = validation
+                return redirect('/milestone')
+
+        #Check the validity of the choice column
+        for i in choice:
+            #If the choice is not an integer    
+            if not ((isinstance(i, int)) or (isinstance(i, float))):
+                validation = "Incompatible File, Invalid choice data " + str(i)
+                session['validation'] = validation
+                return redirect('/milestone')
+            
+            #If choice does not exist
+            if i > len(principal) - 1  or i < 0 or i % 1 != 0:
+                validation = "Incompatible File, Invalid choice data " + str(i)
+                session['validation'] = validation
+                return redirect('/milestone')
+        
+        #Check the validity of the principal column
+        for i in principal:
+            #If the amount is not a number
+            if not ((isinstance(i, int)) or (isinstance(i, float))):
+                validation = "Incompatible File, Invalid principal data " + i
+                session['validation'] = validation
+                return redirect('/milestone')
+            #If the amount is less than 1
+            if (i < 1):
+                validation = "Incompatible File, Invalid principal data " + i
+                session['validation'] = validation
+                return redirect('/milestone')
+
+        #Check the validity of the Interest Rate column
+        for i in int_rate:
+            #If the amount is not a number
+            if not ((isinstance(i, int)) or (isinstance(i, float))):
+                validation = "Incompatible File, Invalid interest rate data " + i
+                session['validation'] = validation
+                return redirect('/milestone')
+            #If the amount is less than 1
+            if (i < 1):
+                validation = "Incompatible File, Invalid interest rate data " + i
+                session['validation'] = validation
+                return redirect('/milestone')
+            
+        #Check the validity of the fees column
+        for i in fees:
+            #If the amount is not a number
+            if not ((isinstance(i, int)) or (isinstance(i, float))):
+                validation = "Incompatible File, Invalid fees data " + i
+                session['validation'] = validation
+                return redirect('/milestone')
+            #If the amount is less than 0
+            if (i < 0):
+                validation = "Incompatible File, Invalid fees data " + i
+                session['validation'] = validation
+                return redirect('/milestone')
+
+        session['amount'] = amount
+        session['pay_date'] = date
+        session['pay_note'] = notes
+        session['loan_choice'] = choice
+        session['loan_principal'] = principal
+        session['loan_int_rate'] = int_rate
+        session['loan_date'] = dod
+        session['loan_fees'] = fees
+        session['loan_note'] = loan_note
+        session['validation'] = ""
+        
     return redirect('/milestone')
 
 @app.route('/login', methods=['GET','POST'])

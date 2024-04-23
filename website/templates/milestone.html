@@ -59,6 +59,10 @@
 
 </form>
 
+{% if validation %}
+    {{validation}}
+{% endif %}
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     //Converts flask data to usable format
