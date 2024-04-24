@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, session, redirect
 from functions import *
+from database import *
 import datetime
 import pandas
 import numpy as np
@@ -446,10 +447,31 @@ def upload():
 
 @app.route('/login', methods=['GET','POST'])
 def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        profile = login_user(username, password)
+        if (profile):
+            session['profile'] = profile
+            return render_template('login.html', title='Login', message='Welcome ' + username)
+        else:
+            return render_template('login.html', title='Login', message='Authentication Failed, Try Again')
     return render_template('login.html', title='Login')
 
 @app.route('/login/register', methods=['GET','POST'])
 def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        gpa = request.form['gpa']
+        status = request.form['status']
+        hours = request.form['hours']
+
+        if (register_user(username, password, gpa, status, hours)):
+            return redirect('/login')
+        else:
+            return render_template('register.html', title='Register', message="Username Already Taken, Please pick another username")
+        
     return render_template('register.html', title='Register')
 
 if __name__ == '__main__':

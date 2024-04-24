@@ -5,14 +5,32 @@
 <form method="POST">
 
     <label for="username">Username</label>
-    <input type="text" class="form-control" id="username" name="username" placeholder="Enter Your Username" required>
+    <input type="text" class="form-control" id="username" name="username" placeholder="Set Your Username" minlength="1" maxlength="15" required>
 
     <label for="password">Password</label>
-    <input type="text" class="form-control" id="password" name="password" placeholder="Enter Your Password" required>
+    <input type="text" class="form-control" id="password" name="password" placeholder="Set Your Password" minlength="8" maxlength="20" required>
+
+    <label for="gpa">GPA</label>
+    <input type="number" class="form-control" id="gpa" name="gpa" placeholder="Enter Your GPA on a 4 Point Scale" min="0" max="4" required>
+
+    <label for="status">Enrollment Status</label>
+    <select class="form-control" id="status" name="status" required>
+        <option value="PT-Undergrad">Part Time Undergraduate, less than 12 credits</option>
+        <option value="PT-Graduate">Part Time Graduate, less than 9 credits</option>
+        <option value="FT-Undergrad">Full Time Undergraduate, 12 credits or more</option>
+        <option value="FT-Graduate">Full Time Graduate, 9 credits or more</option>
+    </select>
+
+    <label for="hours">Credit Hours</label>
+    <input type="number" class="form-control" id="hours" name="hours" placeholder="Enter Your Current Total Credit Hours Towards Your Degree" min="0" max="180" required>
 
     <button type="submit">Register</button>
 
 </form>
+
+{% if message %}
+    {{message}}
+{% endif %}
 
 <!--Back button to go back to login page-->
 <form action="/login"><button>Back to Login</button></form>

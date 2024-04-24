@@ -15,6 +15,10 @@
 
 </form>
 
+{% if message %}
+    {{message}}
+{% endif %}
+
 <!--Navigation to create a new account-->
 <form action="/login/register"><button>Register</button></form>
 
