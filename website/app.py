@@ -254,7 +254,6 @@ def milestone():
     loan_fees = [float(fee) for fee in session['loan_fees']]
     loan_note = session['loan_note']
 
-
     (adj_loan_principal, adj_loan_fees) = (loan_principal.copy(), loan_fees.copy())
     #If there is sufficient data to plot
     if (len(loan_principal) > 0 and len(amount) > 0):
@@ -303,6 +302,8 @@ def milestone():
     df.columns = headers
     csv = df.to_csv(index=False)
 
+    session['file'] = csv_data
+    
     return render_template('milestone.html',
                            title='Milestones',
                            amount=amount,
@@ -445,6 +446,66 @@ def upload():
         
     return redirect('/milestone')
 
+@app.route('/milestone/save', methods=['GET','POST'])
+def save():
+    if 'profile' not in session:
+        validation = "Save Failed, User is not currently logged in" 
+        session['validation'] = validation
+        return redirect('/milestone')
+   
+    username = session['profile']['username']
+    csv_data = session['file']
+
+    if save_log(username, csv_data):
+        validation = "Save Succeeded" 
+        session['validation'] = validation
+        session['profile']['logs'] = csv_data
+        return redirect('/milestone')
+    
+@app.route('/milestone/load', methods=['GET','POST'])
+def load():
+    if 'profile' not in session:
+        validation = "Load Failed, User is not currently logged in" 
+        session['validation'] = validation
+        return redirect('/milestone')
+    
+    csv_data = session['profile']['logs']
+
+    if csv_data == "Empty":
+        validation = "Load Failed, User does not currently have a save file" 
+        session['validation'] = validation
+        return redirect('/milestone')
+    
+    #Produces the log csv that is downloaded at the user's request
+    headers = ["Amount", "Date", "Loan Choice", "Notes", "Principal", "Interest Rate", "Date of Disbursement", "Outstanding Interest/Fees", "Loan Notes"]
+    df = pandas.DataFrame(csv_data).T
+    df.columns = headers
+    
+    amount = [x for x in df['Amount'].tolist() if pandas.notna(x)]
+    date = [datetime.datetime.fromisoformat(str(x)).strftime('%Y-%m-%d') for x in df['Date'].tolist() if pandas.notna(x)]
+    notes = [x if pandas.notna(x) else "" for x in df['Notes'].tolist() ]
+    choice = [x for x in df['Loan Choice'].tolist() if pandas.notna(x)]
+    principal = [x for x in df['Principal'].tolist() if pandas.notna(x)]
+    int_rate = [x for x in df['Interest Rate'].tolist() if pandas.notna(x)]
+    dod = [datetime.datetime.fromisoformat(str(x)).strftime('%Y-%m-%d') for x in df['Date of Disbursement'].tolist() if pandas.notna(x)]
+    fees = [x for x in df['Outstanding Interest/Fees'].tolist() if pandas.notna(x)]
+    loan_note = [x if pandas.notna(x) else "" for x in df['Loan Notes'].tolist()]
+
+    session['amount'] = amount
+    session['pay_date'] = date
+    session['pay_note'] = notes
+    session['loan_choice'] = choice
+    session['loan_principal'] = principal
+    session['loan_int_rate'] = int_rate
+    session['loan_date'] = dod
+    session['loan_fees'] = fees
+    session['loan_note'] = loan_note
+    session['validation'] = ""
+
+    validation = "Load Succeeded" 
+    session['validation'] = validation
+    return redirect('/milestone')
+
 @app.route('/login', methods=['GET','POST'])
 def login():
     if request.method == 'POST':
@@ -469,6 +530,10 @@ def reg_admin():
         password = request.form['password']
         admin_key = request.form['key']
 
+        if (register_admin(username, password, admin_key)):
+            return redirect('/login')
+        else:
+            return render_template('reg_admin.html',title='Register Menu', message="Credentials Not Accepted, Please revise")
         
     return render_template('reg_admin.html',title='Register Menu')
 

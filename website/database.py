@@ -106,3 +106,32 @@ def login_user(username, password):
     else:
         profile['_id'] = str(profile['_id'])
         return profile
+
+def save_log(username, csv):
+    """
+    Description
+    Saves milestone log as csv in database
+
+    Parameters
+    username:     TYPE: str
+                  DESC: user's account username
+
+    csv:          TYPE: csv
+                  DESC: csv file of milestone logs
+
+    Returns:      True if save was successful
+                  False on failure
+    """
+    client = MongoClient(host=["mongodb://localhost:27017/"])
+    db = client['FWA']
+    users = db['users']
+
+    #Checks if user is logged in
+    profile = users.find_one({'username' : username})
+
+    if profile == None:
+        return False
+
+    users.update_one({'username' : username},{'$set': {'logs':csv}})
+
+    return True
