@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<form method="POST">
+    <label for="username">Username</label>
+    <input type="text" class="form-control" id="username" name="username" placeholder="Set Your Username" minlength="1" maxlength="15" required>
+
+    <label for="password">Password</label>
+    <input type="text" class="form-control" id="password" name="password" placeholder="Set Your Password" minlength="8" maxlength="20" required>
+
+    <label for="key">Admin Key</label>
+    <input type="text" class="form-control" id="key" name="key" placeholder="Enter Your One-Time Sponsor Key" minlength="1" required>
+</form>
+
+<button type="submit">Register</button>
+
+{% endblock content %}

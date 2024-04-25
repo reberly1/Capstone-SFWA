@@ -458,7 +458,21 @@ def login():
             return render_template('login.html', title='Login', message='Authentication Failed, Try Again')
     return render_template('login.html', title='Login')
 
-@app.route('/login/register', methods=['GET','POST'])
+@app.route('/login/reg_menu', methods=['GET','POST'])
+def reg_menu():
+    return render_template('register_menu.html',title='Register Menu')
+
+@app.route('/login/reg_menu/reg_admin', methods=['GET','POST'])
+def reg_admin():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        admin_key = request.form['key']
+
+        
+    return render_template('reg_admin.html',title='Register Menu')
+
+@app.route('/login/reg_menu/register', methods=['GET','POST'])
 def register():
     if request.method == 'POST':
         username = request.form['username']
@@ -473,6 +487,10 @@ def register():
             return render_template('register.html', title='Register', message="Username Already Taken, Please pick another username")
         
     return render_template('register.html', title='Register')
+
+@app.route('/scholarships')
+def scholarships():
+    return render_template('scholarships.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

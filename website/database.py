@@ -4,6 +4,7 @@ def register_user(username, password, gpa, status, hours):
     """
     Description
     Creates an account in the database for the user from their inputs
+
     Parameters
     username:     TYPE: str
                   DESC: user's account username
@@ -36,10 +37,52 @@ def register_user(username, password, gpa, status, hours):
 
     return True
 
+def register_admin(username, password, admin_key):
+    """
+    Description
+    Creates a new admin account in the database
+
+    Parameters
+    username:     TYPE: str
+                  DESC: user's account username
+
+    password:     TYPE: str
+                  DESC: user's account password
+    
+    admin_key:    TYPE: str
+                  DESC: A one time use admin key to permit 
+                  the creation of a new admin account
+
+    Returns       True is successful
+                  False otherwise
+    """
+    client = MongoClient(host=["mongodb://localhost:27017/"])
+    db = client['FWA']
+    users = db['users']
+    keys = db['keys']
+    
+    #Ensures that all usernames are unique
+    if users.count_documents({'username' : username}):
+        return False
+    
+    #Ensures that the user was given an admin key to register
+    if keys.count_documents({'key': admin_key}) == 0:
+        return False
+    
+    #Add the admin account to the database
+    users.insert_one({'username':username,'password':password, 'scholarships':"Empty", 'admin':True})
+    
+    #Delete the key they used to register
+    keys.delete_one({'key': admin_key})
+
+    return True
+
+
 def login_user(username, password):
     """
     Description
     Logs user into the requested account
+
     Parameters
     username:     TYPE: str
                   DESC: user's account username
