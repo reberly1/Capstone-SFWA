@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 {% block content %}
-<h1>Scholarships Page</h1>
+<h1>Profile Page</h1>
 
 {% if not profile %}
-    Welcome Guest
+    User is not logged in please login for profile
 {% elif admin %}
     Welcome Sponsor {{ profile.username }}
 {% else %}

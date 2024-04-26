@@ -555,7 +555,31 @@ def register():
 
 @app.route('/scholarships')
 def scholarships():
-    return render_template('scholarships.html')
+    #if the user is not logged in
+    if 'profile' not in session:
+        return render_template('scholarships.html')
+
+    #if the user is logged in as an admin
+    elif 'admin' in session['profile']:
+        return render_template('scholarships.html', profile=session['profile'], admin=True)
+    
+    #if the user is logged in as a normal user
+    else: 
+        return render_template('scholarships.html', profile=session['profile'])
+
+@app.route('/profile')
+def profile():
+    #if the user is not logged in
+    if 'profile' not in session:
+        return render_template('profile.html')
+
+    #if the user is logged in as an admin
+    elif 'admin' in session['profile']:
+        return render_template('profile.html', profile=session['profile'], admin=True)
+    
+    #if the user is logged in as a normal user
+    else: 
+        return render_template('profile.html', profile=session['profile'])
 
 if __name__ == '__main__':
     app.run(debug=True)
