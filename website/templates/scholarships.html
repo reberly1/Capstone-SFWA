@@ -2,10 +2,45 @@
 {% block content %}
 <h1>Scholarships Page</h1>
 
+<!--User not logged into an account-->
 {% if not profile %}
     Welcome Guest
+
+<!--User logged into an sponsor account-->
 {% elif admin %}
     Welcome Sponsor {{ profile.username }}
+
+    <form method="POST">
+        <label for="name">Scholarship Name</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="What is the name of your Scholarship?" minlength="1" required>
+    
+        <label for="gpa">Minimum Qualifying GPA</label>
+        <input type="number" class="form-control" id="gpa" name="gpa" placeholder="What is the Minimum Qualifying GPA?" min="0" max="4" required>
+    
+        <label for="status">Required Enrollment Status</label>
+        <select class="form-control" id="status" name="status" required>
+            <option value="NP">No Preference</option>
+            <option value="PT-Undergrad">Part Time Undergraduate, less than 12 credits</option>
+            <option value="PT-Graduate">Part Time Graduate, less than 9 credits</option>
+            <option value="FT-Undergrad">Full Time Undergraduate, 12 credits or more</option>
+            <option value="FT-Graduate">Full Time Graduate, 9 credits or more</option>
+        </select>
+
+        <label for="hours">Minimum Credit Hours</label>
+        <input type="number" class="form-control" id="hours" name="hours" placeholder="Enter the Minimum Qualifying Credit Hours" min="0" max="180" required>
+
+        <label for="desc">Description/Other Requirements</label>
+        <input type="text" class="form-control" id="desc" name="desc" placeholder="Enter the description and/or other requirements if applicable" minlength="1">
+    
+        <button type="submit">Post</button>
+    </form>
+
+    
+
+    {% if message %}
+        {{message}}
+    {% endif %}
+
 {% else %}
     Welcome User {{ profile.username }}
 {% endif %}

@@ -6,6 +6,11 @@
     User is not logged in please login for profile
 {% elif admin %}
     Welcome Sponsor {{ profile.username }}
+
+    {% if profile.scholarships != "empty" %}
+        <h1>You don't currently have any scholarships posted, post one on the Scholarships page!</h1>
+    {% endif %}
+
 {% else %}
     Welcome User {{ profile.username }}
 {% endif %}

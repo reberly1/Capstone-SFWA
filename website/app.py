@@ -553,7 +553,7 @@ def register():
         
     return render_template('register.html', title='Register')
 
-@app.route('/scholarships')
+@app.route('/scholarships', methods = ['GET', 'POST'])
 def scholarships():
     #if the user is not logged in
     if 'profile' not in session:
@@ -561,6 +561,13 @@ def scholarships():
 
     #if the user is logged in as an admin
     elif 'admin' in session['profile']:
+        if request.method == 'POST':
+            name = request.form['name']
+            gpa = request.form['gpa']
+            status = request.form['status']
+            hours = request.form['hours']
+            description = request.form['desc']
+            return render_template('scholarships.html', profile=session['profile'], admin=True, message="Scholarship Posted!")
         return render_template('scholarships.html', profile=session['profile'], admin=True)
     
     #if the user is logged in as a normal user
