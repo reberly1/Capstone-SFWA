@@ -33,7 +33,7 @@ def register_user(username, password, gpa, status, hours):
     if users.count_documents({'username' : username}):
         return False
     
-    users.insert_one({'username':username,'password':password,'GPA':gpa,'Enrollment Status':status,"Credit Hours":hours,"logs":"Empty"})
+    users.insert_one({'username':username,'password':password,'GPA':gpa,'Enrollment Status':status,"Credit Hours":hours,"logs":[]})
 
     return True
 
@@ -135,3 +135,56 @@ def save_log(username, csv):
     users.update_one({'username' : username},{'$set': {'logs':csv}})
 
     return True
+
+def post_scholarship(sponsor, name, gpa, status, hours, desc, min, max):
+    """
+    Description  
+    Uploads scholarship to the database
+
+    Parameters
+    sponsor:      TYPE: str
+                  DESC: username of the sponsor
+
+    name:         TYPE: str
+                  DESC: name of the scholarship
+
+    gpa:          TYPE: Float
+                  DESC: grade point average on 4 point scale
+
+    status:       TYPE: str
+                  DESC: Required enrollment status for scholarship
+
+    hours:        TYPE: Float
+                  DESC: Required credit hours for scholarships
+
+    desc:         TYPE: str
+                  DESC: The scholarship's description and other requirements
+
+    min:          TYPE: Float
+                  DESC: Minimum scholarship money awarded in USD
+
+    max:          TYPE: Float
+                  DESC: Maximum scholarship money award in USD 
+
+    Returns:      The dictionary document that was inserted if posting was successful
+                  False otherwise
+    """
+    client = MongoClient(host=["mongodb://localhost:27017/"])
+    db = client['FWA']
+    scholarships = db['scholarships']
+    users = db['users']
+
+    #If the scholarship already exists
+    if scholarships.count_documents({'name' : name}):
+        return False
+    
+    #If the minimum award exceeds the maximum
+    if min > max:
+        return False
+    
+    document = {'sponsor':sponsor, 'name':name, 'gpa':gpa, 'status':status, 'hours':hours, 'desc':desc, 'min':min, 'max':max}
+    scholarships.insert_one(document)
+
+    users.update_one({'username':sponsor},{'$push': {'scholarships': document}})
+
+    return document

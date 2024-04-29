@@ -7,8 +7,10 @@
 {% elif admin %}
     Welcome Sponsor {{ profile.username }}
 
-    {% if profile.scholarships != "empty" %}
+    {% if profile.scholarships == [] %}
         <h1>You don't currently have any scholarships posted, post one on the Scholarships page!</h1>
+    {% else %}
+        {{profile.scholarships}}
     {% endif %}
 
 {% else %}

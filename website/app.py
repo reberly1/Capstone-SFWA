@@ -562,12 +562,21 @@ def scholarships():
     #if the user is logged in as an admin
     elif 'admin' in session['profile']:
         if request.method == 'POST':
+            sponsor = session['profile']['username']
             name = request.form['name']
-            gpa = request.form['gpa']
+            gpa = float(request.form['gpa'])
             status = request.form['status']
-            hours = request.form['hours']
-            description = request.form['desc']
-            return render_template('scholarships.html', profile=session['profile'], admin=True, message="Scholarship Posted!")
+            hours = float(request.form['hours'])
+            desc = request.form['desc']
+            min = float(request.form['min'])
+            max = float(request.form['max'])
+            document = post_scholarship(sponsor, name, gpa, status, hours, desc, min, max)
+            if document:
+                session['profile']['scholarships'].append(document)
+                return render_template('scholarships.html', profile=session['profile'], admin=True, message="Scholarship Posted!")
+            else:
+                return render_template('scholarships.html', profile=session['profile'], admin=True, message="Scholarship Failed to be Posted!")
+            
         return render_template('scholarships.html', profile=session['profile'], admin=True)
     
     #if the user is logged in as a normal user
