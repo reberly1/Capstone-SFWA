@@ -188,3 +188,20 @@ def post_scholarship(sponsor, name, gpa, status, hours, desc, min, max):
     users.update_one({'username':sponsor},{'$push': {'scholarships': document}})
 
     return document
+
+def fetch_scholarships(profile):
+    client = MongoClient(host=["mongodb://localhost:27017/"])
+    db = client['FWA']
+    scholarships = db['scholarships']
+
+    #If the user isn't logged in give them all scholarships
+    if profile == None:
+        opportunities = list(scholarships.find())
+        return opportunities
+    
+    else:
+        gpa = profile['GPA']
+        status = profile['Enrollment Status']
+        hours = profile['Credit Hours']
+        opportunities = list(scholarships.find({'gpa': {'$lte': gpa}, '$or':[{'status': {'$eq':status}}, {'status': {'$eq':'NP'}}], 'hours':{'$lte':hours}}))
+        return opportunities

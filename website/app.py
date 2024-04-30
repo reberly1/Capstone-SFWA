@@ -542,9 +542,9 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        gpa = request.form['gpa']
+        gpa = float(request.form['gpa'])
         status = request.form['status']
-        hours = request.form['hours']
+        hours = float(request.form['hours'])
 
         if (register_user(username, password, gpa, status, hours)):
             return redirect('/login')
@@ -557,7 +557,8 @@ def register():
 def scholarships():
     #if the user is not logged in
     if 'profile' not in session:
-        return render_template('scholarships.html')
+        scholarships = fetch_scholarships(None)
+        return render_template('scholarships.html', scholarships=scholarships, length=len(scholarships))
 
     #if the user is logged in as an admin
     elif 'admin' in session['profile']:
@@ -580,8 +581,10 @@ def scholarships():
         return render_template('scholarships.html', profile=session['profile'], admin=True)
     
     #if the user is logged in as a normal user
-    else: 
-        return render_template('scholarships.html', profile=session['profile'])
+    else:
+        profile = session['profile']
+        scholarships = fetch_scholarships(profile)
+        return render_template('scholarships.html', profile=session['profile'], scholarships=scholarships, length=len(scholarships))
 
 @app.route('/profile')
 def profile():
@@ -596,6 +599,12 @@ def profile():
     #if the user is logged in as a normal user
     else: 
         return render_template('profile.html', profile=session['profile'])
+    
+@app.route('/login/logout')
+def logout():
+    if 'profile' in session:
+        session.pop('profile')
+    return redirect('/login')
 
 if __name__ == '__main__':
     app.run(debug=True)

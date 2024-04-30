@@ -15,11 +15,13 @@
 
 </form>
 
-{% if message %}
-    {{message}}
-{% endif %}
+<form action="/login/logout"><button>Logout</button></form>
 
 <!--Navigation to create a new account-->
 <form action="/login/reg_menu"><button>Register</button></form>
+
+{% if message %}
+    {{message}}
+{% endif %}
 
 {% endblock content %}

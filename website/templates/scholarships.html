@@ -5,6 +5,24 @@
 <!--User not logged into an account-->
 {% if not profile %}
     Welcome Guest
+    <br>
+    {% for i in range(length) %}
+        <br>
+        Scholarship {{i+1}}: {{scholarships[i]['name']}} 
+        <br>
+        Sponsor:{{scholarships[i]['sponsor']}} 
+        <br>
+        Minimum GPA:{{scholarships[i]['gpa']}} 
+        <br>
+        Required Enrollment Status:{{scholarships[i]['status']}} 
+        <br>
+        Required Credit Hours:{{scholarships[i]['hours']}}
+        <br>
+        Description/Other Requirements: {{scholarships[i]['desc']}}
+        <br>
+        Award Range:${{scholarships[i]['min']}}-${{scholarships[i]['max']}}
+        <br>
+    {% endfor %}
 
 <!--User logged into an sponsor account-->
 {% elif admin %}
@@ -54,6 +72,24 @@
 
 {% else %}
     Welcome User {{ profile.username }}
+    <br>
+    {% for i in range(length) %}
+        <br>
+        Scholarship {{i+1}}: {{scholarships[i]['name']}} 
+        <br>
+        Sponsor:{{scholarships[i]['sponsor']}} 
+        <br>
+        Minimum GPA:{{scholarships[i]['gpa']}} 
+        <br>
+        Required Enrollment Status:{{scholarships[i]['status']}} 
+        <br>
+        Required Credit Hours:{{scholarships[i]['hours']}}
+        <br>
+        Description/Other Requirements: {{scholarships[i]['desc']}}
+        <br>
+        Award Range:${{scholarships[i]['min']}}-${{scholarships[i]['max']}}
+        <br>
+    {% endfor %}
 {% endif %}
 
 {% endblock content %}
