@@ -104,7 +104,12 @@ def login_user(username, password):
         return False
     
     else:
+        #Convert object id into string for session storing
         profile['_id'] = str(profile['_id'])
+        if 'scholarships' in profile:
+            for i in range(len(profile['scholarships'])):
+                profile['scholarships'][i]['_id'] = str(profile['scholarships'][i]['_id'])
+        
         return profile
 
 def save_log(username, csv):
@@ -205,3 +210,13 @@ def fetch_scholarships(profile):
         hours = profile['Credit Hours']
         opportunities = list(scholarships.find({'gpa': {'$lte': gpa}, '$or':[{'status': {'$eq':status}}, {'status': {'$eq':'NP'}}], 'hours':{'$lte':hours}}))
         return opportunities
+
+def edit_profile(gpa, status, hours, username):
+    client = MongoClient(host=["mongodb://localhost:27017/"])
+    db = client['FWA']
+    users = db['users']
+    users.update_one({'username':username},{'$set': {'GPA': gpa, 'Enrollment Status': status, 'Credit Hours': hours}})
+    return
+
+if __name__ == '__main__':
+    login_user('Admin', 'password123')

@@ -345,6 +345,22 @@ def upload():
                 session['validation'] = validation
                 return redirect('/milestone')
 
+        #Check the validity of the Date column
+        try:
+            [datetime.datetime.strptime(str(x), '%m/%d/%Y %H:%M').strftime('%Y-%m-%d') for x in df['Date'].tolist() if pandas.notna(x)]
+        except ValueError:
+            validation = "Incompatible File, Invalid Date Column Data"
+            session['validation'] = validation
+            return redirect('/milestone')
+        
+        #Check the validity of the Date of Disbursement column
+        try:
+            [datetime.datetime.strptime(str(x), '%m/%d/%Y %H:%M').strftime('%Y-%m-%d') for x in df['Date of Disbursement'].tolist() if pandas.notna(x)]
+        except ValueError:
+            validation = "Incompatible File, Invalid Date of Disbursement Column Data"
+            session['validation'] = validation
+            return redirect('/milestone')
+
         amount = [x for x in df['Amount'].tolist() if pandas.notna(x)]
         date = [datetime.datetime.strptime(str(x), '%m/%d/%Y %H:%M').strftime('%Y-%m-%d') for x in df['Date'].tolist() if pandas.notna(x)]
         notes = [x if pandas.notna(x) else "" for x in df['Notes'].tolist() ]
@@ -512,6 +528,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
         profile = login_user(username, password)
+        
         if (profile):
             session['profile'] = profile
             return render_template('login.html', title='Login', message='Welcome ' + username)
@@ -586,7 +603,7 @@ def scholarships():
         scholarships = fetch_scholarships(profile)
         return render_template('scholarships.html', profile=session['profile'], scholarships=scholarships, length=len(scholarships))
 
-@app.route('/profile')
+@app.route('/profile', methods=["GET", "POST"])
 def profile():
     #if the user is not logged in
     if 'profile' not in session:
@@ -594,10 +611,21 @@ def profile():
 
     #if the user is logged in as an admin
     elif 'admin' in session['profile']:
-        return render_template('profile.html', profile=session['profile'], admin=True)
+        scholarships=session['profile']['scholarships']
+        return render_template('profile.html', profile=session['profile'],scholarships=scholarships, length=len(scholarships), admin=True)
     
     #if the user is logged in as a normal user
     else: 
+        if request.method == "POST":
+            gpa = float(request.form['gpa'])
+            status = request.form['status']
+            hours = float(request.form['hours'])
+            username = session['profile']['username']
+            password = session['profile']['password']
+            edit_profile(gpa, status, hours, username)
+            session.pop('profile')
+            session['profile'] = login_user(username, password)
+            print(session['profile'])
         return render_template('profile.html', profile=session['profile'])
     
 @app.route('/login/logout')

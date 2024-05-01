@@ -10,11 +10,63 @@
     {% if profile.scholarships == [] %}
         <h1>You don't currently have any scholarships posted, post one on the Scholarships page!</h1>
     {% else %}
-        {{profile.scholarships}}
+            <br>    
+    Here are all the scholarships you've posted
+            <br>
+        {% for i in range(length) %}
+            <br>
+            Scholarship {{i+1}}: {{scholarships[i]['name']}} 
+            <br>
+            Sponsor:{{scholarships[i]['sponsor']}} 
+            <br>
+            Minimum GPA:{{scholarships[i]['gpa']}} 
+            <br>
+            Required Enrollment Status:{{scholarships[i]['status']}} 
+            <br>
+            Required Credit Hours:{{scholarships[i]['hours']}}
+            <br>
+            Description/Other Requirements: {{scholarships[i]['desc']}}
+            <br>
+            Award Range:${{scholarships[i]['min']}}-${{scholarships[i]['max']}}
+            <br>
+        {% endfor %}
     {% endif %}
 
 {% else %}
-    Welcome User {{ profile.username }}
+    Welcome {{profile.username}} here is your current information, update it as needed
+
+    <form method="POST">
+    
+        <label for="gpa">GPA</label>
+        <input type="number" class="form-control" id="gpa" name="gpa" value='{{profile["GPA"]}}' step="0.01" min="0" max="4" required>
+    
+        <label for="status">Enrollment Status</label>
+        <select class="form-control" id="status" name="status" required>  
+            <option value="PT-Graduate">Part Time Graduate, less than 9 credits</option>
+            <option value="PT-Undergrad">Part Time Undergraduate, less than 12 credits</option>
+            <option value="FT-Undergrad">Full Time Undergraduate, 12 credits or more</option>
+            <option value="FT-Graduate">Full Time Graduate, 9 credits or more</option>
+        </select>
+    
+        <label for="hours">Credit Hours</label>
+        <input type="number" class="form-control" id="hours" name="hours" value='{{profile["Credit Hours"]}}' min="0" max="180" required>
+    
+        <button type="submit">Edit Profile</button>
+    
+    </form>
+
+    <script>
+        //Dynamically sets the default value to the user's enrollment status
+        var enrollment = '{{profile["Enrollment Status"]}}';
+        var menu = document.getElementById('status');
+        for (var i = 0; i < menu.options.length; i++) {
+            if (menu.options[i].value == enrollment){
+                menu.options[i].selected = true;
+                break;
+            }
+        }
+
+    </script>
 {% endif %}
 
 {% endblock content %}

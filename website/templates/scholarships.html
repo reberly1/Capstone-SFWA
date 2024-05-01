@@ -71,7 +71,7 @@
     {% endif %}
 
 {% else %}
-    Welcome User {{ profile.username }}
+    Welcome User {{ profile.username }} {{profile["GPA"]}}
     <br>
     {% for i in range(length) %}
         <br>
