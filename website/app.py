@@ -347,7 +347,7 @@ def upload():
 
         #Check the validity of the Date column
         try:
-            [datetime.datetime.strptime(str(x), '%m/%d/%Y %H:%M').strftime('%Y-%m-%d') for x in df['Date'].tolist() if pandas.notna(x)]
+            test = [datetime.datetime.strptime(str(x), '%m/%d/%Y %H:%M').strftime('%Y-%m-%d') for x in df['Date'].tolist() if pandas.notna(x)]
         except ValueError:
             validation = "Incompatible File, Invalid Date Column Data"
             session['validation'] = validation
@@ -355,7 +355,7 @@ def upload():
         
         #Check the validity of the Date of Disbursement column
         try:
-            [datetime.datetime.strptime(str(x), '%m/%d/%Y %H:%M').strftime('%Y-%m-%d') for x in df['Date of Disbursement'].tolist() if pandas.notna(x)]
+            test = [datetime.datetime.strptime(str(x), '%m/%d/%Y %H:%M').strftime('%Y-%m-%d') for x in df['Date of Disbursement'].tolist() if pandas.notna(x)]
         except ValueError:
             validation = "Incompatible File, Invalid Date of Disbursement Column Data"
             session['validation'] = validation
