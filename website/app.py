@@ -4,6 +4,7 @@ from database import *
 import datetime
 import pandas
 import numpy as np
+from scraper import *
 
 app = Flask(__name__)
 app.secret_key = "Dummy Key For Debugging Purposes"
@@ -633,6 +634,8 @@ def logout():
     if 'profile' in session:
         session.pop('profile')
     return redirect('/login')
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

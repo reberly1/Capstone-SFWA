@@ -78,10 +78,10 @@ def find_monthly_payment(principal, int_rate, duration):
     Float         DESC: The monthly payment required to afford the loan
     """
     
-    r = (int_rate / 12)/100
+    r = ((int_rate / 100)/365) * 30.437
     n = duration 
-    EMI = (principal * r * (1 + r)**n) / ((1 + r)**n - 1)
-    return EMI
+    emi = (principal * r * ((1+r)**n))/((1+r)**n-1)
+    return emi
 
 def debt_upon_graduation(prin_list, rates_list, types_list, years_grad, year_cost):
     """

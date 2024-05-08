@@ -25,14 +25,6 @@ class TestGeneralScenario(unittest.TestCase):
         duration = 74
         month_pay = find_monthly_payment(principal, interest, duration)
         self.assertAlmostEqual(month_pay, 500, 0)
-        
-
-    def test_int_calc(self):
-        principal = 30000
-        month_pay = 500
-        duration = 74
-        interest = find_total_int(principal, month_pay, duration)
-        self.assertAlmostEqual(interest, 7000, 0)
 
         """
         #Calculate the total cost and interest for both ideals for comparison

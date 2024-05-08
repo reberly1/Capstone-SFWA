@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from scraper import scrape
 
 def register_user(username, password, gpa, status, hours):
     """
@@ -217,6 +218,20 @@ def edit_profile(gpa, status, hours, username):
     users = db['users']
     users.update_one({'username':username},{'$set': {'GPA': gpa, 'Enrollment Status': status, 'Credit Hours': hours}})
     return
+
+def load_scholarships():
+    scholarships = scrape()
+    client = MongoClient(host=["mongodb://localhost:27017/"])
+    db = client['FWA']
+    scholarships_col = db['scholarships']
+
+    for opportunity in scholarships:
+        if scholarships.count_documents({'name' : opportunity['name']}):
+            scholarships.remove(opportunity)
+
+    print(scholarships)
+    scholarships_col.insert_many(scholarships)
+
 
 if __name__ == '__main__':
     login_user('Admin', 'password123')
