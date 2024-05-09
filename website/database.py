@@ -142,7 +142,7 @@ def save_log(username, csv):
 
     return True
 
-def post_scholarship(sponsor, name, gpa, status, hours, desc, min, max):
+def post_scholarship(sponsor, name, gpa, status, hours, desc, award):
     """
     Description  
     Uploads scholarship to the database
@@ -166,11 +166,8 @@ def post_scholarship(sponsor, name, gpa, status, hours, desc, min, max):
     desc:         TYPE: str
                   DESC: The scholarship's description and other requirements
 
-    min:          TYPE: Float
-                  DESC: Minimum scholarship money awarded in USD
-
-    max:          TYPE: Float
-                  DESC: Maximum scholarship money award in USD 
+    award:        TYPE: str
+                  DESC: The award for the scholarship
 
     Returns:      The dictionary document that was inserted if posting was successful
                   False otherwise
@@ -184,14 +181,14 @@ def post_scholarship(sponsor, name, gpa, status, hours, desc, min, max):
     if scholarships.count_documents({'name' : name}):
         return False
     
-    #If the minimum award exceeds the maximum
-    if min > max:
-        return False
+    document = {'sponsor':sponsor, 'name':name, 'gpa':gpa, 'status':status, 'hours':hours, 'desc':desc, 'award':award}
     
-    document = {'sponsor':sponsor, 'name':name, 'gpa':gpa, 'status':status, 'hours':hours, 'desc':desc, 'min':min, 'max':max}
     scholarships.insert_one(document)
 
     users.update_one({'username':sponsor},{'$push': {'scholarships': document}})
+
+    if '_id' in document:
+        document['_id'] = str(document['_id'])
 
     return document
 

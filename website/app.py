@@ -373,13 +373,13 @@ def upload():
         loan_note = [x if pandas.notna(x) else "" for x in df['Loan Notes'].tolist()]
 
          #If the lengths of one of the columns is different reject the file
-        if (len(amount) != len(date) or len(date) != len(choice) or len(notes) > len(amount)):
+        if (len(amount) != len(date) or len(date) != len(choice)):
             validation = "Incompatible File, Misaligned Payment Data"
             session['validation'] = validation
             return redirect('/milestone')
         
         #If the lengths of one of the columns is different reject the file
-        if (len(principal) != len(int_rate) or len(int_rate) != len(dod) or len(dod) != len(fees) or len(loan_note) > len(amount)):
+        if (len(principal) != len(int_rate) or len(int_rate) != len(dod) or len(dod) != len(fees)):
             validation = "Incompatible File, Misaligned Loan Data"
             session['validation'] = validation
             return redirect('/milestone')
@@ -477,6 +477,7 @@ def save():
         validation = "Save Succeeded" 
         session['validation'] = validation
         session['profile']['logs'] = csv_data
+        session.modified = True
         return redirect('/milestone')
     
 @app.route('/milestone/load', methods=['GET','POST'])
@@ -531,6 +532,7 @@ def login():
         profile = login_user(username, password)
         
         if (profile):
+            session.clear()
             session['profile'] = profile
             return render_template('login.html', title='Login', message='Welcome ' + username)
         else:
@@ -587,11 +589,11 @@ def scholarships():
             status = request.form['status']
             hours = float(request.form['hours'])
             desc = request.form['desc']
-            min = float(request.form['min'])
-            max = float(request.form['max'])
-            document = post_scholarship(sponsor, name, gpa, status, hours, desc, min, max)
+            award = request.form['award']
+            document = post_scholarship(sponsor, name, gpa, status, hours, desc, award)
             if document:
                 session['profile']['scholarships'].append(document)
+                session.modified = True
                 return render_template('scholarships.html', profile=session['profile'], admin=True, message="Scholarship Posted!")
             else:
                 return render_template('scholarships.html', profile=session['profile'], admin=True, message="Scholarship Failed to be Posted!")
@@ -631,11 +633,8 @@ def profile():
     
 @app.route('/login/logout')
 def logout():
-    if 'profile' in session:
-        session.pop('profile')
+    session.clear() 
     return redirect('/login')
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
