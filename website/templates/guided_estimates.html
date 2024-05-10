@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-<form action="/guided/terms"><button>Back</button></form>
+<br>
 
 <form method="POST">
     
@@ -15,24 +15,27 @@
 
     </div>
 
-    <button type="submit">Submit</button>
+    <button type="submit" class="movement">Submit</button>
 
 </form>
 
+<form action="/guided/terms"><button class="movement">Back</button></form>
 
-<tbody>
-    Lastly, here is where you enter a monthly pay (PER LOAN) that you believe
-    that you can afford.<br> In addition, this is compared with how long your ideal
-    repayment period in years to show if you're expectations regarding your monthly
-    debt burden and the time to repay align. <br> <br>
-    Below is an example with values and limitations: <br>
-    Total Estimated Monthly Payment
-    <br>
-    500 (Cannot be below 1 dollar per month)
-    <br>
-    Ideal Repayment Period in Years
-    <br>
-    10 (Cannot be below 1 or exceed 50 years)
-</tbody>
-
+<br>
+<div class="desc">
+    <tbody>
+        Lastly, here is where you enter a monthly pay (PER LOAN) that you believe
+        that you can afford.<br> In addition, this is compared with how long your ideal
+        repayment period in years to show if you're expectations regarding your monthly
+        debt burden and the time to repay align. <br> <br>
+        Below is an example with values and limitations: <br>
+        Total Estimated Monthly Payment
+        <br>
+        500 (Cannot be below 1 dollar per month)
+        <br>
+        Ideal Repayment Period in Years
+        <br>
+        10 (Cannot be below 1 or exceed 50 years)
+    </tbody>
+</div>
 {% endblock content %}

@@ -308,15 +308,15 @@ def milestone():
     return render_template('milestone.html',
                            title='Milestones',
                            amount=amount,
-                           pay_date=pay_date,
+                           pay_date=[date.strftime("%m/%d/%Y") for date in pay_date],
                            choice=loan_choice,
                            pay_note=pay_note,
                            num_pay_logs = len(pay_date),
-                           loan_principal=adj_loan_principal,
+                           loan_principal=[round(prin,2) for prin in adj_loan_principal],
                            loan_int_rate=loan_int_rate,
-                           loan_date=loan_date,
-                           loan_fees=adj_loan_fees,
-                           loan_bal=[principal + fees for principal, fees in zip(adj_loan_principal, adj_loan_fees)],
+                           loan_date=[date.strftime("%m/%d/%Y") for date in loan_date],
+                           loan_fees=[round(fees,2) for fees in adj_loan_fees],
+                           loan_bal=[round(principal + fees,2) for principal, fees in zip(adj_loan_principal, adj_loan_fees)],
                            loan_note=loan_note,
                            num_loan_logs = len(loan_date),
                            dates=dates,
@@ -578,7 +578,7 @@ def scholarships():
     #if the user is not logged in
     if 'profile' not in session:
         scholarships = fetch_scholarships(None)
-        return render_template('scholarships.html', scholarships=scholarships, length=len(scholarships))
+        return render_template('scholarships.html', scholarships=scholarships, length=len(scholarships), page=1)
 
     #if the user is logged in as an admin
     elif 'admin' in session['profile']:
@@ -594,11 +594,11 @@ def scholarships():
             if document:
                 session['profile']['scholarships'].append(document)
                 session.modified = True
-                return render_template('scholarships.html', profile=session['profile'], admin=True, message="Scholarship Posted!")
+                return render_template('scholarships.html', profile=session['profile'], admin=True, message="Scholarship Posted!", page=1)
             else:
-                return render_template('scholarships.html', profile=session['profile'], admin=True, message="Scholarship Failed to be Posted!")
+                return render_template('scholarships.html', profile=session['profile'], admin=True, message="Scholarship Failed to be Posted!", page=1)
             
-        return render_template('scholarships.html', profile=session['profile'], admin=True)
+        return render_template('scholarships.html', profile=session['profile'], admin=True, page=1)
     
     #if the user is logged in as a normal user
     else:

@@ -206,7 +206,7 @@ def fetch_scholarships(profile):
         gpa = profile['GPA']
         status = profile['Enrollment Status']
         hours = profile['Credit Hours']
-        opportunities = list(scholarships.find({'gpa': {'$lte': gpa}, '$or':[{'status': {'$eq':status}}, {'status': {'$eq':'NP'}}], 'hours':{'$lte':hours}}))
+        opportunities = list(scholarships.find({'gpa': {'$lte': gpa}, '$or':[{'status': {'$eq':status}}, {'status': {'$eq':'NP'}}], 'hours':{'$lte':hours}}).sort({'gpa':-1, 'hours':-1}))
         return opportunities
 
 def edit_profile(gpa, status, hours, username):

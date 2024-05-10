@@ -5,30 +5,32 @@
 {% if not profile %}
     User is not logged in please login for profile
 {% elif admin %}
-    Welcome Sponsor {{ profile.username }}
+    <h3>Welcome {{ profile.username }}!</h3>
 
     {% if profile.scholarships == [] %}
         <h1>You don't currently have any scholarships posted, post one on the Scholarships page!</h1>
     {% else %}
             <br>    
-    Here are all the scholarships you've posted
+    <h4>Here are all the scholarships you've posted</h4>
             <br>
         {% for i in range(length) %}
-            <br>
-            Scholarship {{i+1}}: {{scholarships[i]['name']}} 
-            <br>
-            Sponsor:{{scholarships[i]['sponsor']}} 
-            <br>
-            Minimum GPA:{{scholarships[i]['gpa']}} 
-            <br>
-            Required Enrollment Status:{{scholarships[i]['status']}} 
-            <br>
-            Required Credit Hours:{{scholarships[i]['hours']}}
-            <br>
-            Description/Other Requirements: {{scholarships[i]['desc']}}
-            <br>
-            Award:${{scholarships[i]['award']}}
-            <br>
+            <div class = "ops"> 
+                <br>
+                Scholarship {{i+1}}: {{scholarships[i]['name']}} 
+                <br>
+                Sponsor:{{scholarships[i]['sponsor']}} 
+                <br>
+                Minimum GPA:{{scholarships[i]['gpa']}} 
+                <br>
+                Required Enrollment Status:{{scholarships[i]['status']}} 
+                <br>
+                Required Credit Hours:{{scholarships[i]['hours']}}
+                <br>
+                Description/Other Requirements: {{scholarships[i]['desc']}}
+                <br>
+                Award:${{scholarships[i]['award']}}
+                <br>
+            </div>
         {% endfor %}
     {% endif %}
 
@@ -51,7 +53,7 @@
         <label for="hours">Credit Hours</label>
         <input type="number" class="form-control" id="hours" name="hours" value='{{profile["Credit Hours"]}}' min="0" max="180" required>
     
-        <button type="submit">Edit Profile</button>
+        <button type="submit" class="movement">Edit Profile</button>
     
     </form>
 

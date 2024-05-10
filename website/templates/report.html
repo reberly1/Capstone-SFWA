@@ -1,16 +1,19 @@
 {% extends "layout.html" %}
 {% block content %}
+<br>
 
     <body>
 
       <div class="row">
           <div class="left-col">
+              <h1>Ideal Monthly Payment Report</h1>
               <h3>To Pay ${{monthly}} Per Month<br> Per Loan<br> It Will Take</h3>
-              <ul>
+              <tbody>
                   {% for i in range(principal_length) %}
-                    <li>A Repayment Duration of {{ repayment_duration[i] // 12 }} Years and {{ repayment_duration[i] % 12}} Months <br>for loan {{i+1}} of Principal Amount: ${{ principal[i] }}</li>
+                    A Repayment Duration of {{ repayment_duration[i] // 12 }} Years and {{ repayment_duration[i] % 12}} Months for loan {{i+1}} of Principal Amount: ${{ principal[i] }}
                   {% endfor %}  
-              </ul>
+              </tbody>
+
               <h3>For a Total Span of <br>{{total_duration//12}} Years and {{total_duration%12}} Months</h3>    
               <h2>For a Total Cost of ${{IP_total - IP_total%1}}</h2>
               <h2>A Total Interest of ${{IP_int - IP_int%1}}</h2>
@@ -19,12 +22,13 @@
           </div>
             
           <div class="right-col">
-              <h3>To Pay Off<br> All Your Loans In<br> {{duration / 12}} Years You Will Need</h3>
-              <ul>
+            <h1>Ideal Repayment Duration Report</h1>  
+            <h3>To Pay Off<br> All Your Loans In<br> {{duration / 12}} Years You Will Need</h3>
+              <tbody>
                   {% for i in range(principal_length) %}
-                    <li>To Pay a Estimated Monthly Installment of: ${{ monthly_rate[i] - monthly_rate[i] % 1}} for loan {{i+1}} of Principal Amount: ${{ principal[i] }}</li>
+                    To Pay a Estimated Monthly Installment of: ${{ monthly_rate[i] - monthly_rate[i] % 1}} for loan {{i+1}} of Principal Amount: ${{ principal[i] }}
                   {% endfor %}  
-              </ul>
+              </tbody>
               <h3>For a Total Estimated Monthly Installment of ${{total_EMI - total_EMI % 1}} Per Month</h3>  
               <h2>For a Total Cost of ${{ID_total - ID_total % 1}}</h2>
               <h2>A Total Interest of ${{ID_int - ID_int % 1}}</h2>
@@ -32,18 +36,20 @@
               <h2>Your Recommended Salary is at least ${{ID_salary[0] - ID_salary[0] % 1}} Annually or ${{ID_salary[1] - ID_salary[1] % 1}} Per Month</h2>
           </div>
       </div>
-      
-      <div class="row">
+      <br>
+
+      <div class="desc">
           <h2>Your Total Debt Upon Graduation is</h2>
           <h2>A Total ${{grad_interest}} in Interest</h2>
           <h2>With ${{grad_debt}} in Total Debt Upon Graduation </h2>
       </div>
-      
       </body>
-      <tbody>
-        Note: if your Total Span in Years is negative, it indicates that your monthly payment per loan is too low
-        for at least one of your loans. Try increasing the Total Estimated Monthly Payment for a better result.
-      </tbody>
+
+    
+        <tbody>
+          Note: if your Total Span in Years is negative, it indicates that your monthly payment per loan is too low
+          for at least one of your loans. Try increasing the Total Estimated Monthly Payment for a better result.
+    </div>
     </body>
 
 {% endblock content %}

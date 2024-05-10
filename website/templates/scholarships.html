@@ -4,24 +4,26 @@
 
 <!--User not logged into an account-->
 {% if not profile %}
-    Welcome Guest
-    <br>
+    <h3>Welcome Guest</h3>
+
     {% for i in range(length) %}
-        <br>
-        Scholarship {{i+1}}: {{scholarships[i]['name']}} 
-        <br>
-        Sponsor:{{scholarships[i]['sponsor']}} 
-        <br>
-        Minimum GPA:{{scholarships[i]['gpa']}} 
-        <br>
-        Required Enrollment Status:{{scholarships[i]['status']}} 
-        <br>
-        Required Credit Hours:{{scholarships[i]['hours']}}
-        <br>
-        Description/Other Requirements: {{scholarships[i]['desc']}}
-        <br>
-        Award Range:${{scholarships[i]['min']}}-${{scholarships[i]['max']}}
-        <br>
+        <div class="ops">
+            <br>
+            Scholarship {{i+1}}: {{scholarships[i]['name']}} 
+            <br>
+            Sponsor:{{scholarships[i]['sponsor']}} 
+            <br>
+            Minimum GPA:{{scholarships[i]['gpa']}} 
+            <br>
+            Required Enrollment Status:{{scholarships[i]['status']}} 
+            <br>
+            Required Credit Hours:{{scholarships[i]['hours']}}
+            <br>
+            Description/Other Requirements: {{scholarships[i]['desc']}}
+            <br>
+            Award: {{scholarships[i]['award']}}
+            <br>
+        </div>
     {% endfor %}
 
 <!--User logged into an sponsor account-->
@@ -56,7 +58,7 @@
         <label for="award">Scholarship Reward</label>
         <input type="text" class="form-control" id="award" name="award" placeholder="Enter the scholarship's reward USD" minlength="1" maxlength="15" required>
     
-        <button type="submit">Post</button>
+        <button type="submit" class="movement">Post</button>
     </form>
 
     <script>
@@ -68,24 +70,27 @@
     {% endif %}
 
 {% else %}
-    Welcome User {{ profile.username }} {{profile["GPA"]}}
+    <h3>Welcome {{ profile.username }}!</h3> 
     <br>
+    
     {% for i in range(length) %}
-        <br>
-        Scholarship {{i+1}}: {{scholarships[i]['name']}} 
-        <br>
-        Sponsor:{{scholarships[i]['sponsor']}} 
-        <br>
-        Minimum GPA:{{scholarships[i]['gpa']}} 
-        <br>
-        Required Enrollment Status:{{scholarships[i]['status']}} 
-        <br>
-        Required Credit Hours:{{scholarships[i]['hours']}}
-        <br>
-        Description/Other Requirements: {{scholarships[i]['desc']}}
-        <br>
-        Award:${{scholarships[i]['award']}}
-        <br>
+        <div class = "ops">   
+            <br>
+            Scholarship {{i+1}}: {{scholarships[i]['name']}} 
+            <br>
+            Sponsor:{{scholarships[i]['sponsor']}} 
+            <br>
+            Minimum GPA:{{scholarships[i]['gpa']}} 
+            <br>
+            Required Enrollment Status:{{scholarships[i]['status']}} 
+            <br>
+            Required Credit Hours:{{scholarships[i]['hours']}}
+            <br>
+            Description/Other Requirements: {{scholarships[i]['desc']}}
+            <br>
+            Award: {{scholarships[i]['award']}}
+            <br>
+        </div>
     {% endfor %}
 {% endif %}
 

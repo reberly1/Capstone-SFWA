@@ -13,9 +13,9 @@
         <!--Visualizes logged payment data under the corresponding header-->
         {% for i in range(num_pay_logs) %}
         <tr>
-            <td>{{ amount[i] }}</td>
+            <td>${{ amount[i] }}</td>
             <td>{{ pay_date[i] }}</td>
-            <td>{{ choice[i] }}</td>
+            <td>Loan-{{ choice[i] + 1 }}</td>
             <td>{{ pay_note[i] }}</td>
         </tr>
         {% endfor %}
@@ -24,6 +24,7 @@
     <table class="table right">
         <!--Table Headers-->
         <tr>
+            <th>Loan ID</th>
             <th>Principal</th>
             <th>Interest Rate</th>
             <th>Date of Disbursement</th>
@@ -34,11 +35,12 @@
         <!--Visualizes logged loan data under the corresponding header-->
         {% for i in range(num_loan_logs) %}
         <tr>
-            <td>{{ loan_principal[i] }}</td>
-            <td>{{ loan_int_rate[i] }}</td>
+            <td>Loan-{{i+1}}</td>
+            <td>${{ loan_principal[i] }}</td>
+            <td>{{ loan_int_rate[i] }}%</td>
             <td>{{ loan_date[i] }}</td>
-            <td>{{ loan_fees[i] }}</td>
-            <td>{{ loan_bal[i] }}</td>
+            <td>${{ loan_fees[i] }}</td>
+            <td>${{ loan_bal[i] }}</td>
             <td>{{ loan_note[i] }}</td>
         </tr>
         {% endfor %}
@@ -54,16 +56,16 @@
 <!--Log Upload Button-->
 <form action="/milestone/upload" method="POST" enctype="multipart/form-data">
 
-    <input type="file" id="user_csv" name="user_csv">
-    <input type="submit" value="Upload CSV">
+    <input type="file" id="user_csv" name="user_csv" accept=".csv">
+    <input type="submit" value="Upload CSV" class="movement">
 
 </form>
 
 <!--Log Save Button-->
-<form action="/milestone/save" method="POST"><input type="submit" value="Save"></form>
+<form action="/milestone/save" method="POST"><input type="submit" value="Save" class="movement"></form>
 
 <!--Log Load Button-->
-<form action="/milestone/load" method="POST"><input type="submit" value="Load"></form>
+<form action="/milestone/load" method="POST"><input type="submit" value="Load" class="movement"></form>
 
 {% if validation %}
     {{validation}}
@@ -92,9 +94,31 @@
             datasets: datasets
         },
         options: {
+            plugins: {
+                title: {
+                    display: true, 
+                    text:"Loan Progess Over 10 Years",
+                    font: {
+                        size:24
+                    },
+                    color: "black"
+                }
+            },
             scales: {
+                y: {
+                    ticks: {
+                        color: "black",
+                        font: {
+                            size: 12
+                        }
+                    }
+                },
                 x: {
                     ticks: {
+                        color: "black", 
+                        font: {
+                            size: 12
+                        },
                         maxTicksLimit: 10,
                         autoSkipPadding: 12,
                         autoSkip: true

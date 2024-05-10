@@ -20,6 +20,10 @@
   line-height: 1.6;
   }
 
+  body {
+    background-color: #c7c8ca;
+  }
+
  .th, .tr, .td {
     border: 1px solid black;
 }
@@ -34,6 +38,7 @@
   display: flex;
   justify-content: center;
   position: relative;
+ 
 }
 
 .grid{
@@ -45,14 +50,45 @@
 .left-col{
   width: 50%;
   text-align: left;
+  border: 1px solid;
+  padding: 1rem;
+  background-color: white;
 }
 
 .left-col h2 {
-  margin-bottom: 2%;
+  margin-bottom: 5%;
+}
+
+.left-col h3 {
+  margin-bottom: 5%;
 }
 
 .right-col{
   width: 50%;
   text-align: right;  
   transform: translateX(25%);
+  border: 1px solid;
+  padding: 1rem;
+  background-color: white;
+}
+
+.desc {
+  border: 1px solid;
+  padding: 1rem;
+  background-color: white;
+}
+
+.ops {
+  border: 1px solid;
+  padding: 1rem;
+  background-color: white;
+}
+
+.movement {
+  width: 12rem;
+  border: 3px;
+  margin-top: 5px;
+  border-color: #000000;
+  background-color: white;
+  border-radius: 2rem;
 }

@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>Repayment Logging Page</h1>
+<br>    
+<h1>Repayment Logging Page</h1>
 
     <form method="POST">
 
@@ -24,7 +25,7 @@
 
         </div>
 
-        <button type="submit">Submit Log</button>
+        <button type="submit" class="movement">Submit Log</button>
 
     </form>
 
@@ -44,7 +45,7 @@
         for (let i = 0; i < loans.length; i++) {
             var loan = document.createElement('option');
             loan.value = i;
-            loan.textContent = 'Loan ' + i + ' of initial principal: ' + loans[i];
+            loan.textContent = 'Loan ' + (i+1) + ' of initial principal: ' + loans[i];
             loanChoice.appendChild(loan);
         }
 

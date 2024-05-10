@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-<form action="/guided"><button>Back</button></form>
+<br>
 
 <form method="POST">
     
@@ -9,53 +9,56 @@
     <div id="dynamic loans" div class="form-group"></div>
 
     <!--Calls the addLoan() javascript function to add additional loan inputs when user presses the button-->
-    <button type="button" onclick="addLoan()">Add Loan</button>
+    <button type="button" class="movement" onclick="addLoan()">Add Loan</button>
     
-    <button type="submit">Next</button>
+    
+
+    <button type="submit" class="movement">Next</button>
 
 </form>
 
-<tbody>
-    <br>
-    This is where you enter your existing loans and their interest rates.
-    In addition, you may specify if the loan is unsubsidized or subsidized.
-    Subsidized means that interest is not accrued while you're in school.
-    unsubsidized means that interest is being accrued even while you're in school.
-    To add another loan simply press the add loan button above and another loan 
-    form will be produced.
-    <br>
-    Here's an example input with usage rules you may use for reference:
-</tbody>
+<form action="/guided"><button class="movement">Back</button></form>
 
-<tbody>
-    <br>
-    <br>
-    Loan Principal
-    <br>
-    30000 (The Loan Principal cannot be less than 1)
-    <br>
-    Loan Interest
-    <br>
-    7 (The Loan Interest cannot be less than 1 or exceed 25.)
-    <br>
-    Loan Type
-    <br>
-    unsubsidized 
-    <br>
-    <br>
-    Loan Principal
-    <br>
-    20000
-    <br>
-    Loan Interest
-    <br>
-    5
-    <br>
-    Loan Type
-    <br>
-    unsubsidized
-</tbody>
-
+<br>
+<div class="desc">
+    <tbody>
+        <br>
+        This is where you enter your existing loans and their interest rates.
+        In addition, you may specify if the loan is unsubsidized or subsidized.
+        Subsidized means that interest is not accrued while you're in school.
+        unsubsidized means that interest is being accrued even while you're in school.
+        To add another loan simply press the add loan button above and another loan 
+        form will be produced.
+        <br>
+        Here's an example input with usage rules you may use for reference:
+        <br>
+        <br>
+        Loan Principal
+        <br>
+        30000 (The Loan Principal cannot be less than 1)
+        <br>
+        Loan Interest
+        <br>
+        7 (The Loan Interest cannot be less than 1 or exceed 25.)
+        <br>
+        Loan Type
+        <br>
+        unsubsidized 
+        <br>
+        <br>
+        Loan Principal
+        <br>
+        20000
+        <br>
+        Loan Interest
+        <br>
+        5
+        <br>
+        Loan Type
+        <br>
+        unsubsidized
+    </tbody>
+</div>
 <script>
     function addLoan() {
         //Container for dynamic inputs declared above

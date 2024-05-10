@@ -11,14 +11,14 @@
     <label for="password">Password</label>
     <input type="text" class="form-control" id="password" name="password" placeholder="Enter Your Password" required>
 
-    <button type="submit">Login</button>
+    <button type="submit" class="movement">Login</button>
 
 </form>
 
-<form action="/login/logout"><button>Logout</button></form>
+<form action="/login/logout"><button class="movement">Logout</button></form>
 
 <!--Navigation to create a new account-->
-<form action="/login/reg_menu"><button>Register</button></form>
+<form action="/login/reg_menu"><button class="movement">Register</button></form>
 
 {% if message %}
     {{message}}
