@@ -6,6 +6,7 @@
 {% if not profile %}
     <h3>Welcome Guest</h3>
 
+    <!--displays all scholarships-->
     {% for i in range(length) %}
         <div class="ops">
             <br>
@@ -30,6 +31,9 @@
 {% elif admin %}
     Welcome Sponsor {{ profile.username }}
 
+    <!--Sponsors cannot view scholarships of others rather they use the page
+    to post scholarships that students may see and apply for.
+    -->
     <form method="POST">
         <label for="name">Scholarship Name</label>
         <input type="text" class="form-control" id="name" name="name" placeholder="What is the name of your Scholarship?" minlength="1" required>
@@ -69,10 +73,12 @@
         {{message}}
     {% endif %}
 
+<!--User logged into a regular user account-->
 {% else %}
     <h3>Welcome {{ profile.username }}!</h3> 
     <br>
     
+    <!--displays all scholarships the user is eligible for-->
     {% for i in range(length) %}
         <div class = "ops">   
             <br>

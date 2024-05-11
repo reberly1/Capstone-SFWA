@@ -1,8 +1,14 @@
+<!--
+Websites Referenced:
+[4] https://www.w3schools.com/html/html_forms.asp
+-->
+
 {% extends "layout.html" %}
 {% block content %}
 <br>    
 <h1>Guided Calculator</h1>
 
+    <!--Description Text-->
     <div class="desc">
         <tbody>
             Welcome to the Guided Calculator.
@@ -13,9 +19,8 @@
         </tbody>
     </div>
     <br>
-    <!--Navigation Buttons-->
-    <form action="/"><button class="movement">Home</button></form>
 
+    <!--Navigation Button-->
     <form action="/guided/loans"><button class="movement">Start</button></form>
     
 {% endblock content %}

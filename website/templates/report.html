@@ -6,6 +6,11 @@
 
       <div class="row">
           <div class="left-col">
+              <!--Left table represents the scenario where the student pays back
+              their loans using their ideal monthly repayment for each of their 
+              existing loans
+              Ideal Payment Scenario
+              -->
               <h1>Ideal Monthly Payment Report</h1>
               <h3>To Pay ${{monthly}} Per Month<br> Per Loan<br> It Will Take</h3>
               <tbody>
@@ -22,6 +27,11 @@
           </div>
             
           <div class="right-col">
+            <!--Right table represents the scenario where the student pays back
+            their loans over a predefined period of time rather than a specified 
+            monthly rate
+            Ideal Duration Scenario
+            -->
             <h1>Ideal Repayment Duration Report</h1>  
             <h3>To Pay Off<br> All Your Loans In<br> {{duration / 12}} Years You Will Need</h3>
               <tbody>
@@ -38,6 +48,9 @@
       </div>
       <br>
 
+      <!--Displays the estimated remaining costs of college unaccount for based
+      on estimates
+      -->
       <div class="desc">
           <h2>Your Total Debt Upon Graduation is</h2>
           <h2>A Total ${{grad_interest}} in Interest</h2>

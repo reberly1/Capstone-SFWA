@@ -1,3 +1,8 @@
+<!--
+Websites Referenced:
+[4] https://www.w3schools.com/html/html_forms.asp
+[5] https://www.geeksforgeeks.org/how-to-create-a-form-dynamically-with-the-javascript/?ref=ml_lbp
+-->
 {% extends "layout.html" %}
 {% block content %}
 <br>
@@ -9,16 +14,16 @@
     <div id="dynamic loans" div class="form-group"></div>
 
     <!--Calls the addLoan() javascript function to add additional loan inputs when user presses the button-->
-    <button type="button" class="movement" onclick="addLoan()">Add Loan</button>
-    
-    
+    <button type="button" class="movement" onclick="addLoan()">Add Loan</button> 
 
     <button type="submit" class="movement">Next</button>
 
 </form>
 
+<!--Navigation to Previous Page-->
 <form action="/guided"><button class="movement">Back</button></form>
 
+<!--Description Text-->
 <br>
 <div class="desc">
     <tbody>
@@ -59,6 +64,7 @@
         unsubsidized
     </tbody>
 </div>
+
 <script>
     function addLoan() {
         //Container for dynamic inputs declared above

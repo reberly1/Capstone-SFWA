@@ -1,5 +1,11 @@
+"""
+Websites Referenced:
+[12] https://www.mongodb.com/docs/manual/reference/method/db.collection.find/
+"""
 from pymongo import MongoClient
-from scraper import scrape
+
+#Change this string to match your mongodb server host
+HOST = "mongodb://localhost:27017/"
 
 def register_user(username, password, gpa, status, hours):
     """
@@ -26,7 +32,7 @@ def register_user(username, password, gpa, status, hours):
                   False otherwise
     """
 
-    client = MongoClient(host=["mongodb://localhost:27017/"])
+    client = MongoClient(host=[HOST])
     db = client['FWA']
     users = db['users']
     
@@ -57,7 +63,7 @@ def register_admin(username, password, admin_key):
     Returns       True is successful
                   False otherwise
     """
-    client = MongoClient(host=["mongodb://localhost:27017/"])
+    client = MongoClient(host=[HOST])
     db = client['FWA']
     users = db['users']
     keys = db['keys']
@@ -95,7 +101,7 @@ def login_user(username, password):
                   False if the account profile doesn't exist
     """
      
-    client = MongoClient(host=["mongodb://localhost:27017/"])
+    client = MongoClient(host=[HOST])
     db = client['FWA']
     users = db['users']
 
@@ -128,7 +134,7 @@ def save_log(username, csv):
     Returns:      True if save was successful
                   False on failure
     """
-    client = MongoClient(host=["mongodb://localhost:27017/"])
+    client = MongoClient(host=[HOST])
     db = client['FWA']
     users = db['users']
 
@@ -172,7 +178,7 @@ def post_scholarship(sponsor, name, gpa, status, hours, desc, award):
     Returns:      The dictionary document that was inserted if posting was successful
                   False otherwise
     """
-    client = MongoClient(host=["mongodb://localhost:27017/"])
+    client = MongoClient(host=[HOST])
     db = client['FWA']
     scholarships = db['scholarships']
     users = db['users']
@@ -193,7 +199,18 @@ def post_scholarship(sponsor, name, gpa, status, hours, desc, award):
     return document
 
 def fetch_scholarships(profile):
-    client = MongoClient(host=["mongodb://localhost:27017/"])
+    """
+    Description
+    collect all scholarships the student is eligible for
+
+    Parameters
+    profile:       TYPE: dictionary
+                   DESC: user profile where all data is stored about them
+                 
+    Returns        TYPE: list
+                   DESC: list of all scholarships they are eligible for
+    """
+    client = MongoClient(host=[HOST])
     db = client['FWA']
     scholarships = db['scholarships']
 
@@ -210,25 +227,27 @@ def fetch_scholarships(profile):
         return opportunities
 
 def edit_profile(gpa, status, hours, username):
-    client = MongoClient(host=["mongodb://localhost:27017/"])
+    """
+    Description
+    edits the user's profile to their specified criteria
+
+    Parameters
+    gpa:          TYPE: Float
+                  DESC: grade point average on 4 point scale
+
+    status:       TYPE: str
+                  DESC: Required enrollment status for scholarship
+
+    hours:        TYPE: Float
+                  DESC: Required credit hours for scholarships
+
+    username:     TYPE: str
+                  DESC: user's account username
+
+    Returns       None
+    """
+    client = MongoClient(host=[HOST])
     db = client['FWA']
     users = db['users']
     users.update_one({'username':username},{'$set': {'GPA': gpa, 'Enrollment Status': status, 'Credit Hours': hours}})
     return
-
-def load_scholarships():
-    scholarships = scrape()
-    client = MongoClient(host=["mongodb://localhost:27017/"])
-    db = client['FWA']
-    scholarships_col = db['scholarships']
-
-    for opportunity in scholarships:
-        if scholarships.count_documents({'name' : opportunity['name']}):
-            scholarships.remove(opportunity)
-
-    print(scholarships)
-    scholarships_col.insert_many(scholarships)
-
-
-if __name__ == '__main__':
-    login_user('Admin', 'password123')

@@ -1,8 +1,25 @@
+"""
+Websites Referenced:
+[13] https://brightdata.com/blog/how-tos/web-scraping-with-python
+[14] https://umbc.academicworks.com/
+"""
 import requests
 from bs4 import BeautifulSoup
 from pymongo import MongoClient
 
+#Change this string to match your mongodb server host
+HOST = "mongodb://localhost:27017/"
+
 def scrape():
+    """
+    Description
+    Scrapes all scholarships off of academic works
+
+    Parameters
+    None
+
+    Returns       None
+    """
     page = requests.get('https://umbc.academicworks.com/')
     soup = BeautifulSoup(page.text, 'html.parser')
     
@@ -11,6 +28,7 @@ def scrape():
     num_pages = len(num_pages.findAll('option'))
 
     scholarships = []
+    #For each page on academic works, scrape all scholarship data
     for i in range(num_pages):
         page_num = i+1
         page_num = str(page_num)
@@ -20,22 +38,26 @@ def scrape():
         #Extracts the table where all scholarship data is located
         table = soup.find(class_='full striped-table')
         
+        #Extracts scholarship titles
         titles = []
         name_href = table.find_all('a')
         for href in name_href:
             titles.append(href.get_text(strip=True))
 
+        #Extracts the url for the scholarship
         descs = []
         desc_row = table.find_all('a')
         for desc in desc_row:
             href = desc.get('href')
             descs.append("https://umbc.academicworks.com" + href)
 
+        #Extracts the scholarship reward
         awards = []
         award_row = table.find_all(class_='strong h4 table__column--max-width-250')
         for row in award_row:
             awards.append(row.get_text(strip=True))
 
+        #Extracts the scholarship deadline
         deadlines = []
         deadline_row = table.find_all(class_='mq-no-bp-only clr block')
         for row in deadline_row:
@@ -49,8 +71,17 @@ def scrape():
     return scholarships
 
 def load_scholarships():
+    """
+    Description
+    Uploads all scraped scholarships to mongodb
+
+    Parameters
+    None
+
+    Returns       None
+    """
     scholarships = scrape()
-    client = MongoClient(host=["mongodb://localhost:27017/"])
+    client = MongoClient(host=[HOST])
     db = client['FWA']
     scholarships_col = db['scholarships']
 

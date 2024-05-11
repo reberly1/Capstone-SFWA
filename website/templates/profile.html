@@ -2,16 +2,22 @@
 {% block content %}
 <h1>Profile Page</h1>
 
+<!--IF THE USER IS NOT LOGGED IN-->
 {% if not profile %}
     User is not logged in please login for profile
+
+<!--IF THE USER IS LOGGED IN AS A SPONSOR--> 
 {% elif admin %}
     <h3>Welcome {{ profile.username }}!</h3>
 
+    <!--IF the sponsor has not posted scholarships-->
     {% if profile.scholarships == [] %}
         <h1>You don't currently have any scholarships posted, post one on the Scholarships page!</h1>
+    
+    <!--Displays all scholarships the sponsor posted-->
     {% else %}
             <br>    
-    <h4>Here are all the scholarships you've posted</h4>
+        <h4>Here are all the scholarships you've posted</h4>
             <br>
         {% for i in range(length) %}
             <div class = "ops"> 
@@ -34,9 +40,11 @@
         {% endfor %}
     {% endif %}
 
+<!--IF THE USER IS LOGGED IN AS A NORMAL USER-->
 {% else %}
     Welcome {{profile.username}} here is your current information, update it as needed
 
+    <!--Displays the users profile information and gives the opportunity to edit it as needed-->
     <form method="POST">
     
         <label for="gpa">GPA</label>

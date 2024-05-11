@@ -1,3 +1,11 @@
+"""
+Websites Referenced:
+[15] https://smartasset.com/student-loans/student-loan-calculator
+[16] https://www.calculator.net/student-loan-calculator.html
+[17] https://studentaid.gov/understand-aid/types/loans/interest-rates
+[18] https://money.stackexchange.com/questions/64639/how-to-calculate-the-number-of-months-until-a-loan-is-paid-off-given-principal
+[19] https://www.investopedia.com/terms/e/equated_monthly_installment.asp
+"""
 import math
 import datetime
 import pandas as pd
@@ -255,16 +263,4 @@ def apply_adjustments(loan_prins, loan_fees, int_accrued, amounts, loan_choice):
 
     return (loan_prins, loan_fees)
 
-def check_df(df):
-    """
-    Description
-    Validates the dataframe confirming the data is of the proper format
-    Parameters
-    df:          TYPE: DataFrame
-                  DESC: The user uploaded file that is being tested for validity
-        
-    Returns       True if the DataFrame is compatible for uploading
-                  str if the DataFrame is incompatible for a given reason
-    """
-    
-    return True
+

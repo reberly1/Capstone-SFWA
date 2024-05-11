@@ -1,3 +1,26 @@
+"""
+Websites Referenced:
+[1] https://www.geeksforgeeks.org/how-to-use-flask-session-in-python-flask/
+[2] https://www.youtube.com/watch?v=MwZwr5Tvyxo&list=PL-osiE80TeTs4UjLw5MM6OjgkjFeUxCYH
+[3] https://github.com/CoreyMSchafer/code_snippets/blob/master/Python/Flask_Blog/02-Templates/templates/layout.html
+[4] https://www.w3schools.com/html/html_forms.asp
+[5] https://www.geeksforgeeks.org/how-to-create-a-form-dynamically-with-the-javascript/?ref=ml_lbp
+[6] https://www.w3schools.com/jsref/jsref_toisostring.asp
+[7] https://www.programiz.com/python-programming/datetime/strptime
+[8] https://www.geeksforgeeks.org/saving-a-pandas-dataframe-as-a-csv/
+[9] https://www.w3schools.com/html/html_tables.asp
+[10] https://www.chartjs.org/docs/latest/general/accessibility.html
+[11] https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
+[12] https://www.mongodb.com/docs/manual/reference/method/db.collection.find/
+[13] https://brightdata.com/blog/how-tos/web-scraping-with-python
+[14] https://umbc.academicworks.com/
+[15] https://smartasset.com/student-loans/student-loan-calculator
+[16] https://www.calculator.net/student-loan-calculator.html
+[17] https://studentaid.gov/understand-aid/types/loans/interest-rates
+[18] https://money.stackexchange.com/questions/64639/how-to-calculate-the-number-of-months-until-a-loan-is-paid-off-given-principal
+[19] https://www.investopedia.com/terms/e/equated_monthly_installment.asp
+"""
+
 from flask import Flask, render_template, request, session, redirect
 from functions import *
 from database import *
@@ -9,20 +32,41 @@ from scraper import *
 app = Flask(__name__)
 app.secret_key = "Dummy Key For Debugging Purposes"
 
-@app.route('/')
-@app.route('/home')
-def home():
-    return render_template('home.html', title="Home")
 
-#Routes for the guided calculator suite
+#<------------------------COMPONENT 1 CALCULATOR SUITE------------------------>
+"""
+References Applicable to Section:
+[1] https://www.geeksforgeeks.org/how-to-use-flask-session-in-python-flask/
+[2] https://www.youtube.com/watch?v=MwZwr5Tvyxo&list=PL-osiE80TeTs4UjLw5MM6OjgkjFeUxCYH
+[3] https://github.com/CoreyMSchafer/code_snippets/blob/master/Python/Flask_Blog/02-Templates/templates/layout.html
+[4] https://www.w3schools.com/html/html_forms.asp
+[5] https://www.geeksforgeeks.org/how-to-create-a-form-dynamically-with-the-javascript/?ref=ml_lbp
+[15] https://smartasset.com/student-loans/student-loan-calculator
+[16] https://www.calculator.net/student-loan-calculator.html
+[17] https://studentaid.gov/understand-aid/types/loans/interest-rates
+[18] https://money.stackexchange.com/questions/64639/how-to-calculate-the-number-of-months-until-a-loan-is-paid-off-given-principal
+[19] https://www.investopedia.com/terms/e/equated_monthly_installment.asp
+"""
+
+#GUIDED CALCULATOR MENU
 @app.route('/guided')
+@app.route('/')
 def guided():
+    """
+    Description: Displays the start menu for the guided calculator suite
+    using guided.html
+    """
+
     return render_template('guided.html',title='Guided')
 
-#Page 1, loans
+#PAGE 1 of GUIDED CALCULATOR SUITE: LOANS PAGE
 @app.route('/guided/loans', methods=['GET','POST'])
 def loans():
-    #Stores all input into session for extraction by other pages
+    """
+    Description: Extracts the list of existing loans from the user and sets
+    them in the session for calculations, then sends them to the next page
+    """
+
     if request.method == "POST":
         session['principals'] = request.form.getlist('principal[]')
         session['interests'] = request.form.getlist('interest[]')
@@ -31,10 +75,15 @@ def loans():
     
     return render_template('guided_loans.html',title='Guided Loans')
 
-#Page 2, term costs
+#PAGE 2 of GUIDED CALCULATOR SUITE: TERMS PAGE
 @app.route('/guided/terms', methods=['GET','POST'])
 def terms():
-    #Stores all input into session for extraction by other pages
+    """
+    Description: Extracts the years until graduation and cost per year 
+    from the user and sets them in the session for calculations, 
+    then sends them to the next page
+    """
+
     if request.method == "POST":
         session['year_grad'] = request.form['year_grad']
         session['term_cost'] = request.form['term_cost']
@@ -42,10 +91,16 @@ def terms():
     
     return render_template('guided_terms.html',title='Guided Terms')
 
-#Page 3, estimates
+#PAGE 3 of GUIDED CALCULATOR SUITE: IDEAL ESIMATES PAGE
 @app.route('/guided/estimates', methods=['GET','POST'])
 def estimates():
-    #Stores all input into session for extraction by other pages
+    """
+    Description: Extracts how much the user wants to pay per month
+    towards loans and how quickly the user want to pay off their loans 
+    and sets them in the session for calculations, 
+    then sends them to the report page where the result is diplayed
+    """
+
     if request.method == "POST":
         session['month_pay'] = request.form['month_pay']
         session['duration'] = request.form['duration']
@@ -53,9 +108,16 @@ def estimates():
     
     return render_template('guided_estimates.html',title='Guided Estimates')
 
+#UNGUIDED CALCULATOR SUITE
 @app.route('/unguided', methods=['GET','POST'])
 def unguided():
-    #Stores all input into session for extraction by other pages
+    """
+    Description: Extracts all variables needed for the guided calculation
+    in a single page for simplicity in the event the user is familiar with
+    the process already, then sends the user to the report once information
+    is submitted
+    """
+
     if request.method == "POST":
         session['principals'] = request.form.getlist('principal[]')
         session['interests'] = request.form.getlist('interest[]')
@@ -67,9 +129,15 @@ def unguided():
         return redirect('/report')
     
     return render_template("unguided.html",title='Unguided')
-    
+
+#REPORT PAGE   
 @app.route('/report', methods=['GET','POST'])
 def report():
+    """
+    Description: Calculates the results of the report then displays then to the
+    user. The results collected are described below
+    """
+    
     #Collects all calculator input from session for computation and display
     #numeric values are typecasted from string to float
     principal = [float(principal) for principal in session['principals']]
@@ -80,22 +148,29 @@ def report():
     term = float(session['term_cost'])   
     duration = float(session['duration']) * 12
     
-
-    """Standardizations and revisions needed for the report"""
-    #Calculate Total Debt Upon Graduation
+    #Calculates Total Debt Upon Graduation
     (grad_debt, grad_interest) = debt_upon_graduation(principal, interest, loantype, grad, term)
 
+    #The number of months to pay off each loan assuming a flat user 
+    #provided rate (monthly)
     repayment_duration = []
+
+    #The monthly payment to pay off each loan assuming all have to be paid off 
+    #by the same deadline (duration)
     monthly_rate = []
     for i in range(len(principal)):
-        #Calculate Duration to Pay back the loan at the monthly rate
+        #Calculate Duration to Pay back the given loan at the monthly rate
         repayment_duration.append(find_num_months(principal[i], interest[i], monthly))
 
         #Calculate monthly rate needed to pay back loan at ideal repayment time
         monthly_rate.append(find_monthly_payment(principal[i], interest[i], duration))
 
-    #Calculate the total cost and interest for both ideals for comparison
+    #Calculate the total cost and interest given an ideal repayment deadline
+    #ID stands for Ideal Duration
     (ID_total, ID_int) = find_cost(principal, interest, monthly_rate, [duration])
+
+    #Calculate the total cost and interest given an ideal monthly rate
+    #IP stands for Ideal Payment
     (IP_total, IP_int) = find_cost(principal, interest, [monthly], repayment_duration)
 
     #Calculate the percentage of payments going towards the principal for each ideal
@@ -106,6 +181,7 @@ def report():
     ID_salary = minimum_salary(sum(monthly_rate))
     IP_salary = minimum_salary(monthly*len(principal))
 
+    #Displays the results to the user
     return render_template('report.html', title='Report', 
                            principal=principal, 
                            interest=interest, 
@@ -131,12 +207,36 @@ def report():
                            total_duration=max(repayment_duration))
 
 
+
+
+
+
+#<------------------------COMPONENT 2 MILESTONE TRACKER------------------------>
+"""
+References Applicable to Section
+[6] https://www.w3schools.com/jsref/jsref_toisostring.asp
+[7] https://www.programiz.com/python-programming/datetime/strptime
+[8] https://www.geeksforgeeks.org/saving-a-pandas-dataframe-as-a-csv/
+[9] https://www.w3schools.com/html/html_tables.asp
+[10] https://www.chartjs.org/docs/latest/general/accessibility.html
+[11] https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
+"""
+
+#LOG MENU
 @app.route('/log', methods=['GET','POST'])
 def log_menu():
+    """
+    Description: Displays log menu to users
+    """
     return render_template('log.html',title='Log Menu')
 
+#REPAY LOGGING
 @app.route('/log/repay', methods=['GET','POST'])
 def repay_log():
+    """
+    Description: Logs all payments made/posted by the user through a series of inputs
+    """
+
     #Initializes variables if they don't yet exist so that values can be added to them
     if 'amount' not in session:
         session['amount'] = []
@@ -175,8 +275,13 @@ def repay_log():
 
     return render_template('repay_log.html',title='Repayment Log', conf=conf, loans=loans)
 
+#LOAN LOGGING
 @app.route('/log/loan', methods=['GET','POST'])
 def loan_log():
+    """
+    Description: Logs all payments made/posted by the user through a series of inputs
+    """
+    
     #Initializes variables if they don't yet exist so that values can be added to them
     if 'loan_principal' not in session:
         session['loan_principal'] = []
@@ -218,8 +323,14 @@ def loan_log():
     
     return render_template('loan_log.html',title='Loan Log', conf=conf)
 
+#MILESTONE PAGE
 @app.route('/milestone', methods=['GET','POST'])
 def milestone():
+    """
+    Description: Calculates/Displays user's logs and progress through graph projection.
+    Processes data to be storable as a csv.
+    """
+    
     #Initializes variables if they don't yet exist so that values can be added to them
     if 'amount' not in session:
         session['amount'] = []
@@ -268,6 +379,7 @@ def milestone():
     temp_prin = adj_loan_principal.copy()
     temp_fees = adj_loan_fees.copy()
     balances = [] 
+    #Creates the balances for the 10 year projection while accounting for interest.
     for i in range(len(temp_prin)):
         bal_i = []
         monthly_payment = sum(amount for amount, choice in current_payments if choice == i)
@@ -325,8 +437,15 @@ def milestone():
                            validation=session['validation']
                            )
 
+#UPLOAD FEATURE FOR MILESTONE PAGE
 @app.route('/milestone/upload', methods=['GET','POST'])
 def upload():
+    """
+    Description: Checks a provided file uploaded by the user,
+    if the file is valid it will loaded into the milestone page.
+    else an error message will be shown the to the user
+    """
+
     if request.method == 'POST':
         file = request.files.get('user_csv')
 
@@ -346,7 +465,7 @@ def upload():
                 session['validation'] = validation
                 return redirect('/milestone')
 
-        #Check the validity of the Date column
+        #Check the validity of the Date column by checking if a value error occurs
         try:
             test = [datetime.datetime.strptime(str(x), '%m/%d/%Y %H:%M').strftime('%Y-%m-%d') for x in df['Date'].tolist() if pandas.notna(x)]
         except ValueError:
@@ -354,7 +473,7 @@ def upload():
             session['validation'] = validation
             return redirect('/milestone')
         
-        #Check the validity of the Date of Disbursement column
+        #Check the validity of the Date of Disbursement column by checking if a value error occurs
         try:
             test = [datetime.datetime.strptime(str(x), '%m/%d/%Y %H:%M').strftime('%Y-%m-%d') for x in df['Date of Disbursement'].tolist() if pandas.notna(x)]
         except ValueError:
@@ -362,6 +481,7 @@ def upload():
             session['validation'] = validation
             return redirect('/milestone')
 
+        #Applies filtering to data including type conversion and removal of nan values
         amount = [x for x in df['Amount'].tolist() if pandas.notna(x)]
         date = [datetime.datetime.strptime(str(x), '%m/%d/%Y %H:%M').strftime('%Y-%m-%d') for x in df['Date'].tolist() if pandas.notna(x)]
         notes = [x if pandas.notna(x) else "" for x in df['Notes'].tolist() ]
@@ -463,8 +583,13 @@ def upload():
         
     return redirect('/milestone')
 
+#SAVE TO PROFILE FUNCTION FOR MILESTONE PAGE
 @app.route('/milestone/save', methods=['GET','POST'])
 def save():
+    """
+    Description: Saves the user's milestone log to their profile
+    """
+
     if 'profile' not in session:
         validation = "Save Failed, User is not currently logged in" 
         session['validation'] = validation
@@ -473,15 +598,24 @@ def save():
     username = session['profile']['username']
     csv_data = session['file']
 
+    #Saves data to profile in database
     if save_log(username, csv_data):
         validation = "Save Succeeded" 
         session['validation'] = validation
         session['profile']['logs'] = csv_data
         session.modified = True
-        return redirect('/milestone')
+
+    return redirect('/milestone')
     
+#LOAD FROM PROFILE FUNCTION FOR MILESTONE PAGE
 @app.route('/milestone/load', methods=['GET','POST'])
 def load():
+    """
+    Description: Loads milestone data from user profile to 
+    milestone page
+    """
+
+    #Checks if the profile exists and contains the log information
     if 'profile' not in session:
         validation = "Load Failed, User is not currently logged in" 
         session['validation'] = validation
@@ -499,6 +633,7 @@ def load():
     df = pandas.DataFrame(csv_data).T
     df.columns = headers
     
+    #Format it for use in milestones page
     amount = [x for x in df['Amount'].tolist() if pandas.notna(x)]
     date = [datetime.datetime.fromisoformat(str(x)).strftime('%Y-%m-%d') for x in df['Date'].tolist() if pandas.notna(x)]
     notes = [x if pandas.notna(x) else "" for x in df['Notes'].tolist() ]
@@ -524,32 +659,61 @@ def load():
     session['validation'] = validation
     return redirect('/milestone')
 
+
+
+
+
+#<------------------------COMPONENT 3 PROFILES/SCHOLARSHIPS------------------------>
+"""
+References Applicable to Section
+[12] https://www.mongodb.com/docs/manual/reference/method/db.collection.find/
+[13] https://brightdata.com/blog/how-tos/web-scraping-with-python
+[14] https://umbc.academicworks.com/
+"""
+
+#LOGIN PAGE
 @app.route('/login', methods=['GET','POST'])
 def login():
+    """
+    Description: Log user into their profile if they enter correct details
+    """
+
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         profile = login_user(username, password)
         
+        #If the database finds a profile log the user in else send error
         if (profile):
             session.clear()
             session['profile'] = profile
             return render_template('login.html', title='Login', message='Welcome ' + username)
         else:
             return render_template('login.html', title='Login', message='Authentication Failed, Try Again')
+        
     return render_template('login.html', title='Login')
 
+#REGISTRATION MENU
 @app.route('/login/reg_menu', methods=['GET','POST'])
 def reg_menu():
+    """
+    Description: Displays menu determining whether user want to log in as
+    a normal user or a sponsor
+    """
     return render_template('register_menu.html',title='Register Menu')
 
+#REGISTER SPONSOR PAGE
 @app.route('/login/reg_menu/reg_admin', methods=['GET','POST'])
 def reg_admin():
+    """
+    Description: Registers sponsor accounts through verification of key
+    """
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         admin_key = request.form['key']
 
+        #If the admin has the proper admin key register them else send error
         if (register_admin(username, password, admin_key)):
             return redirect('/login')
         else:
@@ -557,8 +721,12 @@ def reg_admin():
         
     return render_template('reg_admin.html',title='Register Menu')
 
+#REGISTER REGULAR USER
 @app.route('/login/reg_menu/register', methods=['GET','POST'])
 def register():
+    """
+    Description: Registers user accounts into the database
+    """
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -573,8 +741,13 @@ def register():
         
     return render_template('register.html', title='Register')
 
+#SCHOLARSHIP PAGE
 @app.route('/scholarships', methods = ['GET', 'POST'])
 def scholarships():
+    """
+    Description: Displays list of valid scholarships to the user
+    """
+    
     #if the user is not logged in
     if 'profile' not in session:
         scholarships = fetch_scholarships(None)
@@ -590,7 +763,11 @@ def scholarships():
             hours = float(request.form['hours'])
             desc = request.form['desc']
             award = request.form['award']
+            
+            #Upload the scholarship to the database
             document = post_scholarship(sponsor, name, gpa, status, hours, desc, award)
+            
+            #If the scholarship was posted
             if document:
                 session['profile']['scholarships'].append(document)
                 session.modified = True
@@ -606,8 +783,12 @@ def scholarships():
         scholarships = fetch_scholarships(profile)
         return render_template('scholarships.html', profile=session['profile'], scholarships=scholarships, length=len(scholarships))
 
+#PROFILE PAGE
 @app.route('/profile', methods=["GET", "POST"])
 def profile():
+    """
+    Description: Displays and edits user credentials
+    """
     #if the user is not logged in
     if 'profile' not in session:
         return render_template('profile.html')
@@ -625,16 +806,19 @@ def profile():
             hours = float(request.form['hours'])
             username = session['profile']['username']
             password = session['profile']['password']
+            
+            #Update the old credentials with the new ones in the database
             edit_profile(gpa, status, hours, username)
             session.pop('profile')
             session['profile'] = login_user(username, password)
-            print(session['profile'])
+        
         return render_template('profile.html', profile=session['profile'])
-    
+
+#LOGOUT PAGE
 @app.route('/login/logout')
 def logout():
+    """
+    Description: Logs user out by clearing their session
+    """
     session.clear() 
     return redirect('/login')
-
-if __name__ == '__main__':
-    app.run(debug=True)
