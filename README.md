@@ -14,7 +14,7 @@ c.	Flask run (Activates a development server to run the application)
 File Naviation:
 There are three primary sections within this application (Calculator Suite, Milestone Tracker, and Scholarships/Profiles)
 
-Calculator Suite Code:
+Calculator Suite:
 1. Lines 36-213 of app.py for flask route handling
 2. functions.py for calculations
 3. Relevant HTML Files found in templates:  
