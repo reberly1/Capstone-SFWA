@@ -30,7 +30,7 @@ import numpy as np
 from scraper import *
 
 app = Flask(__name__)
-app.secret_key = "Dummy Key For Debugging Purposes"
+app.secret_key = "Adjust the key as needed"
 
 
 #<------------------------COMPONENT 1 CALCULATOR SUITE------------------------>
