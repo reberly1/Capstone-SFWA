@@ -6,10 +6,10 @@ Steps to deploy on a development server
 3.	Ensure that the system environment has the dependencies, so they match the requirements provided in requirements.txt using the command: pip install -r requirements.txt
 4.	Ensure that the system has the most recent installation of the python programming language at https://www.python.org/.
 5.	Change the "HOST" constant variable in scraper.py and database.py to match the connection string for your MongoDB database.
-6.	Run the following commands in the terminal to activate the server from your machine (note this is for testing purposes, for true deployment knowledge of the host system architecture and policies of the organization will be required for broader deployments).
-a.	Cd website (To Naviate to the website folder of the project)
-b.	Python ./scraper.py (Scrapes an updated version of the opportunities from academic works)
-c.	Flask run (Activates a development server to run the application)
+6.	Run the following commands in the terminal to activate the server from your machine (note this is for testing purposes, for true deployment knowledge of the host system architecture and policies of the organization will be required for broader deployments).  
+a.	Cd website (To Naviate to the website folder of the project)  
+b.	Python ./scraper.py (Scrapes an updated version of the opportunities from academic works)  
+c.	Flask run (Activates a development server to run the application)  
 
 File Naviation:
 There are three primary sections within this application (Calculator Suite, Milestone Tracker, and Scholarships/Profiles)
