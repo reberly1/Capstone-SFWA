@@ -18,24 +18,24 @@ Calculator Suite:
 1. Lines 36-213 of app.py for flask route handling
 2. functions.py for calculations
 3. Relevant HTML Files found in templates:  
-   a. layout  
-   b. guided  
-   c. guided_estimates  
-   d. guided_terms 
-   e. guided_loans  
-   f. report  
-   g. unguided   
+   a. layout    
+   b. guided    
+   c. guided_estimates    
+   d. guided_terms   
+   e. guided_loans    
+   f. report    
+   g. unguided     
 
 Milestone Tracker: 
 1. Lines 214-665 in app.py for flask route handling
 2. functions.py for calculations
 3. database.py for saving logs via profile
 4. Relevant HTML Files found in templates:  
-   a. layout 
-   b. loan_log 
-   c. log  
-   d. milestone  
-   e. repay_log  
+   a. layout    
+   b. loan_log   
+   c. log    
+   d. milestone    
+   e. repay_log    
 
 Scholarships/Profiles:
 1. Lines 666-824 of app.py for flask route handling
