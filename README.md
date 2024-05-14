@@ -22,9 +22,9 @@ Calculator Suite:
    b. guided  
    c. guided_estimates  
    d. guided_terms 
-   d. guided_loans  
-   e. report  
-   f. unguided  
+   e. guided_loans  
+   f. report  
+   g. unguided   
 
 Milestone Tracker: 
 1. Lines 214-665 in app.py for flask route handling
